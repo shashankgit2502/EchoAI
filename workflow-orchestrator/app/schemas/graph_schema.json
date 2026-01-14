@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GraphDefinition",
+  "description": "Graph representation schema - for UI visualization of workflows",
+  "type": "object",
+  "required": ["nodes", "edges"],
+  "properties": {
+    "nodes": {
+      "type": "array",
+      "description": "Graph nodes (agents)",
+      "items": {
+        "$ref": "#/definitions/GraphNode"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "description": "Graph edges (connections between agents)",
+      "items": {
+        "$ref": "#/definitions/GraphEdge"
+      }
+    },
+    "layout": {
+      "type": "object",
+      "description": "Layout configuration for graph visualization",
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["dagre", "force", "hierarchical", "circular"],
+          "default": "dagre"
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["TB", "BT", "LR", "RL"],
+          "default": "TB",
+          "description": "Graph direction (TB=top-bottom, LR=left-right)"
+        },
+        "spacing": {
+          "type": "object",
+          "properties": {
+            "nodeSpacing": {
+              "type": "number",
+              "default": 50
+            },
+            "rankSpacing": {
+              "type": "number",
+              "default": 100
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "workflow_id": {
+          "type": "string"
+        },
+        "workflow_name": {
+          "type": "string"
+        },
+        "communication_pattern": {
+          "type": "string",
+          "enum": ["sequential", "parallel", "hierarchical", "conditional", "graph"]
+        }
+      }
+    }
+  },
+  "definitions": {
+    "GraphNode": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique node identifier (agent_id)",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["agent", "start", "end", "decision"],
+          "description": "Node type"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "Display label for node"
+            },
+            "role": {
+              "type": "string",
+              "description": "Agent role"
+            },
+            "is_master": {
+              "type": "boolean",
+              "default": false
+            },
+            "tools": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "status": {
+              "type": "string",
+              "enum": ["idle", "running", "completed", "failed"],
+              "default": "idle"
+            }
+          }
+        },
+        "position": {
+          "type": "object",
+          "description": "Node position in graph (x, y coordinates)",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          }
+        },
+        "style": {
+          "type": "object",
+          "description": "Visual styling for node",
+          "additionalProperties": true
+        }
+      }
+    },
+    "GraphEdge": {
+      "type": "object",
+      "required": ["id", "source", "target"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique edge identifier"
+        },
+        "source": {
+          "type": "string",
+          "description": "Source node ID",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "target": {
+          "type": "string",
+          "description": "Target node ID",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["sequential", "parallel", "conditional"],
+          "default": "sequential"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "Edge label (e.g., condition)"
+            },
+            "condition": {
+              "type": "string",
+              "description": "Conditional expression (if conditional edge)"
+            }
+          }
+        },
+        "style": {
+          "type": "object",
+          "description": "Visual styling for edge",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

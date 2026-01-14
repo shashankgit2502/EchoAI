@@ -1,0 +1,537 @@
+{
+  "system_name": "coffee_shop_business_proposal_generator",
+  "description": "A multi-agent system designed to create comprehensive business proposals for launching new coffee shops, including market analysis, financial projections, marketing strategy, and operational planning.",
+  "domain": "general",
+  "agents": [
+    {
+      "id": "proposal_coordinator",
+      "name": "Proposal Coordinator",
+      "role": "Orchestrate the business proposal creation process",
+      "responsibilities": [
+        "Coordinate workflow execution",
+        "Validate proposal completeness",
+        "Ensure data consistency across sections",
+        "Handle error recovery",
+        "Generate final proposal document"
+      ],
+      "system_prompt": "You are the central coordinator for creating comprehensive coffee shop business proposals. Your role is to manage the workflow, ensure all components are completed, validate data consistency, and compile the final document. You must maintain clear communication with all specialized agents and handle any errors that arise during the process.",
+      "tools": [
+        "document_compiler",
+        "validation_tool"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.3,
+        "max_tokens": 8000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": true,
+        "can_call_agents": [
+          "market_analyst",
+          "financial_planner",
+          "marketing_strategist",
+          "operations_planner",
+          "quality_assurance"
+        ],
+        "max_tool_calls": 50
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": true
+    },
+    {
+      "id": "market_analyst",
+      "name": "Market Analyst",
+      "role": "Conduct market research and competitive analysis",
+      "responsibilities": [
+        "Analyze local coffee market trends",
+        "Identify target demographics",
+        "Assess competitor strengths/weaknesses",
+        "Determine optimal location factors",
+        "Generate market analysis report"
+      ],
+      "system_prompt": "As the Market Analyst, you specialize in researching coffee shop markets. Your task is to analyze local market conditions, identify target customer segments, evaluate competition, and determine optimal location characteristics. Provide data-driven insights that will inform the business strategy.",
+      "tools": [
+        "market_data_api",
+        "demographic_analyzer"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.7,
+        "max_tokens": 4000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": [],
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "financial_planner",
+      "name": "Financial Planner",
+      "role": "Develop financial projections and budgeting",
+      "responsibilities": [
+        "Create startup cost estimates",
+        "Develop 3-year financial projections",
+        "Calculate break-even analysis",
+        "Prepare funding requirements",
+        "Generate financial statements"
+      ],
+      "system_prompt": "As the Financial Planner, you are responsible for creating comprehensive financial projections for the coffee shop. Your analysis should include startup costs, revenue projections, expense forecasts, and funding requirements. Ensure all financial data is realistic and well-supported.",
+      "tools": [
+        "financial_calculator",
+        "spreadsheet_generator"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.4,
+        "max_tokens": 6000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": [],
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "marketing_strategist",
+      "name": "Marketing Strategist",
+      "role": "Develop marketing and branding strategy",
+      "responsibilities": [
+        "Create brand positioning strategy",
+        "Develop pre-launch marketing plan",
+        "Design customer acquisition strategy",
+        "Plan loyalty programs",
+        "Generate marketing budget"
+      ],
+      "system_prompt": "As the Marketing Strategist, you will develop a comprehensive marketing plan for the coffee shop launch. Your strategy should include brand positioning, customer acquisition tactics, promotional campaigns, and digital marketing approaches. Focus on creating a unique value proposition that differentiates the coffee shop in the market.",
+      "tools": [
+        "social_media_analyzer",
+        "branding_toolkit"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.8,
+        "max_tokens": 5000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": [],
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "operations_planner",
+      "name": "Operations Planner",
+      "role": "Design operational workflows and logistics",
+      "responsibilities": [
+        "Develop staffing plan",
+        "Design supply chain logistics",
+        "Create inventory management system",
+        "Plan equipment requirements",
+        "Establish quality control procedures"
+      ],
+      "system_prompt": "As the Operations Planner, you are responsible for designing all operational aspects of the coffee shop. This includes staffing requirements, supply chain management, inventory systems, equipment needs, and quality control processes. Your plan should ensure efficient daily operations while maintaining high service standards.",
+      "tools": [
+        "supply_chain_optimizer",
+        "staffing_calculator"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.5,
+        "max_tokens": 5000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": [],
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "quality_assurance",
+      "name": "Quality Assurance Specialist",
+      "role": "Validate proposal content and consistency",
+      "responsibilities": [
+        "Verify data accuracy across sections",
+        "Ensure logical flow between components",
+        "Check for completeness of all required elements",
+        "Validate financial calculations",
+        "Confirm regulatory compliance"
+      ],
+      "system_prompt": "As the Quality Assurance Specialist, your role is to thoroughly review all components of the business proposal for accuracy, consistency, and completeness. You must verify that financial projections are sound, market data is properly interpreted, and all operational plans are feasible. Your validation ensures the final proposal meets professional standards.",
+      "tools": [
+        "validation_tool",
+        "compliance_checker"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.2,
+        "max_tokens": 4000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": [],
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    }
+  ],
+  "tools": [
+    {
+      "name": "document_compiler",
+      "type": "custom",
+      "description": "Compiles individual proposal sections into a final formatted document",
+      "config": {
+        "output_format": "PDF",
+        "template_path": "/templates/business_proposal"
+      },
+      "auth_required": false,
+      "parameters": {
+        "sections": {
+          "type": "array",
+          "description": "List of proposal sections to compile"
+        },
+        "metadata": {
+          "type": "object",
+          "description": "Document metadata including title and author"
+        }
+      }
+    },
+    {
+      "name": "validation_tool",
+      "type": "custom",
+      "description": "Validates proposal content for completeness and consistency",
+      "config": {
+        "validation_rules": "/config/validation_rules.json"
+      },
+      "auth_required": false,
+      "parameters": {
+        "proposal_data": {
+          "type": "object",
+          "description": "Complete proposal data to validate"
+        }
+      }
+    },
+    {
+      "name": "market_data_api",
+      "type": "api",
+      "description": "Provides access to market research data and industry trends",
+      "config": {
+        "endpoint": "https://api.marketdata.com/v2",
+        "api_key": "MARKETDATA_API_KEY"
+      },
+      "auth_required": true,
+      "parameters": {
+        "location": {
+          "type": "string",
+          "description": "Geographic area for market analysis"
+        },
+        "industry": {
+          "type": "string",
+          "description": "Industry sector (e.g., 'coffee shops')"
+        }
+      }
+    },
+    {
+      "name": "demographic_analyzer",
+      "type": "api",
+      "description": "Analyzes demographic data for target market identification",
+      "config": {
+        "endpoint": "https://api.demographics.com/v1",
+        "api_key": "DEMOGRAPHICS_API_KEY"
+      },
+      "auth_required": true,
+      "parameters": {
+        "radius": {
+          "type": "number",
+          "description": "Analysis radius in miles"
+        },
+        "location": {
+          "type": "string",
+          "description": "Center point for analysis"
+        }
+      }
+    },
+    {
+      "name": "financial_calculator",
+      "type": "calculator",
+      "description": "Performs complex financial calculations and projections",
+      "config": {
+        "precision": 4,
+        "currency": "USD"
+      },
+      "auth_required": false,
+      "parameters": {
+        "revenue_projections": {
+          "type": "array",
+          "description": "Expected revenue by period"
+        },
+        "expense_estimates": {
+          "type": "array",
+          "description": "Projected expenses by category"
+        }
+      }
+    },
+    {
+      "name": "spreadsheet_generator",
+      "type": "file",
+      "description": "Generates financial spreadsheets in standard formats",
+      "config": {
+        "default_format": "xlsx",
+        "templates": "/templates/financial"
+      },
+      "auth_required": false,
+      "parameters": {
+        "data": {
+          "type": "object",
+          "description": "Financial data to include in spreadsheet"
+        },
+        "template": {
+          "type": "string",
+          "description": "Template name to use"
+        }
+      }
+    },
+    {
+      "name": "social_media_analyzer",
+      "type": "api",
+      "description": "Analyzes social media trends and competitor presence",
+      "config": {
+        "endpoint": "https://api.socialanalytics.com/v3",
+        "api_key": "SOCIAL_API_KEY"
+      },
+      "auth_required": true,
+      "parameters": {
+        "keywords": {
+          "type": "array",
+          "description": "Keywords to analyze"
+        },
+        "competitors": {
+          "type": "array",
+          "description": "Competitor social media handles"
+        }
+      }
+    },
+    {
+      "name": "branding_toolkit",
+      "type": "custom",
+      "description": "Assists in developing brand identity elements",
+      "config": {
+        "assets_path": "/assets/branding"
+      },
+      "auth_required": false,
+      "parameters": {
+        "brand_values": {
+          "type": "array",
+          "description": "Core brand values to incorporate"
+        },
+        "target_audience": {
+          "type": "string",
+          "description": "Primary target audience description"
+        }
+      }
+    },
+    {
+      "name": "supply_chain_optimizer",
+      "type": "calculator",
+      "description": "Optimizes supply chain logistics and inventory levels",
+      "config": {
+        "lead_time_factor": 1.2,
+        "safety_stock_factor": 1.15
+      },
+      "auth_required": false,
+      "parameters": {
+        "demand_forecast": {
+          "type": "array",
+          "description": "Projected demand by product"
+        },
+        "supplier_data": {
+          "type": "array",
+          "description": "Supplier lead times and reliability"
+        }
+      }
+    },
+    {
+      "name": "staffing_calculator",
+      "type": "calculator",
+      "description": "Calculates optimal staffing requirements",
+      "config": {
+        "productivity_factor": 0.85,
+        "shift_length": 8
+      },
+      "auth_required": false,
+      "parameters": {
+        "customer_flow": {
+          "type": "array",
+          "description": "Expected customer traffic by hour"
+        },
+        "service_standards": {
+          "type": "object",
+          "description": "Service time requirements"
+        }
+      }
+    },
+    {
+      "name": "compliance_checker",
+      "type": "custom",
+      "description": "Verifies regulatory compliance for food service businesses",
+      "config": {
+        "regulations_db": "/data/food_service_regulations",
+        "jurisdiction": "US"
+      },
+      "auth_required": false,
+      "parameters": {
+        "business_type": {
+          "type": "string",
+          "description": "Type of food service establishment"
+        },
+        "location": {
+          "type": "string",
+          "description": "Specific location details"
+        }
+      }
+    }
+  ],
+  "workflows": [
+    {
+      "name": "complete_business_proposal_workflow",
+      "description": "Generates a comprehensive coffee shop business proposal from start to finish",
+      "trigger": "manual",
+      "steps": [
+        {
+          "agent_id": "proposal_coordinator",
+          "action": "Initialize proposal structure",
+          "inputs": {
+            "business_name": "string",
+            "location": "string",
+            "concept": "string"
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "market_analyst",
+          "action": "Conduct market analysis",
+          "inputs": {
+            "location_data": "object",
+            "concept_details": "object"
+          },
+          "condition": null,
+          "parallel_with": [
+            "financial_planner"
+          ]
+        },
+        {
+          "agent_id": "financial_planner",
+          "action": "Develop financial projections",
+          "inputs": {
+            "startup_costs": "object",
+            "revenue_model": "object"
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "marketing_strategist",
+          "action": "Create marketing strategy",
+          "inputs": {
+            "target_market": "object",
+            "brand_positioning": "object"
+          },
+          "condition": "market_analysis.complete AND financial_projections.complete",
+          "parallel_with": []
+        },
+        {
+          "agent_id": "operations_planner",
+          "action": "Design operational plan",
+          "inputs": {
+            "space_requirements": "object",
+            "equipment_needs": "object"
+          },
+          "condition": null,
+          "parallel_with": [
+            "marketing_strategist"
+          ]
+        },
+        {
+          "agent_id": "quality_assurance",
+          "action": "Validate all proposal sections",
+          "inputs": {
+            "complete_proposal": "object"
+          },
+          "condition": "market_analysis.complete AND financial_projections.complete AND marketing_strategy.complete AND operations_plan.complete",
+          "parallel_with": []
+        },
+        {
+          "agent_id": "proposal_coordinator",
+          "action": "Compile final proposal document",
+          "inputs": {
+            "validated_sections": "object",
+            "formatting_preferences": "object"
+          },
+          "condition": "quality_assurance.approved",
+          "parallel_with": []
+        }
+      ],
+      "communication_pattern": "conditional"
+    }
+  ],
+  "communication_pattern": "hierarchical",
+  "metadata": {
+    "complexity_score": 3,
+    "suggested_patterns": [
+      "sequential"
+    ],
+    "domain_analysis": {
+      "original_request": "Write a comprehensive business proposal for launching a new coffee shop, including market analysis, financial projections, marketing strategy, and operational plan",
+      "domain": "general",
+      "entities": [
+        "data",
+        "task"
+      ],
+      "operations": [
+        "process",
+        "analyze"
+      ],
+      "data_sources": [
+        "user_input"
+      ],
+      "output_requirements": [
+        "result"
+      ],
+      "temporal_requirements": "on-demand",
+      "integration_points": [],
+      "suggested_patterns": [
+        "sequential"
+      ],
+      "complexity_score": 3
+    }
+  },
+  "_metadata": {
+    "state": "final",
+    "workflow_id": "coffee_shop_business_proposal_generator",
+    "version": "1.0",
+    "saved_at": "2026-01-13T09:16:13.059551",
+    "immutable": true
+  }
+}

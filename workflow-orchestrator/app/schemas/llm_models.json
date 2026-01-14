@@ -1,0 +1,182 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LLM Models Catalog",
+  "description": "Registry of supported LLM models with metadata for multi-provider support",
+  "version": "1.0.0",
+
+  "models": [
+    {
+      "id": "claude-sonnet-4-5-20250929",
+      "name": "Claude Sonnet 4.5",
+      "provider": "anthropic",
+      "family": "claude-4",
+      "tier": "standard",
+      "context_window": 200000,
+      "max_output_tokens": 16384,
+      "supports_tools": true,
+      "supports_vision": true,
+      "supports_streaming": true,
+      "cost_per_million_input_tokens": 3.0,
+      "cost_per_million_output_tokens": 15.0,
+      "recommended_for": ["general_purpose", "workflow_design", "agent_coordination", "balanced_tasks"],
+      "description": "Balanced intelligence and speed for most tasks"
+    },
+    {
+      "id": "gpt-4",
+      "name": "GPT-4",
+      "provider": "openai",
+      "family": "gpt-4",
+      "tier": "standard",
+      "context_window": 8192,
+      "max_output_tokens": 4096,
+      "supports_tools": true,
+      "supports_vision": false,
+      "supports_streaming": true,
+      "cost_per_million_input_tokens": 30.0,
+      "cost_per_million_output_tokens": 60.0,
+      "recommended_for": ["general_purpose", "reasoning"],
+      "description": "Standard GPT-4 model"
+    },
+    {
+      "id": "mistralai/devstral-2512:free",
+      "name": "NVIDIA: Nemotron 3 Nano 30B A3B",
+      "provider": "openrouter",
+      "family": "olmo",
+      "tier": "fast",
+      "context_window": 8192,
+      "max_output_tokens": 2048,
+      "supports_tools": true,
+      "supports_vision": false,
+      "supports_streaming": true,
+      "cost_per_million_input_tokens": 0.0,
+      "cost_per_million_output_tokens": 0.0,
+      "recommended_for": ["fast_tasks", "experimental", "cost_free"],
+      "description": "Free open-source model via OpenRouter - Good for experimentation"
+    },
+    {
+      "id": "mistral-nemo:12b-instruct-2407-fp16",
+      "name": "Mistral Nemo 12B (On-Prem)",
+      "provider": "onprem",
+      "family": "mistral",
+      "tier": "fast",
+      "context_window": 8192,
+      "max_output_tokens": 2048,
+      "supports_tools": true,
+      "supports_vision": false,
+      "supports_streaming": true,
+      "cost_per_million_input_tokens": 0.0,
+      "cost_per_million_output_tokens": 0.0,
+      "recommended_for": ["fast_tasks", "onprem_deployment", "privacy_sensitive"],
+      "description": "On-premise Mistral Nemo model - Good balance of speed and quality"
+    }
+  ],
+
+  "disabled_models": [
+    {
+      "_comment": "Uncomment and move to 'models' array above to enable",
+      "id": "claude-opus-4-20250514",
+      "name": "Claude Opus 4",
+      "provider": "anthropic",
+      "tier": "premium",
+      "description": "Most capable Claude model for complex, multi-step tasks"
+    },
+    {
+      "_comment": "Uncomment and move to 'models' array above to enable",
+      "id": "claude-3-5-sonnet-20241022",
+      "name": "Claude 3.5 Sonnet",
+      "provider": "anthropic",
+      "tier": "standard",
+      "description": "Previous generation Sonnet model"
+    },
+    {
+      "_comment": "Uncomment and move to 'models' array above to enable",
+      "id": "claude-3-5-haiku-20241022",
+      "name": "Claude 3.5 Haiku",
+      "provider": "anthropic",
+      "tier": "fast",
+      "description": "Fast and cost-effective for simpler tasks"
+    },
+    {
+      "_comment": "Uncomment and move to 'models' array above to enable",
+      "id": "gpt-4-turbo-preview",
+      "name": "GPT-4 Turbo",
+      "provider": "openai",
+      "tier": "premium",
+      "description": "Latest GPT-4 model with larger context window"
+    },
+    {
+      "_comment": "Uncomment and move to 'models' array above to enable",
+      "id": "gpt-3.5-turbo",
+      "name": "GPT-3.5 Turbo",
+      "provider": "openai",
+      "tier": "fast",
+      "description": "Fast and cost-effective GPT model"
+    }
+  ],
+
+  "providers": [
+    {
+      "id": "anthropic",
+      "name": "Anthropic",
+      "api_base_url": "https://api.anthropic.com/v1",
+      "requires_api_key": true,
+      "api_key_env_var": "ANTHROPIC_API_KEY",
+      "supported_features": ["tools", "vision", "streaming", "system_prompts"],
+      "rate_limits": {
+        "requests_per_minute": 50,
+        "tokens_per_minute": 100000
+      }
+    },
+    {
+      "id": "openai",
+      "name": "OpenAI",
+      "api_base_url": "https://api.openai.com/v1",
+      "requires_api_key": true,
+      "api_key_env_var": "OPENAI_API_KEY",
+      "supported_features": ["tools", "vision", "streaming", "system_prompts"],
+      "rate_limits": {
+        "requests_per_minute": 60,
+        "tokens_per_minute": 150000
+      }
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter",
+      "api_base_url": "https://openrouter.ai/api/v1",
+      "requires_api_key": true,
+      "api_key_env_var": "OPENROUTER_API_KEY",
+      "supported_features": ["tools", "vision", "streaming", "system_prompts"],
+      "rate_limits": {
+        "requests_per_minute": 100,
+        "tokens_per_minute": 200000
+      }
+    },
+    {
+      "id": "onprem",
+      "name": "On-Premise (Ollama)",
+      "api_base_url": "http://10.188.100.131:8004/v1",
+      "requires_api_key": false,
+      "api_key_env_var": "ONPREM_API_KEY",
+      "supported_features": ["tools", "vision", "streaming", "system_prompts"],
+      "rate_limits": {
+        "requests_per_minute": 1000,
+        "tokens_per_minute": 1000000
+      }
+    }
+  ],
+
+  "tiers": {
+    "premium": {
+      "description": "Highest capability models for complex tasks",
+      "use_cases": ["complex_reasoning", "multi_step_workflows", "critical_decisions"]
+    },
+    "standard": {
+      "description": "Balanced models for general purpose tasks",
+      "use_cases": ["general_purpose", "workflow_design", "agent_coordination"]
+    },
+    "fast": {
+      "description": "Fast and cost-effective models for simpler tasks",
+      "use_cases": ["simple_validation", "lightweight_agents", "rapid_iteration"]
+    }
+  }
+}

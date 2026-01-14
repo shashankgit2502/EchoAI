@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ToolDefinition",
+  "description": "Tool specification schema - defines tools that agents can use (including MCP tools)",
+  "type": "object",
+  "required": ["name", "type"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unique tool identifier",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "minLength": 3,
+      "maxLength": 100
+    },
+    "type": {
+      "type": "string",
+      "enum": ["database", "api", "calculator", "email", "search", "file", "custom", "mcp"],
+      "description": "Tool type category"
+    },
+    "description": {
+      "type": "string",
+      "description": "What this tool does",
+      "minLength": 10,
+      "maxLength": 500
+    },
+    "config": {
+      "type": "object",
+      "description": "Tool-specific configuration",
+      "additionalProperties": true
+    },
+    "auth_required": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this tool requires authentication"
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Tool parameter schema (JSON Schema)",
+      "additionalProperties": true
+    },
+    "mcp_config": {
+      "type": "object",
+      "description": "MCP-specific configuration (if type=mcp)",
+      "properties": {
+        "server_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "MCP server endpoint"
+        },
+        "server_name": {
+          "type": "string",
+          "description": "MCP server identifier"
+        },
+        "tool_name": {
+          "type": "string",
+          "description": "Tool name on MCP server"
+        },
+        "version": {
+          "type": "string",
+          "description": "MCP protocol version"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_health_check": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "health_status": {
+          "type": "string",
+          "enum": ["healthy", "degraded", "unavailable"],
+          "default": "healthy"
+        }
+      }
+    }
+  }
+}

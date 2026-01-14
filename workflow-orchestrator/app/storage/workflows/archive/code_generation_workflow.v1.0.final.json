@@ -1,0 +1,336 @@
+{
+  "system_name": "code_generation_workflow",
+  "description": "A multi-agent system designed to generate code based on user requirements, ensuring quality and correctness through a structured workflow.",
+  "domain": "general",
+  "agents": [
+    {
+      "id": "requirement_analyzer",
+      "name": "Requirement Analyzer",
+      "role": "Analyze user requirements and extract key specifications for code generation.",
+      "responsibilities": [
+        "Parse user input to identify key requirements",
+        "Extract technical specifications and constraints",
+        "Validate requirements for completeness and clarity",
+        "Prepare structured input for the code generator"
+      ],
+      "system_prompt": "You are a requirement analyzer. Your task is to carefully read the user's input and extract all relevant technical specifications, constraints, and requirements for code generation. Ensure the requirements are clear, complete, and unambiguous. If any information is missing, ask clarifying questions. Output a structured summary of the requirements for the next agent.",
+      "tools": [
+        "input_parser",
+        "validation_tool"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.5,
+        "max_tokens": 1000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": {
+        "user_input": "string"
+      },
+      "output_schema": {
+        "requirements": "object",
+        "clarifications_needed": "array"
+      },
+      "is_master": false
+    },
+    {
+      "id": "code_generator",
+      "name": "Code Generator",
+      "role": "Generate code based on the analyzed requirements.",
+      "responsibilities": [
+        "Generate code snippets based on structured requirements",
+        "Ensure code adheres to best practices and standards",
+        "Provide comments and documentation within the code",
+        "Handle multiple programming languages and frameworks"
+      ],
+      "system_prompt": "You are a code generator. Your task is to generate high-quality, functional code based on the structured requirements provided by the requirement analyzer. Ensure the code is well-documented, follows best practices, and meets all specified requirements. If any requirements are unclear, request clarification.",
+      "tools": [
+        "code_library",
+        "syntax_validator"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.7,
+        "max_tokens": 2000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": {
+        "requirements": "object"
+      },
+      "output_schema": {
+        "generated_code": "string",
+        "language_used": "string",
+        "comments": "string"
+      },
+      "is_master": false
+    },
+    {
+      "id": "code_reviewer",
+      "name": "Code Reviewer",
+      "role": "Review generated code for quality, correctness, and adherence to requirements.",
+      "responsibilities": [
+        "Review code for syntax and logical errors",
+        "Ensure code meets all specified requirements",
+        "Check for adherence to coding standards and best practices",
+        "Provide feedback for improvements or corrections"
+      ],
+      "system_prompt": "You are a code reviewer. Your task is to thoroughly review the generated code for correctness, quality, and adherence to the specified requirements. Check for syntax errors, logical flaws, and compliance with coding standards. Provide detailed feedback and suggestions for improvements if necessary.",
+      "tools": [
+        "syntax_validator",
+        "code_quality_checker"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.3,
+        "max_tokens": 1500,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": {
+        "generated_code": "string",
+        "requirements": "object"
+      },
+      "output_schema": {
+        "review_feedback": "string",
+        "is_approved": "boolean",
+        "suggested_changes": "array"
+      },
+      "is_master": false
+    },
+    {
+      "id": "workflow_coordinator",
+      "name": "Workflow Coordinator",
+      "role": "Coordinate the workflow and manage communication between agents.",
+      "responsibilities": [
+        "Manage the sequence of workflow steps",
+        "Handle communication and data passing between agents",
+        "Monitor workflow progress and handle errors",
+        "Ensure the final output is delivered to the user"
+      ],
+      "system_prompt": "You are the workflow coordinator. Your task is to manage the entire code generation workflow, ensuring that each agent performs its role correctly and in the right sequence. Handle data passing between agents, monitor progress, and manage any errors or exceptions that arise. Ensure the final output is delivered to the user in a clear and structured manner.",
+      "tools": [
+        "workflow_manager",
+        "error_handler"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.2,
+        "max_tokens": 800,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 50
+      },
+      "input_schema": {
+        "user_input": "string"
+      },
+      "output_schema": {
+        "final_output": "object",
+        "status": "string"
+      },
+      "is_master": true
+    }
+  ],
+  "tools": [
+    {
+      "name": "input_parser",
+      "type": "custom",
+      "description": "Parses and structures user input for further processing.",
+      "config": {
+        "input_format": "text"
+      },
+      "auth_required": false,
+      "parameters": {
+        "input_text": "string"
+      }
+    },
+    {
+      "name": "validation_tool",
+      "type": "custom",
+      "description": "Validates the completeness and clarity of extracted requirements.",
+      "config": {
+        "validation_rules": "predefined"
+      },
+      "auth_required": false,
+      "parameters": {
+        "requirements": "object"
+      }
+    },
+    {
+      "name": "code_library",
+      "type": "custom",
+      "description": "Provides access to a library of code templates and best practices.",
+      "config": {
+        "supported_languages": [
+          "python",
+          "javascript",
+          "java",
+          "c++"
+        ]
+      },
+      "auth_required": false,
+      "parameters": {
+        "language": "string",
+        "template_type": "string"
+      }
+    },
+    {
+      "name": "syntax_validator",
+      "type": "custom",
+      "description": "Validates the syntax of generated code.",
+      "config": {
+        "supported_languages": [
+          "python",
+          "javascript",
+          "java",
+          "c++"
+        ]
+      },
+      "auth_required": false,
+      "parameters": {
+        "code": "string",
+        "language": "string"
+      }
+    },
+    {
+      "name": "code_quality_checker",
+      "type": "custom",
+      "description": "Checks code for adherence to coding standards and best practices.",
+      "config": {
+        "coding_standards": "predefined"
+      },
+      "auth_required": false,
+      "parameters": {
+        "code": "string",
+        "language": "string"
+      }
+    },
+    {
+      "name": "workflow_manager",
+      "type": "custom",
+      "description": "Manages the sequence and execution of workflow steps.",
+      "config": {
+        "workflow_steps": "predefined"
+      },
+      "auth_required": false,
+      "parameters": {
+        "current_step": "string",
+        "next_step": "string"
+      }
+    },
+    {
+      "name": "error_handler",
+      "type": "custom",
+      "description": "Handles errors and exceptions during workflow execution.",
+      "config": {
+        "error_handling_rules": "predefined"
+      },
+      "auth_required": false,
+      "parameters": {
+        "error_type": "string",
+        "error_message": "string"
+      }
+    }
+  ],
+  "workflows": [
+    {
+      "name": "code_generation_workflow",
+      "description": "A sequential workflow for generating code based on user requirements.",
+      "trigger": "manual",
+      "steps": [
+        {
+          "agent_id": "requirement_analyzer",
+          "action": "analyze_requirements",
+          "inputs": {
+            "user_input": "user_input"
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "code_generator",
+          "action": "generate_code",
+          "inputs": {
+            "requirements": "requirements"
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "code_reviewer",
+          "action": "review_code",
+          "inputs": {
+            "generated_code": "generated_code",
+            "requirements": "requirements"
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "workflow_coordinator",
+          "action": "deliver_output",
+          "inputs": {
+            "final_output": "final_output"
+          },
+          "condition": null,
+          "parallel_with": []
+        }
+      ],
+      "communication_pattern": "sequential"
+    }
+  ],
+  "communication_pattern": "sequential",
+  "metadata": {
+    "complexity_score": 3,
+    "suggested_patterns": [
+      "sequential"
+    ],
+    "domain_analysis": {
+      "original_request": "give me code generation workflow",
+      "domain": "general",
+      "entities": [
+        "data",
+        "task"
+      ],
+      "operations": [
+        "process",
+        "analyze"
+      ],
+      "data_sources": [
+        "user_input"
+      ],
+      "output_requirements": [
+        "result"
+      ],
+      "temporal_requirements": "on-demand",
+      "integration_points": [],
+      "suggested_patterns": [
+        "sequential"
+      ],
+      "complexity_score": 3
+    }
+  },
+  "_metadata": {
+    "state": "final",
+    "workflow_id": "code_generation_workflow",
+    "version": "1.0",
+    "saved_at": "2026-01-12T06:10:23.851918",
+    "immutable": true
+  }
+}

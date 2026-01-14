@@ -1,0 +1,452 @@
+{
+  "system_name": "content_writing_orchestrator",
+  "description": "Orchestrates end-to-end content creation from idea to publication",
+  "domain": "content_writing",
+  "agents": [
+    {
+      "id": "content_master",
+      "name": "Content Pipeline Master",
+      "role": "Coordinate end-to-end content workflow",
+      "responsibilities": [
+        "Orchestrate agent handoffs",
+        "Manage feedback loops",
+        "Ensure deadline adherence",
+        "Handle exceptions",
+        "Maintain workflow state"
+      ],
+      "system_prompt": "You are the master coordinator for content creation. You orchestrate agents, manage workflow state, and ensure sequential progression with iterative feedback.",
+      "tools": [],
+      "llm_config": {
+        "model": "gpt-4",
+        "temperature": 0.3,
+        "max_tokens": 8000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 50
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": true
+    },
+    {
+      "id": "idea_generator",
+      "name": "Idea Generator",
+      "role": "Generate content ideas",
+      "responsibilities": [
+        "Capture user brief",
+        "Brainstorm topics",
+        "Validate relevance",
+        "Prioritize ideas",
+        "Output idea list"
+      ],
+      "system_prompt": "You are an idea generation specialist. Create relevant, engaging content topics based on user input and content strategy. Output concise, prioritized topic suggestions.",
+      "tools": [
+        "research_db"
+      ],
+      "llm_config": {
+        "model": "gpt-3.5-turbo",
+        "temperature": 0.7,
+        "max_tokens": 2000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "research_agent",
+      "name": "Research Specialist",
+      "role": "Conduct topic research",
+      "responsibilities": [
+        "Gather sources",
+        "Extract key points",
+        "Cite references",
+        "Summarize findings",
+        "Prepare research notes"
+      ],
+      "system_prompt": "You are a research analyst. Retrieve and synthesize information from provided sources to support content creation, ensuring accuracy and depth.",
+      "tools": [
+        "research_db",
+        "seo_api"
+      ],
+      "llm_config": {
+        "model": "claude-sonnet-4-5-20250929",
+        "temperature": 0.2,
+        "max_tokens": 12000,
+        "top_p": 0.9
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "outline_builder",
+      "name": "Outline Builder",
+      "role": "Create article outlines",
+      "responsibilities": [
+        "Structure sections",
+        "Define headings",
+        "Assign sub-points",
+        "Align with SEO keywords",
+        "Generate outline draft"
+      ],
+      "system_prompt": "You are an outline architect. Convert research findings into a clear, logical article outline with headings and bullet points, optimizing for flow and SEO.",
+      "tools": [],
+      "llm_config": {
+        "model": "gpt-4",
+        "temperature": 0.5,
+        "max_tokens": 4000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "draft_writer",
+      "name": "Draft Writer",
+      "role": "Write first draft",
+      "responsibilities": [
+        "Expand outline into prose",
+        "Maintain tone",
+        "Incorporate keywords",
+        "Generate draft text",
+        "Flag missing sections"
+      ],
+      "system_prompt": "You are a professional writer. Transform the approved outline into a coherent first draft, adhering to style guide and keyword placement requirements.",
+      "tools": [],
+      "llm_config": {
+        "model": "gpt-4",
+        "temperature": 0.7,
+        "max_tokens": 12000,
+        "top_p": 0.9
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "editing_agent",
+      "name": "Editing Specialist",
+      "role": "Edit and refine draft",
+      "responsibilities": [
+        "Check grammar",
+        "Improve clarity",
+        "Adjust pacing",
+        "Enforce style guide",
+        "Suggest revisions"
+      ],
+      "system_prompt": "You are a meticulous editor. Review the draft for grammar, clarity, and stylistic consistency, returning suggested edits without rewriting entire sections.",
+      "tools": [],
+      "llm_config": {
+        "model": "gpt-4",
+        "temperature": 0.2,
+        "max_tokens": 4000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "seo_optimizer",
+      "name": "SEO Optimizer",
+      "role": "Optimize for search engines",
+      "responsibilities": [
+        "Apply keyword density",
+        "Suggest meta tags",
+        "Structure headings",
+        "Add internal links",
+        "Generate SEO report"
+      ],
+      "system_prompt": "You are an SEO expert. Analyze content for search engine optimization, providing actionable recommendations while preserving original message.",
+      "tools": [
+        "seo_api"
+      ],
+      "llm_config": {
+        "model": "claude-sonnet-4-5-20250929",
+        "temperature": 0.5,
+        "max_tokens": 6000,
+        "top_p": 0.9
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "publishing_agent",
+      "name": "Publishing Coordinator",
+      "role": "Publish content to CMS",
+      "responsibilities": [
+        "Validate final output",
+        "Upload to CMS",
+        "Set publishing schedule",
+        "Notify team",
+        "Log publication metadata"
+      ],
+      "system_prompt": "You are a publishing manager. Ensure final content meets quality standards, then coordinate publishing to the CMS with appropriate metadata and notifications.",
+      "tools": [
+        "cms_api",
+        "file"
+      ],
+      "llm_config": {
+        "model": "gpt-3.5-turbo",
+        "temperature": 0.1,
+        "max_tokens": 2000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    }
+  ],
+  "tools": [
+    {
+      "name": "research_db",
+      "type": "database",
+      "description": "Access internal research knowledge base and external academic sources",
+      "config": {
+        "endpoint": "https://researchdb.example.com/api/v1",
+        "query_params": {}
+      },
+      "auth_required": true,
+      "parameters": {
+        "topic": "string",
+        "limit": "integer"
+      }
+    },
+    {
+      "name": "seo_api",
+      "type": "api",
+      "description": "Interface to SEO analysis and keyword suggestion service",
+      "config": {
+        "endpoint": "https://seoapi.example.com/optimize",
+        "method": "POST"
+      },
+      "auth_required": true,
+      "parameters": {
+        "content": "string",
+        "target_url": "string"
+      }
+    },
+    {
+      "name": "cms_api",
+      "type": "api",
+      "description": "Content Management System integration for publishing articles",
+      "config": {
+        "endpoint": "https://cms.example.com/api/v1/articles",
+        "method": "POST"
+      },
+      "auth_required": true,
+      "parameters": {
+        "title": "string",
+        "body": "string",
+        "tags": "array",
+        "author": "string"
+      }
+    },
+    {
+      "name": "file",
+      "type": "file",
+      "description": "File storage and retrieval for drafts and assets",
+      "config": {
+        "bucket": "content-drafts",
+        "access_role": "writer"
+      },
+      "auth_required": false,
+      "parameters": {
+        "filename": "string",
+        "operation": "read|write|delete"
+      }
+    }
+  ],
+  "workflows": [
+    {
+      "name": "content_writing_workflow",
+      "description": "End-to-end workflow for creating and publishing SEO-optimized articles",
+      "trigger": "manual",
+      "steps": [
+        {
+          "agent_id": "content_master",
+          "action": "start_workflow",
+          "inputs": {},
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "idea_generator",
+          "action": "generate_ideas",
+          "inputs": {
+            "user_brief": "string"
+          },
+          "condition": "always",
+          "parallel_with": []
+        },
+        {
+          "agent_id": "research_agent",
+          "action": "conduct_research",
+          "inputs": {
+            "topic": "from_idea_generator"
+          },
+          "condition": "idea_approved",
+          "parallel_with": []
+        },
+        {
+          "agent_id": "outline_builder",
+          "action": "build_outline",
+          "inputs": {
+            "research_notes": "from_research_agent"
+          },
+          "condition": "research_completed",
+          "parallel_with": []
+        },
+        {
+          "agent_id": "draft_writer",
+          "action": "write_draft",
+          "inputs": {
+            "outline": "from_outline_builder"
+          },
+          "condition": "outline_ready",
+          "parallel_with": []
+        },
+        {
+          "agent_id": "editing_agent",
+          "action": "edit_draft",
+          "inputs": {
+            "draft": "from_draft_writer"
+          },
+          "condition": "draft_ready",
+          "parallel_with": [
+            "proofreading"
+          ]
+        },
+        {
+          "agent_id": "seo_optimizer",
+          "action": "optimize_seo",
+          "inputs": {
+            "draft": "from_editing_agent"
+          },
+          "condition": "editing_completed",
+          "parallel_with": []
+        },
+        {
+          "agent_id": "editing_agent",
+          "action": "proofread",
+          "inputs": {},
+          "condition": "seo_optimized",
+          "parallel_with": [
+            "publishing_agent"
+          ]
+        },
+        {
+          "agent_id": "publishing_agent",
+          "action": "publish_content",
+          "inputs": {
+            "final_text": "from_editing_agent",
+            "metadata": "from_seo_optimizer"
+          },
+          "condition": "proofreading_completed",
+          "parallel_with": []
+        }
+      ],
+      "communication_pattern": "conditional"
+    }
+  ],
+  "communication_pattern": "conditional",
+  "metadata": {
+    "complexity_score": 7,
+    "suggested_patterns": [
+      "sequential",
+      "conditional"
+    ],
+    "domain_analysis": {
+      "original_request": "give me workflow for content writing",
+      "domain": "content_writing",
+      "entities": [
+        "content",
+        "article",
+        "research",
+        "draft",
+        "editor",
+        "publication"
+      ],
+      "operations": [
+        "idea_generation",
+        "research",
+        "outline_creation",
+        "draft_writing",
+        "editing",
+        "proofreading",
+        "seo_optimization",
+        "publishing"
+      ],
+      "data_sources": [
+        "user_input",
+        "research_database",
+        "seo_tool",
+        "cms"
+      ],
+      "output_requirements": [
+        "workflow_diagram",
+        "checklist",
+        "process_steps"
+      ],
+      "temporal_requirements": "sequential with iterative feedback loops",
+      "integration_points": [
+        "project_management_tool",
+        "cms",
+        "slack",
+        "seo_api"
+      ],
+      "suggested_patterns": [
+        "sequential",
+        "conditional"
+      ],
+      "complexity_score": 7
+    }
+  },
+  "_metadata": {
+    "state": "temp",
+    "workflow_id": "content_writing_orchestrator",
+    "saved_at": "2026-01-11T14:04:26.190379",
+    "version": "testing"
+  }
+}

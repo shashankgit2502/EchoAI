@@ -1,0 +1,316 @@
+{
+  "system_name": "content_creation_orchestrator",
+  "description": "A multi-agent system that automates end‑to‑end content creation from research to publishing",
+  "domain": "content creation",
+  "agents": [
+    {
+      "id": "research_agent",
+      "name": "Research Analyst",
+      "role": "Gather and summarize information",
+      "responsibilities": [
+        "Perform web searches",
+        "Extract key points",
+        "Identify SEO keywords",
+        "Provide source citations"
+      ],
+      "system_prompt": "You are a research specialist tasked with gathering accurate, up-to-date information on the given topic using web searches. Provide concise summaries, extract key points, and identify relevant SEO keywords.",
+      "tools": [
+        "search"
+      ],
+      "llm_config": {
+        "model": "gpt-3.5-turbo",
+        "temperature": 0.3,
+        "max_tokens": 4000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": {},
+      "output_schema": {},
+      "is_master": false
+    },
+    {
+      "id": "outline_agent",
+      "name": "Outline Creator",
+      "role": "Structure article framework",
+      "responsibilities": [
+        "Generate article outline",
+        "Assign headings and subheadings",
+        "Incorporate SEO keywords",
+        "Ensure logical flow"
+      ],
+      "system_prompt": "You are an outline creator responsible for structuring the article based on research findings, ensuring logical flow, proper headings, and incorporation of SEO keywords.",
+      "tools": [],
+      "llm_config": {
+        "model": "gpt-3.5-turbo",
+        "temperature": 0.4,
+        "max_tokens": 3000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": {},
+      "output_schema": {},
+      "is_master": false
+    },
+    {
+      "id": "draft_agent",
+      "name": "Draft Writer",
+      "role": "Compose initial article draft",
+      "responsibilities": [
+        "Write article content from outline",
+        "Integrate research insights",
+        "Maintain target audience tone",
+        "Adhere to style guide"
+      ],
+      "system_prompt": "You are a content writer who produces a compelling first draft using the provided outline, maintaining the target audience tone, integrating research insights, and adhering to style guidelines.",
+      "tools": [
+        "file"
+      ],
+      "llm_config": {
+        "model": "gpt-4",
+        "temperature": 0.6,
+        "max_tokens": 8000,
+        "top_p": 0.9
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": {},
+      "output_schema": {},
+      "is_master": false
+    },
+    {
+      "id": "edit_agent",
+      "name": "Article Editor",
+      "role": "Refine and optimize draft",
+      "responsibilities": [
+        "Check grammar and style",
+        "Improve clarity and coherence",
+        "Apply SEO best practices",
+        "Add citations and references"
+      ],
+      "system_prompt": "You are an editor who refines the draft for grammar, clarity, coherence, SEO optimization, and overall quality, making necessary revisions and citations.",
+      "tools": [
+        "file"
+      ],
+      "llm_config": {
+        "model": "gpt-4",
+        "temperature": 0.5,
+        "max_tokens": 6000,
+        "top_p": 0.9
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 10
+      },
+      "input_schema": {},
+      "output_schema": {},
+      "is_master": false
+    },
+    {
+      "id": "publish_agent",
+      "name": "Publishing Coordinator",
+      "role": "Manage final publication and notifications",
+      "responsibilities": [
+        "Validate final article",
+        "Upload to CMS",
+        "Trigger SEO report",
+        "Send email alerts"
+      ],
+      "system_prompt": "You are a publishing coordinator that validates the final article, uploads it to the CMS, triggers SEO reporting, and notifies stakeholders via email, ensuring a smooth go-live.",
+      "tools": [
+        "cms_api",
+        "email_sender",
+        "file"
+      ],
+      "llm_config": {
+        "model": "claude-sonnet-4-5-20250929",
+        "temperature": 0.2,
+        "max_tokens": 2000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": null,
+        "max_tool_calls": 50
+      },
+      "input_schema": {},
+      "output_schema": {},
+      "is_master": true
+    }
+  ],
+  "tools": [
+    {
+      "name": "search",
+      "type": "api",
+      "description": "Perform web search to retrieve relevant information for research",
+      "config": {
+        "endpoint": "https://api.searchengine.com/search"
+      },
+      "auth_required": false,
+      "parameters": {
+        "query": "string",
+        "num_results": "integer"
+      }
+    },
+    {
+      "name": "file",
+      "type": "file",
+      "description": "Read from and write to local files",
+      "config": {
+        "base_path": "/var/content_system"
+      },
+      "auth_required": false,
+      "parameters": {}
+    },
+    {
+      "name": "cms_api",
+      "type": "api",
+      "description": "Interact with the content management system to publish articles",
+      "config": {
+        "endpoint": "https://cms.example.com/api/v1/articles"
+      },
+      "auth_required": true,
+      "parameters": {
+        "Authorization": "string"
+      }
+    },
+    {
+      "name": "email_sender",
+      "type": "email",
+      "description": "Send notification emails to stakeholders",
+      "config": {
+        "smtp_server": "smtp.example.com"
+      },
+      "auth_required": true,
+      "parameters": {
+        "to": "string",
+        "subject": "string",
+        "body": "string"
+      }
+    }
+  ],
+  "workflows": [
+    {
+      "name": "content_creation_workflow",
+      "description": "End‑to‑end content creation from research to publishing",
+      "trigger": "manual",
+      "steps": [
+        {
+          "agent_id": "research_agent",
+          "action": "perform_research",
+          "inputs": {
+            "topic": "{{topic}}"
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "outline_agent",
+          "action": "create_outline",
+          "inputs": {
+            "research": "{{research_output}}"
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "draft_agent",
+          "action": "write_draft",
+          "inputs": {
+            "outline": "{{outline_output}}"
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "edit_agent",
+          "action": "edit_draft",
+          "inputs": {
+            "draft": "{{draft_output}}"
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "publish_agent",
+          "action": "publish_and_notify",
+          "inputs": {
+            "article": "{{edited_draft}}",
+            "topic": "{{topic}}"
+          },
+          "condition": null,
+          "parallel_with": []
+        }
+      ],
+      "communication_pattern": "sequential"
+    }
+  ],
+  "communication_pattern": "sequential",
+  "metadata": {
+    "complexity_score": 6,
+    "suggested_patterns": [
+      "sequential",
+      "conditional"
+    ],
+    "domain_analysis": {
+      "original_request": "give me workflow for content writing",
+      "domain": "content creation",
+      "entities": [
+        "article",
+        "research",
+        "draft",
+        "editor",
+        "SEO keywords",
+        "publishing platform"
+      ],
+      "operations": [
+        "research",
+        "outline",
+        "draft",
+        "edit",
+        "review",
+        "publish"
+      ],
+      "data_sources": [
+        "internet",
+        "knowledge base",
+        "user input",
+        "content management system"
+      ],
+      "output_requirements": [
+        "outline",
+        "draft",
+        "published article",
+        "SEO report"
+      ],
+      "temporal_requirements": "on-demand",
+      "integration_points": [
+        "CMS",
+        "SEO tool",
+        "email"
+      ],
+      "suggested_patterns": [
+        "sequential",
+        "conditional"
+      ],
+      "complexity_score": 6
+    }
+  },
+  "_metadata": {
+    "state": "temp",
+    "workflow_id": "content_creation_orchestrator",
+    "saved_at": "2026-01-11T14:08:32.570516",
+    "version": "testing"
+  }
+}

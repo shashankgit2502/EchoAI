@@ -1,0 +1,502 @@
+{
+  "system_name": "programming_language_comparison_system",
+  "description": "A multi-agent system designed to compare Python, JavaScript, Java, and Go programming languages across performance, use cases, learning curve, and ecosystem metrics.",
+  "domain": "general",
+  "agents": [
+    {
+      "id": "language_research_coordinator",
+      "name": "Language Research Coordinator",
+      "role": "Orchestrate the comparison process and aggregate results",
+      "responsibilities": [
+        "Coordinate the workflow among specialized agents",
+        "Aggregate and synthesize final comparison results",
+        "Ensure all aspects of the comparison are covered",
+        "Handle error recovery and retries"
+      ],
+      "system_prompt": "You are the coordinator for a programming language comparison system. Your role is to manage the workflow, delegate tasks to specialized agents, and compile their findings into a comprehensive comparison report. Ensure all agents complete their tasks accurately and on time. If any agent fails, retry or escalate as needed.",
+      "tools": [
+        "workflow_manager",
+        "result_aggregator"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.5,
+        "max_tokens": 4000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": true,
+        "can_call_agents": [
+          "performance_analyst",
+          "use_case_expert",
+          "learning_curve_evaluator",
+          "ecosystem_analyst",
+          "report_generator"
+        ],
+        "max_tool_calls": 50
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": true
+    },
+    {
+      "id": "performance_analyst",
+      "name": "Performance Analyst",
+      "role": "Analyze and compare the performance characteristics of programming languages",
+      "responsibilities": [
+        "Research and compare execution speed",
+        "Analyze memory usage patterns",
+        "Evaluate concurrency and parallelism capabilities",
+        "Assess runtime efficiency"
+      ],
+      "system_prompt": "You are a performance analyst specializing in programming languages. Your task is to evaluate and compare the performance metrics of Python, JavaScript, Java, and Go. Focus on execution speed, memory efficiency, concurrency models, and runtime behavior. Provide detailed, data-driven insights.",
+      "tools": [
+        "benchmark_data_retriever",
+        "performance_calculator"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.3,
+        "max_tokens": 3000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": [],
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "use_case_expert",
+      "name": "Use Case Expert",
+      "role": "Identify and compare typical use cases for each programming language",
+      "responsibilities": [
+        "Research common applications for each language",
+        "Compare suitability for web development, data science, etc.",
+        "Analyze industry adoption trends",
+        "Identify niche use cases"
+      ],
+      "system_prompt": "You are an expert in programming language applications. Your role is to identify and compare the typical use cases for Python, JavaScript, Java, and Go. Focus on real-world applications, industry trends, and suitability for different domains like web development, data science, and systems programming.",
+      "tools": [
+        "industry_trends_api",
+        "use_case_database"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.7,
+        "max_tokens": 3500,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": [],
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "learning_curve_evaluator",
+      "name": "Learning Curve Evaluator",
+      "role": "Assess and compare the learning difficulty of each programming language",
+      "responsibilities": [
+        "Evaluate syntax complexity",
+        "Compare documentation quality and availability",
+        "Assess community support and learning resources",
+        "Analyze beginner-friendliness"
+      ],
+      "system_prompt": "You are an educator specializing in programming languages. Your task is to evaluate and compare the learning curves of Python, JavaScript, Java, and Go. Consider factors like syntax complexity, documentation quality, community support, and availability of learning resources. Provide insights suitable for both beginners and experienced developers.",
+      "tools": [
+        "community_forum_search",
+        "documentation_analyzer"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.6,
+        "max_tokens": 3000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": [],
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "ecosystem_analyst",
+      "name": "Ecosystem Analyst",
+      "role": "Compare the ecosystems surrounding each programming language",
+      "responsibilities": [
+        "Evaluate package manager quality and availability",
+        "Compare library and framework ecosystems",
+        "Assess tooling and IDE support",
+        "Analyze community size and activity"
+      ],
+      "system_prompt": "You are an ecosystem analyst for programming languages. Your role is to compare the ecosystems of Python, JavaScript, Java, and Go. Focus on package managers, libraries, frameworks, tooling support, and community activity. Provide insights into the maturity and vibrancy of each ecosystem.",
+      "tools": [
+        "package_repository_api",
+        "community_metrics_tool"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.5,
+        "max_tokens": 3200,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": [],
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    },
+    {
+      "id": "report_generator",
+      "name": "Report Generator",
+      "role": "Compile and format the final comparison report",
+      "responsibilities": [
+        "Aggregate findings from all analysts",
+        "Format data into a coherent report structure",
+        "Ensure consistency and readability",
+        "Generate visual comparisons where applicable"
+      ],
+      "system_prompt": "You are a technical report generator. Your task is to compile the findings from various language analysts into a comprehensive, well-structured comparison report. Focus on clarity, consistency, and readability. Use appropriate formatting and visual elements to enhance understanding.",
+      "tools": [
+        "report_formatter",
+        "visualization_tool"
+      ],
+      "llm_config": {
+        "model": "mistralai/devstral-2512:free",
+        "temperature": 0.4,
+        "max_tokens": 5000,
+        "top_p": 1.0
+      },
+      "permissions": {
+        "can_delegate": false,
+        "can_call_agents": [],
+        "max_tool_calls": 10
+      },
+      "input_schema": null,
+      "output_schema": null,
+      "is_master": false
+    }
+  ],
+  "tools": [
+    {
+      "name": "workflow_manager",
+      "type": "custom",
+      "description": "Manages the execution workflow and agent coordination",
+      "config": {
+        "max_retries": 3,
+        "timeout_seconds": 300
+      },
+      "auth_required": false,
+      "parameters": null
+    },
+    {
+      "name": "result_aggregator",
+      "type": "custom",
+      "description": "Aggregates results from multiple agents into a unified format",
+      "config": {
+        "output_format": "json"
+      },
+      "auth_required": false,
+      "parameters": null
+    },
+    {
+      "name": "benchmark_data_retriever",
+      "type": "api",
+      "description": "Retrieves performance benchmark data from various sources",
+      "config": {
+        "api_endpoint": "https://api.benchmarks.example.com/v1",
+        "rate_limit": 10
+      },
+      "auth_required": true,
+      "parameters": {
+        "language": "string",
+        "metric": "string"
+      }
+    },
+    {
+      "name": "performance_calculator",
+      "type": "calculator",
+      "description": "Performs calculations on performance metrics",
+      "config": {},
+      "auth_required": false,
+      "parameters": null
+    },
+    {
+      "name": "industry_trends_api",
+      "type": "api",
+      "description": "Provides data on industry adoption trends for programming languages",
+      "config": {
+        "api_endpoint": "https://api.trends.example.com/v2",
+        "api_key": "required"
+      },
+      "auth_required": true,
+      "parameters": null
+    },
+    {
+      "name": "use_case_database",
+      "type": "database",
+      "description": "Contains curated information about programming language use cases",
+      "config": {
+        "connection_string": "db.use_cases.example.com:5432",
+        "query_timeout": 30
+      },
+      "auth_required": true,
+      "parameters": null
+    },
+    {
+      "name": "community_forum_search",
+      "type": "search",
+      "description": "Searches community forums for learning curve discussions",
+      "config": {
+        "search_endpoint": "https://search.forums.example.com",
+        "max_results": 50
+      },
+      "auth_required": false,
+      "parameters": null
+    },
+    {
+      "name": "documentation_analyzer",
+      "type": "custom",
+      "description": "Analyzes documentation quality and completeness",
+      "config": {
+        "metrics": [
+          "completeness",
+          "readability",
+          "examples"
+        ]
+      },
+      "auth_required": false,
+      "parameters": null
+    },
+    {
+      "name": "package_repository_api",
+      "type": "api",
+      "description": "Provides data on package repositories and libraries",
+      "config": {
+        "endpoints": {
+          "npm": "https://api.npmjs.org",
+          "pypi": "https://api.pypi.org",
+          "maven": "https://api.maven.org"
+        }
+      },
+      "auth_required": false,
+      "parameters": null
+    },
+    {
+      "name": "community_metrics_tool",
+      "type": "custom",
+      "description": "Gathers metrics on community size and activity",
+      "config": {
+        "sources": [
+          "github",
+          "stackoverflow",
+          "reddit"
+        ]
+      },
+      "auth_required": true,
+      "parameters": null
+    },
+    {
+      "name": "report_formatter",
+      "type": "custom",
+      "description": "Formats comparison data into a structured report",
+      "config": {
+        "template": "comparison_report_v1",
+        "output_formats": [
+          "markdown",
+          "pdf"
+        ]
+      },
+      "auth_required": false,
+      "parameters": null
+    },
+    {
+      "name": "visualization_tool",
+      "type": "custom",
+      "description": "Generates visual comparisons and charts",
+      "config": {
+        "chart_types": [
+          "bar",
+          "radar",
+          "line"
+        ]
+      },
+      "auth_required": false,
+      "parameters": null
+    }
+  ],
+  "workflows": [
+    {
+      "name": "language_comparison_workflow",
+      "description": "Complete workflow for comparing programming languages across multiple dimensions",
+      "trigger": "manual",
+      "steps": [
+        {
+          "agent_id": "language_research_coordinator",
+          "action": "initiate_comparison",
+          "inputs": {
+            "languages": [
+              "Python",
+              "JavaScript",
+              "Java",
+              "Go"
+            ],
+            "comparison_dimensions": [
+              "performance",
+              "use_cases",
+              "learning_curve",
+              "ecosystem"
+            ]
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "performance_analyst",
+          "action": "analyze_performance",
+          "inputs": {
+            "languages": [
+              "Python",
+              "JavaScript",
+              "Java",
+              "Go"
+            ]
+          },
+          "condition": null,
+          "parallel_with": [
+            "step3",
+            "step4",
+            "step5"
+          ]
+        },
+        {
+          "agent_id": "use_case_expert",
+          "action": "evaluate_use_cases",
+          "inputs": {
+            "languages": [
+              "Python",
+              "JavaScript",
+              "Java",
+              "Go"
+            ]
+          },
+          "condition": null,
+          "parallel_with": [
+            "step2",
+            "step4",
+            "step5"
+          ]
+        },
+        {
+          "agent_id": "learning_curve_evaluator",
+          "action": "assess_learning_curve",
+          "inputs": {
+            "languages": [
+              "Python",
+              "JavaScript",
+              "Java",
+              "Go"
+            ]
+          },
+          "condition": null,
+          "parallel_with": [
+            "step2",
+            "step3",
+            "step5"
+          ]
+        },
+        {
+          "agent_id": "ecosystem_analyst",
+          "action": "analyze_ecosystem",
+          "inputs": {
+            "languages": [
+              "Python",
+              "JavaScript",
+              "Java",
+              "Go"
+            ]
+          },
+          "condition": null,
+          "parallel_with": [
+            "step2",
+            "step3",
+            "step4"
+          ]
+        },
+        {
+          "agent_id": "language_research_coordinator",
+          "action": "aggregate_results",
+          "inputs": {
+            "performance_data": "from_step2",
+            "use_case_data": "from_step3",
+            "learning_curve_data": "from_step4",
+            "ecosystem_data": "from_step5"
+          },
+          "condition": null,
+          "parallel_with": []
+        },
+        {
+          "agent_id": "report_generator",
+          "action": "generate_final_report",
+          "inputs": {
+            "aggregated_data": "from_step6"
+          },
+          "condition": null,
+          "parallel_with": []
+        }
+      ],
+      "communication_pattern": "conditional"
+    }
+  ],
+  "communication_pattern": "hierarchical",
+  "metadata": {
+    "complexity_score": 3,
+    "suggested_patterns": [
+      "sequential"
+    ],
+    "domain_analysis": {
+      "original_request": "Compare Python, JavaScript, Java, and Go programming languages in terms of performance, use cases, learning curve, and ecosystem",
+      "domain": "general",
+      "entities": [
+        "data",
+        "task"
+      ],
+      "operations": [
+        "process",
+        "analyze"
+      ],
+      "data_sources": [
+        "user_input"
+      ],
+      "output_requirements": [
+        "result"
+      ],
+      "temporal_requirements": "on-demand",
+      "integration_points": [],
+      "suggested_patterns": [
+        "sequential"
+      ],
+      "complexity_score": 3
+    }
+  },
+  "_metadata": {
+    "state": "final",
+    "workflow_id": "programming_language_comparison_system",
+    "version": "1.0",
+    "saved_at": "2026-01-13T18:14:37.818184",
+    "immutable": true
+  }
+}
