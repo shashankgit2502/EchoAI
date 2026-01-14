@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workflow Builder - AI Automation</title>
+
+  <!-- React & Babel -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Marked.js for Markdown Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Tailwind Config & Custom Styles -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            slate: {
+              850: '#151e2e',
+              950: '#020617',
+            },
+            primary: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.3s ease-out forwards',
+            'slide-up': 'slideUp 0.4s ease-out forwards',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    /* Utilities */
+    .glass {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-card {
+      background: rgba(30, 41, 59, 0.4);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      transition: all 0.2s ease;
+    }
+
+    .glass-card:hover {
+      background: rgba(30, 41, 59, 0.6);
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+    }
+
+    body {
+      background-color: #020617;
+      color: #f8fafc;
+      overflow: hidden;
+    }
+
+    /* Markdown Styles for Chat Output */
+    .prose-custom {
+      font-size: 0.95em;
+      line-height: 1.6;
+    }
+
+    .prose-custom p {
+      margin-bottom: 0.75em;
+    }
+
+    .prose-custom p:last-child {
+      margin-bottom: 0;
+    }
+
+    .prose-custom strong {
+      font-weight: 700;
+      color: #818cf8;
+    }
+
+    .prose-custom ul {
+      list-style-type: disc;
+      padding-left: 1.5em;
+      margin-bottom: 0.75em;
+    }
+
+    .prose-custom ol {
+      list-style-type: decimal;
+      padding-left: 1.5em;
+      margin-bottom: 0.75em;
+    }
+
+    .prose-custom li {
+      margin-bottom: 0.25em;
+      padding-left: 0.25em;
+    }
+
+    .prose-custom a {
+      color: #6366f1;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .prose-custom a:hover {
+      color: #818cf8;
+    }
+
+    .prose-custom code {
+      background-color: rgba(30, 41, 59, 0.5);
+      padding: 0.2em 0.4em;
+      border-radius: 0.25rem;
+      font-family: monospace;
+      font-size: 0.9em;
+      color: #e2e8f0;
+    }
+
+    .prose-custom pre {
+      background-color: rgba(15, 23, 42, 0.5);
+      padding: 1em;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin-bottom: 1em;
+      border: 1px solid rgba(51, 65, 85, 0.5);
+    }
+
+    .prose-custom pre code {
+      background-color: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    .prose-custom h1,
+    .prose-custom h2,
+    .prose-custom h3 {
+      font-weight: 700;
+      color: #fff;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+      line-height: 1.3;
+    }
+
+    .prose-custom h3 {
+      font-size: 1.1em;
+    }
+
+    .prose-custom blockquote {
+      border-left: 3px solid #4f46e5;
+      padding-left: 1em;
+      margin-left: 0;
+      font-style: italic;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // --- Icons ---
+    const Icons = {
+      Plus: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M12 5v14" /></svg>,
+      Trash: () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /></svg>,
+      Edit: () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" /></svg>,
+      Play: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3" /></svg>,
+      Save: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><polyline points="17 21 17 13 7 13 7 21" /><polyline points="7 3 7 8 15 8" /></svg>,
+      Check: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>,
+      Message: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>,
+      Cpu: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2" /><rect x="9" y="9" width="6" height="6" /><line x1="9" y1="1" x2="9" y2="4" /><line x1="15" y1="1" x2="15" y2="4" /><line x1="9" y1="20" x2="9" y2="23" /><line x1="15" y1="20" x2="15" y2="23" /><line x1="20" y1="9" x2="23" y2="9" /><line x1="20" y1="14" x2="23" y2="14" /><line x1="1" y1="9" x2="4" y2="9" /><line x1="1" y1="14" x2="4" y2="14" /></svg>,
+      Workflow: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2" /><rect x="2" y="14" width="20" height="8" rx="2" ry="2" /><line x1="6" y1="6" x2="6.01" y2="6" /><line x1="6" y1="18" x2="6.01" y2="18" /></svg>,
+      Sparkles: () => <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L12 3Z" /></svg>,
+      Bot: () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line x1="16" x2="16" y1="2" y2="4" /><line x1="8" x2="8" y1="2" y2="4" /><line x1="12" x2="12" y1="15" y2="19" /><line x1="8" x2="16" y1="19" y2="19" /><path d="M8 11h.01" /><path d="M16 11h.01" /></svg>,
+      ArrowRight: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>,
+      ArrowDown: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" /></svg>,
+      Send: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>,
+      X: () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+    };
+
+    const API_URL = 'http://localhost:8000';
+    const DEFAULT_MODEL = 'openrouter/mistralai/devstral-2512:free';
+
+    // Simplified Workflow States
+    const STATES = {
+      IDLE: 'idle',
+      CHATTING: 'chatting',
+      WORKFLOW_READY: 'workflow_ready',
+      TESTING: 'testing',
+      SAVED: 'saved'
+    };
+
+    function App() {
+      // Core state
+      const [workflowState, setWorkflowState] = useState(STATES.IDLE);
+      const [savedWorkflows, setSavedWorkflows] = useState([]);
+      const [selectedWorkflow, setSelectedWorkflow] = useState(null);
+
+      // Generation state
+      const [chatMessages, setChatMessages] = useState([]);
+      const [inputText, setInputText] = useState('');
+      const [isLoading, setIsLoading] = useState(false);
+
+      // Workflow data from backend
+      const [workflowData, setWorkflowData] = useState(null); // Full workflow JSON from backend
+      const [agentsData, setAgentsData] = useState(null); // Agents dict from backend
+
+      // Thread ID for conversation continuation
+      const [currentThreadId, setCurrentThreadId] = useState(null);
+
+      // HITL state
+      const [showHitlOptions, setShowHitlOptions] = useState(false);
+      const [lastExecutionResult, setLastExecutionResult] = useState(null);
+
+      // Agent editing with cycling
+      const [editingAgent, setEditingAgent] = useState(null);
+      const [showEditModal, setShowEditModal] = useState(false);
+      const [editingAgentIndex, setEditingAgentIndex] = useState(0);
+      const [isEditingAllAgents, setIsEditingAllAgents] = useState(false);
+
+      // Chat with Workflow modal
+      const [showWorkflowChatModal, setShowWorkflowChatModal] = useState(false);
+      const [workflowChatMessages, setWorkflowChatMessages] = useState([]);
+      const [workflowChatInput, setWorkflowChatInput] = useState('');
+      const [workflowChatLoading, setWorkflowChatLoading] = useState(false);
+      const workflowChatEndRef = useRef(null);
+
+      // Context tracking for modifications
+      const [pendingModification, setPendingModification] = useState(false);
+
+      // UI
+      const [notification, setNotification] = useState(null);
+      const chatEndRef = useRef(null);
+
+      // Auto-scroll chat
+      useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, [chatMessages, isLoading]);
+
+      // Auto-scroll workflow chat modal
+      useEffect(() => {
+        workflowChatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, [workflowChatMessages, workflowChatLoading]);
+
+      // Load saved workflows on mount
+      useEffect(() => {
+        loadSavedWorkflows();
+      }, []);
+
+      const showNotify = (message, type) => {
+        setNotification({ message, type: type || 'success' });
+        setTimeout(() => setNotification(null), 4000);
+      };
+
+      // Format message with Markdown
+      const formatMessage = (text) => {
+        if (!text) return '';
+        if (typeof window.marked !== 'undefined') {
+          try {
+            return window.marked.parse(text);
+          } catch (e) {
+            console.error('Markdown parsing failed', e);
+          }
+        }
+        return text.replace(/\n/g, '<br>');
+      };
+
+      const loadSavedWorkflows = async () => {
+        try {
+          // Load both drafts and finals for the side panel
+          const [draftResponse, finalResponse] = await Promise.all([
+            fetch(`${API_URL}/workflow/list?state=draft`),
+            fetch(`${API_URL}/workflow/list?state=final`)
+          ]);
+
+          let allWorkflows = [];
+
+          if (draftResponse.ok) {
+            const draftData = await draftResponse.json();
+            allWorkflows = [...(draftData.workflows || [])];
+          }
+
+          if (finalResponse.ok) {
+            const finalData = await finalResponse.json();
+            allWorkflows = [...allWorkflows, ...(finalData.workflows || [])];
+          }
+
+          // Sort by saved_at (most recent first)
+          allWorkflows.sort((a, b) => {
+            const dateA = a.saved_at ? new Date(a.saved_at) : new Date(0);
+            const dateB = b.saved_at ? new Date(b.saved_at) : new Date(0);
+            return dateB - dateA;
+          });
+
+          setSavedWorkflows(allWorkflows);
+        } catch (err) {
+          console.error('Failed to load workflows', err);
+          setSavedWorkflows([]);
+        }
+      };
+
+      const resetToIdle = () => {
+        setWorkflowState(STATES.IDLE);
+        setSelectedWorkflow(null);
+        setChatMessages([]);
+        setInputText('');
+        setWorkflowData(null);
+        setAgentsData(null);
+        setIsLoading(false);
+        setCurrentThreadId(null);
+        setShowHitlOptions(false);
+        setLastExecutionResult(null);
+        setEditingAgentIndex(0);
+        setIsEditingAllAgents(false);
+        setShowWorkflowChatModal(false);
+        setWorkflowChatMessages([]);
+        setWorkflowChatInput('');
+        setPendingModification(false);
+      };
+
+      const createNewWorkflow = () => {
+        setWorkflowState(STATES.CHATTING);
+        setSelectedWorkflow(null);
+        setChatMessages([]);
+        setInputText('');
+        setWorkflowData(null);
+        setAgentsData(null);
+        setIsLoading(false);
+        setCurrentThreadId(null);
+        setShowHitlOptions(false);
+        setLastExecutionResult(null);
+        setEditingAgentIndex(0);
+        setIsEditingAllAgents(false);
+        setShowWorkflowChatModal(false);
+        setWorkflowChatMessages([]);
+        setWorkflowChatInput('');
+        setPendingModification(false);
+      };
+
+      const sendMessage = async () => {
+        if (!inputText.trim() || isLoading) return;
+
+        const userContent = inputText.trim();
+        const userMsg = { role: 'user', content: userContent };
+        const newMessages = [...chatMessages, userMsg];
+        setChatMessages(newMessages);
+        setInputText('');
+        setIsLoading(true);
+
+        try {
+          // Use unified /workflow/process endpoint - backend handles intent detection
+          const response = await fetch(`${API_URL}/workflow/process`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: userContent,
+              workflow_id: workflowData?.system_name || null,
+              agent_system: workflowData || null,
+              thread_id: currentThreadId,
+              execution_mode: workflowState === STATES.SAVED ? 'final' : 'test',
+              pending_modification: pendingModification
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+          }
+
+          const result = await response.json();
+
+          // Reset pending modification flag after use
+          if (pendingModification) {
+            setPendingModification(false);
+          }
+
+          // Handle response based on action
+          await handleProcessResponse(result, newMessages);
+
+        } catch (err) {
+          console.error('Error:', err);
+          setChatMessages([...newMessages, {
+            role: 'assistant',
+            content: `Error: ${err.message}. Please try again.`
+          }]);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      // Handle unified process response
+      const handleProcessResponse = async (result, messages) => {
+        const { action, success, agent_system, execution_result, validation, error, message, thread_id, run_id } = result;
+
+        // Update thread_id if provided
+        if (thread_id) {
+          setCurrentThreadId(thread_id);
+        }
+
+        if (!success) {
+          setChatMessages([...messages, {
+            role: 'assistant',
+            content: `❌ ${message || error || 'An error occurred.'}`
+          }]);
+          return;
+        }
+
+        switch (action) {
+          case 'generate':
+          case 'modify':
+            // Update workflow data
+            if (agent_system) {
+              setWorkflowData(agent_system);
+              setAgentsData(agent_system.agents);
+            }
+
+            // Build response message
+            const agentsList = agent_system?.agents || [];
+            let responseText = action === 'generate'
+              ? `✅ I've designed a **${agent_system?.communication_pattern || 'sequential'}** workflow with ${agentsList.length} agent(s):\n\n`
+              : `✅ Workflow modified! Now has ${agentsList.length} agent(s):\n\n`;
+
+            agentsList.forEach((agent, idx) => {
+              responseText += `**${idx + 1}. ${agent.name}** - ${agent.role}\n`;
+              responseText += `   ${agent.responsibilities?.join(', ') || 'No responsibilities listed'}\n`;
+              if (agent.tools && agent.tools.length > 0) {
+                responseText += `   Tools: ${agent.tools.join(', ')}\n`;
+              }
+              responseText += `\n`;
+            });
+
+            if (validation?.warnings?.length > 0) {
+              responseText += `\n⚠️ Warnings:\n${validation.warnings.map(w => w.message || w).join('\n')}\n\n`;
+            }
+
+            responseText += `\nYou can:\n- Type "test" to execute this workflow\n- Ask me to modify agents or tools\n- Click Edit to manually adjust agents`;
+
+            setChatMessages([...messages, { role: 'assistant', content: responseText }]);
+            setWorkflowState(STATES.WORKFLOW_READY);
+            break;
+
+          case 'test':
+          case 'execute':
+            // Update workflow data if provided
+            if (agent_system) {
+              setWorkflowData(agent_system);
+              setAgentsData(agent_system.agents);
+            }
+
+            // Store execution result for HITL
+            setLastExecutionResult(execution_result);
+            setShowHitlOptions(action === 'test');
+
+            const outputBlock = execution_result?.output?.error
+              ? `⚠️ Execution completed with errors:\n\n\`\`\`json\n${JSON.stringify(execution_result.output, null, 2)}\n\`\`\``
+              : `✅ ${action === 'test' ? 'Workflow tested' : 'Execution complete'}!\n\nOutput:\n\`\`\`json\n${JSON.stringify(execution_result?.output, null, 2)}\n\`\`\``;
+
+            let testMessage = outputBlock;
+            if (action === 'test') {
+              testMessage += `\n\n**What would you like to do?**\n- Type a message to continue chatting with this workflow\n- Type "modify" to make changes\n- Type "save" to save permanently`;
+            }
+
+            setChatMessages([...messages, { role: 'assistant', content: testMessage }]);
+            setWorkflowState(STATES.TESTING);
+            showNotify('Workflow executed successfully!', 'success');
+            break;
+
+          case 'save':
+            if (agent_system) {
+              setWorkflowData(agent_system);
+            }
+
+            setChatMessages([...messages, {
+              role: 'assistant',
+              content: `✅ ${message || 'Workflow saved successfully!'}\n\nYou can now reuse this workflow or create a new one.`
+            }]);
+            setWorkflowState(STATES.SAVED);
+            loadSavedWorkflows();
+            showNotify('Workflow saved!', 'success');
+            break;
+
+          default:
+            setChatMessages([...messages, {
+              role: 'assistant',
+              content: message || 'Action completed.'
+            }]);
+        }
+      };
+
+      const detectIntent = (message) => {
+        const lower = message.toLowerCase();
+
+        // Use word boundary matching to avoid partial matches (e.g., "tester" matching "test")
+        const matchWord = (text, word) => {
+          const regex = new RegExp(`\\b${word}\\b`, 'i');
+          return regex.test(text);
+        };
+
+        // Check for modification intent FIRST (highest priority when workflow exists)
+        // Includes: add, remove, insert, delete, modify, change, edit, update, replace, rename
+        const modifyKeywords = ['add', 'adding', 'remove', 'removing', 'insert', 'inserting',
+          'delete', 'deleting', 'modify', 'modifying', 'change', 'changing', 'edit', 'editing',
+          'update', 'updating', 'replace', 'replacing', 'rename', 'renaming', 'include', 'including',
+          'append', 'appending', 'create new agent', 'add agent', 'remove agent', 'more agent'];
+
+        for (const keyword of modifyKeywords) {
+          if (lower.includes(keyword)) return 'modify';
+        }
+
+        // Check for test intent (use word boundary to avoid matching "tester")
+        const testKeywords = ['test', 'try', 'execute', 'run'];
+        for (const keyword of testKeywords) {
+          if (matchWord(lower, keyword)) return 'test';
+        }
+
+        // Check for save intent
+        const saveKeywords = ['save', 'finalize', 'finish', 'complete', 'done'];
+        for (const keyword of saveKeywords) {
+          if (matchWord(lower, keyword)) return 'save';
+        }
+
+        return 'generate';
+      };
+
+      const generateWorkflow = async (description, messages) => {
+        try {
+          // Call /workflow/design
+          const response = await fetch(`${API_URL}/workflow/design`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ request: description })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Design failed: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          // Store agent system (backend returns agent_system, not workflow/agents separately)
+          setWorkflowData(data.agent_system);
+          setAgentsData(data.agent_system.agents);
+
+          // Auto-validate draft
+          await validateDraft(data.agent_system, messages);
+
+        } catch (err) {
+          throw new Error(`Failed to generate workflow: ${err.message}`);
+        }
+      };
+
+      const validateDraft = async (agent_system, messages) => {
+        try {
+          const response = await fetch(`${API_URL}/validate/draft`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ agent_system, mode: 'draft' })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Validation failed: ${response.status}`);
+          }
+
+          const validation = await response.json();
+
+          if (!validation.valid) {
+            const errorMsg = `Workflow validation failed:\n${validation.errors.map(e => e.message || e).join('\n')}`;
+            setChatMessages([...messages, { role: 'assistant', content: errorMsg }]);
+            return;
+          }
+
+          // Success - show workflow
+          const agentsList = agent_system.agents || [];
+          let responseText = `✅ I've designed a **${agent_system.communication_pattern || 'sequential'}** workflow with ${agentsList.length} agent(s):\n\n`;
+
+          agentsList.forEach((agent, idx) => {
+            responseText += `**${idx + 1}. ${agent.name}** - ${agent.role}\n`;
+            responseText += `   ${agent.responsibilities?.join(', ') || 'No responsibilities listed'}\n`;
+            if (agent.tools && agent.tools.length > 0) {
+              responseText += `   Tools: ${agent.tools.join(', ')}\n`;
+            }
+            responseText += `\n`;
+          });
+
+          if (validation.warnings && validation.warnings.length > 0) {
+            responseText += `\n⚠️ Warnings:\n${validation.warnings.map(w => w.message || w).join('\n')}\n\n`;
+          }
+
+          responseText += `\nYou can:\n- Type "test" to execute this workflow\n- Ask me to modify agents or tools\n- Click Edit to manually adjust agents`;
+
+          setChatMessages([...messages, { role: 'assistant', content: responseText }]);
+          setWorkflowState(STATES.WORKFLOW_READY);
+
+        } catch (err) {
+          throw new Error(`Validation error: ${err.message}`);
+        }
+      };
+
+      const modifyWorkflow = async (instruction, messages) => {
+        // Modify existing workflow (preserves structure, only changes what's requested)
+        try {
+          const response = await fetch(`${API_URL}/workflow/modify`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              agent_system: workflowData,
+              modification_request: instruction
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Modification failed: ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          // Update with modified system
+          setWorkflowData(data);
+          setAgentsData(data.agents);
+
+          // Add success message
+          const successMsg = {
+            role: 'assistant',
+            content: `✅ Workflow modified successfully! I've updated the agents as requested.`
+          };
+          setChatMessages([...messages, successMsg]);
+
+          // Re-validate after modification
+          await validateDraft(data, [...messages, successMsg]);
+
+        } catch (err) {
+          throw new Error(`Failed to modify workflow: ${err.message}`);
+        }
+      };
+
+      const testWorkflow = async () => {
+        try {
+          // Validate final before testing
+          const validationResponse = await fetch(`${API_URL}/validate/final`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ agent_system: workflowData, mode: 'final' })
+          });
+
+          if (!validationResponse.ok) {
+            throw new Error(`Final validation failed: ${validationResponse.status}`);
+          }
+
+          const validation = await validationResponse.json();
+          if (!validation.valid) {
+            showNotify(`Validation errors: ${validation.errors.join(', ')}`, 'error');
+            return;
+          }
+
+          // Save as temp
+          const tempResponse = await fetch(`${API_URL}/workflow/save/temp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              workflow_id: workflowData.system_name,
+              agent_system: workflowData,
+              state: 'temp'
+            })
+          });
+
+          if (!tempResponse.ok) {
+            throw new Error(`Failed to save temp: ${tempResponse.status}`);
+          }
+
+          // Execute in test mode with thread_id for conversation continuation
+          const executeResponse = await fetch(`${API_URL}/runtime/execute`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              workflow_id: workflowData.system_name,
+              execution_mode: 'test',
+              input_payload: {},
+              thread_id: currentThreadId // Pass existing thread_id if continuing conversation
+            })
+          });
+
+          if (!executeResponse.ok) {
+            throw new Error(`Execution failed: ${executeResponse.status}`);
+          }
+
+          const result = await executeResponse.json();
+
+          // Store thread_id for conversation continuation
+          if (result.thread_id) {
+            setCurrentThreadId(result.thread_id);
+          }
+
+          // Store execution result for HITL
+          setLastExecutionResult(result);
+          setShowHitlOptions(true);
+
+          const outputBlock = result.output?.error
+            ? `⚠️ Execution completed with errors:\n\n\`\`\`json\n${JSON.stringify(result.output, null, 2)}\n\`\`\``
+            : `✅ Workflow executed successfully in test mode!\n\nOutput:\n\`\`\`json\n${JSON.stringify(result.output, null, 2)}\n\`\`\``;
+
+          setChatMessages(prev => [...prev, {
+            role: 'assistant',
+            content: `${outputBlock}\n\n**What would you like to do?**\n- Type a message to continue chatting with this workflow\n- Type "modify" to make changes to the workflow\n- Type "save" to save this workflow permanently\n- Or use the action buttons below`
+          }]);
+
+          setWorkflowState(STATES.TESTING);
+          showNotify('Workflow tested successfully!', 'success');
+
+        } catch (err) {
+          showNotify(`Test failed: ${err.message}`, 'error');
+        }
+      };
+
+      const executeWorkflowWithInput = async (message) => {
+        try {
+          const executionMode = workflowState === STATES.SAVED ? 'final' : 'test';
+
+          if (executionMode === 'test') {
+            const tempResponse = await fetch(`${API_URL}/workflow/save/temp`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                workflow_id: workflowData.system_name,
+                agent_system: workflowData,
+                state: 'temp'
+              })
+            });
+
+            if (!tempResponse.ok) {
+              throw new Error(`Failed to save temp: ${tempResponse.status}`);
+            }
+          }
+
+          // Execute with thread_id for conversation continuation
+          const executeResponse = await fetch(`${API_URL}/runtime/execute`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              workflow_id: workflowData.system_name,
+              execution_mode: executionMode,
+              version: workflowData.metadata?.version,
+              input_payload: { message },
+              thread_id: currentThreadId // Pass thread_id for conversation continuation
+            })
+          });
+
+          if (!executeResponse.ok) {
+            throw new Error(`Execution failed: ${executeResponse.status}`);
+          }
+
+          const result = await executeResponse.json();
+
+          // Update thread_id for next conversation turn
+          if (result.thread_id) {
+            setCurrentThreadId(result.thread_id);
+          }
+
+          // Store execution result for HITL
+          setLastExecutionResult(result);
+          setShowHitlOptions(true);
+
+          const outputBlock = result.output?.error
+            ? `⚠️ Execution completed with errors:\n\n\`\`\`json\n${JSON.stringify(result.output, null, 2)}\n\`\`\``
+            : `✅ Execution complete!\n\nOutput:\n\`\`\`json\n${JSON.stringify(result.output, null, 2)}\n\`\`\``;
+
+          setChatMessages(prev => [...prev, {
+            role: 'assistant',
+            content: outputBlock
+          }]);
+
+          if (executionMode === 'test') {
+            setWorkflowState(STATES.TESTING);
+          }
+        } catch (err) {
+          showNotify(`Execution failed: ${err.message}`, 'error');
+        }
+      };
+
+      // HITL Action Handlers
+      const handleHitlAction = async (action) => {
+        switch (action) {
+          case 'approve':
+            setShowHitlOptions(false);
+            setChatMessages(prev => [...prev, {
+              role: 'assistant',
+              content: '✅ Workflow approved! Would you like to save it as final? Type "save" or click Save Workflow.'
+            }]);
+            break;
+
+          case 'reject':
+            setShowHitlOptions(false);
+            setChatMessages(prev => [...prev, {
+              role: 'assistant',
+              content: '❌ Workflow rejected. You can:\n- Type "modify" followed by your changes\n- Click Edit on any agent to make manual adjustments\n- Start over with a new workflow description'
+            }]);
+            setWorkflowState(STATES.WORKFLOW_READY);
+            break;
+
+          case 'modify':
+            setShowHitlOptions(false);
+            setPendingModification(true); // Set flag so next message is treated as modification
+            setChatMessages(prev => [...prev, {
+              role: 'assistant',
+              content: '🔧 What would you like to modify? Describe your changes (e.g., "add a tester agent", "remove the analyzer agent", "change the model for code_generator") and I\'ll update the workflow accordingly.'
+            }]);
+            break;
+
+          case 'edit':
+            // Start cycling through all agents
+            if (agentsData && agentsData.length > 0) {
+              setEditingAgentIndex(0);
+              setIsEditingAllAgents(true);
+              openEditAgentByIndex(0);
+            }
+            break;
+
+          case 'chat':
+            // Open workflow chat modal
+            setShowWorkflowChatModal(true);
+            setWorkflowChatMessages([{
+              role: 'assistant',
+              content: `👋 Welcome! You're now chatting with the **${workflowData?.system_name || 'workflow'}**.\n\nThis is a test conversation to validate the workflow works correctly. Type your message below to interact with the workflow.`
+            }]);
+            break;
+
+          case 'defer':
+            setShowHitlOptions(false);
+            // Actually save the workflow as draft
+            if (workflowData) {
+              try {
+                const saveResponse = await fetch(`${API_URL}/workflow/save/draft`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    workflow_id: workflowData.system_name,
+                    agent_system: workflowData,
+                    state: 'draft'
+                  })
+                });
+
+                if (saveResponse.ok) {
+                  setChatMessages(prev => [...prev, {
+                    role: 'assistant',
+                    content: `⏸️ Decision deferred. The workflow **"${workflowData.system_name}"** has been saved as a **draft**.\n\nYou can find it in the side panel under "Your Workflows" and continue working on it later.`
+                  }]);
+                  // Refresh the workflows list to show the new draft
+                  loadSavedWorkflows();
+                  showNotify('Workflow saved as draft', 'success');
+                } else {
+                  throw new Error('Failed to save draft');
+                }
+              } catch (err) {
+                setChatMessages(prev => [...prev, {
+                  role: 'assistant',
+                  content: `⚠️ Could not save draft: ${err.message}. The workflow is still in memory - you can continue working on it.`
+                }]);
+              }
+            } else {
+              setChatMessages(prev => [...prev, {
+                role: 'assistant',
+                content: '⚠️ No workflow to save. Please create a workflow first.'
+              }]);
+            }
+            break;
+
+          default:
+            break;
+        }
+      };
+
+      // Open edit modal for agent at specific index
+      const openEditAgentByIndex = (index) => {
+        if (agentsData && index < agentsData.length) {
+          const agent = agentsData[index];
+          const agentCopy = JSON.parse(JSON.stringify(agent));
+          if (!agentCopy.tools) agentCopy.tools = [];
+          if (!agentCopy.llm_config) {
+            agentCopy.llm_config = {
+              model: DEFAULT_MODEL,
+              temperature: 0.7
+            };
+          }
+          setEditingAgent(agentCopy);
+          setShowEditModal(true);
+        }
+      };
+
+      const saveWorkflowFinal = async () => {
+        try {
+          const response = await fetch(`${API_URL}/workflow/save/final`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              workflow_id: workflowData.system_name,
+              agent_system: workflowData,
+              state: 'final',
+              version: workflowData.metadata?.version || '1.0'
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Save failed: ${response.status}`);
+          }
+
+          const data = await response.json();
+          setWorkflowData(prev => prev ? {
+            ...prev,
+            metadata: { ...(prev.metadata || {}), version: data.version }
+          } : prev);
+
+          setChatMessages(prev => [...prev, {
+            role: 'assistant',
+            content: `✅ Workflow "${workflowData.system_name}" saved as **version ${data.version || workflowData.metadata?.version || '1.0'}**!\n\nYou can now reuse this workflow or create a new one.`
+          }]);
+
+          setWorkflowState(STATES.SAVED);
+          loadSavedWorkflows();
+          showNotify('Workflow saved successfully!', 'success');
+
+        } catch (err) {
+          showNotify(`Save failed: ${err.message}`, 'error');
+        }
+      };
+
+      const openEditAgent = (agent) => {
+        const agentCopy = JSON.parse(JSON.stringify(agent));
+        if (!agentCopy.tools) agentCopy.tools = [];
+        if (!agentCopy.llm_config) {
+          agentCopy.llm_config = {
+            model: DEFAULT_MODEL,
+            temperature: 0.7
+          };
+        }
+        setEditingAgent(agentCopy);
+        setShowEditModal(true);
+      };
+
+      const saveAgentEdit = () => {
+        if (!editingAgent || !agentsData) return;
+
+        // Update agent in agentsData array
+        const updated = agentsData.map(agent =>
+          agent.id === editingAgent.id ? editingAgent : agent
+        );
+        setAgentsData(updated);
+
+        // Update workflow data with new agents
+        const updatedWorkflow = { ...workflowData, agents: updated };
+        setWorkflowData(updatedWorkflow);
+
+        setShowEditModal(false);
+        setEditingAgent(null);
+
+        // If editing all agents, move to next agent
+        if (isEditingAllAgents) {
+          const nextIndex = editingAgentIndex + 1;
+          if (nextIndex < agentsData.length) {
+            setEditingAgentIndex(nextIndex);
+            showNotify(`Agent ${editingAgentIndex + 1}/${agentsData.length} saved. Opening next agent...`, 'success');
+            // Small delay before opening next agent modal
+            setTimeout(() => {
+              openEditAgentByIndex(nextIndex);
+            }, 300);
+          } else {
+            // All agents edited
+            setIsEditingAllAgents(false);
+            setEditingAgentIndex(0);
+            showNotify(`All ${agentsData.length} agents updated! Re-validating...`, 'success');
+            setChatMessages(prev => [...prev, {
+              role: 'assistant',
+              content: `✅ All ${agentsData.length} agents have been edited successfully!`
+            }]);
+            // Re-validate after all edits
+            validateDraft(updatedWorkflow, chatMessages);
+          }
+        } else {
+          showNotify('Agent updated. Re-validating...', 'success');
+          // Re-validate after single edit
+          validateDraft(updatedWorkflow, chatMessages);
+        }
+      };
+
+      // Cancel agent edit
+      const cancelAgentEdit = () => {
+        setShowEditModal(false);
+        setEditingAgent(null);
+
+        if (isEditingAllAgents) {
+          // Ask if user wants to continue with remaining agents
+          const remainingAgents = agentsData.length - editingAgentIndex - 1;
+          if (remainingAgents > 0) {
+            const continueEditing = confirm(`You have ${remainingAgents} more agent(s) to edit. Continue editing?`);
+            if (continueEditing) {
+              const nextIndex = editingAgentIndex + 1;
+              setEditingAgentIndex(nextIndex);
+              setTimeout(() => {
+                openEditAgentByIndex(nextIndex);
+              }, 300);
+              return;
+            }
+          }
+          // Stop editing all agents
+          setIsEditingAllAgents(false);
+          setEditingAgentIndex(0);
+          setChatMessages(prev => [...prev, {
+            role: 'assistant',
+            content: `✏️ Agent editing completed. ${editingAgentIndex} agent(s) were edited.`
+          }]);
+        }
+      };
+
+      // Send message in workflow chat modal
+      const sendWorkflowChatMessage = async () => {
+        if (!workflowChatInput.trim() || workflowChatLoading) return;
+
+        const userMessage = workflowChatInput.trim();
+        setWorkflowChatMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+        setWorkflowChatInput('');
+        setWorkflowChatLoading(true);
+
+        try {
+          // Save temp workflow first
+          await fetch(`${API_URL}/workflow/save/temp`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              workflow_id: workflowData.system_name,
+              agent_system: workflowData,
+              state: 'temp'
+            })
+          });
+
+          // Execute workflow with user input
+          const executeResponse = await fetch(`${API_URL}/runtime/execute`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              workflow_id: workflowData.system_name,
+              execution_mode: 'test',
+              input_payload: { message: userMessage, user_input: userMessage },
+              thread_id: currentThreadId
+            })
+          });
+
+          if (!executeResponse.ok) {
+            throw new Error(`Execution failed: ${executeResponse.status}`);
+          }
+
+          const result = await executeResponse.json();
+
+          // Update thread_id for conversation continuation
+          if (result.thread_id) {
+            setCurrentThreadId(result.thread_id);
+          }
+
+          // Extract the main result from output
+          let responseContent = '';
+          if (result.output?.error) {
+            responseContent = `⚠️ Error: ${result.output.error}`;
+          } else if (result.output?.result) {
+            responseContent = result.output.result;
+          } else if (result.output?.all_outputs) {
+            // Get the last agent's output
+            const outputs = result.output.all_outputs;
+            const lastOutput = Object.values(outputs).pop();
+            responseContent = lastOutput || JSON.stringify(result.output, null, 2);
+          } else {
+            responseContent = JSON.stringify(result.output, null, 2);
+          }
+
+          setWorkflowChatMessages(prev => [...prev, {
+            role: 'assistant',
+            content: responseContent
+          }]);
+
+        } catch (err) {
+          setWorkflowChatMessages(prev => [...prev, {
+            role: 'assistant',
+            content: `❌ Error: ${err.message}`
+          }]);
+        } finally {
+          setWorkflowChatLoading(false);
+        }
+      };
+
+      // Close workflow chat modal
+      const closeWorkflowChatModal = () => {
+        setShowWorkflowChatModal(false);
+        setChatMessages(prev => [...prev, {
+          role: 'assistant',
+          content: `💬 Workflow testing session ended. You had ${workflowChatMessages.length} messages in the test conversation.\n\nWhat would you like to do next?\n- **Approve** if the workflow works as expected\n- **Modify** to make changes\n- **Save** to finalize the workflow`
+        }]);
+      };
+
+      const updateEditingAgent = (field, value) => {
+        setEditingAgent(prev => ({ ...prev, [field]: value }));
+      };
+
+      const toggleAgentTool = (toolId) => {
+        if (!editingAgent) return;
+        const currentTools = editingAgent.tools || [];
+        const newTools = currentTools.includes(toolId)
+          ? currentTools.filter(t => t !== toolId)
+          : [...currentTools, toolId];
+        updateEditingAgent('tools', newTools);
+      };
+
+      const deleteWorkflow = async (id, state, version, e) => {
+        e.stopPropagation();
+        const confirmText = state === 'final' ? 'Archive this workflow version?' : 'Delete this workflow?';
+        if (!confirm(confirmText)) return;
+
+        try {
+          if (state === 'final') {
+            const response = await fetch(`${API_URL}/workflow/archive/${id}?version=${encodeURIComponent(version || '')}`, {
+              method: 'POST'
+            });
+            if (!response.ok) {
+              throw new Error(`Archive failed: ${response.status}`);
+            }
+          } else if (state === 'draft') {
+            const response = await fetch(`${API_URL}/workflow/delete/draft/${id}`, { method: 'DELETE' });
+            if (!response.ok) {
+              throw new Error(`Delete failed: ${response.status}`);
+            }
+          } else if (state === 'temp') {
+            const response = await fetch(`${API_URL}/workflow/delete/temp/${id}`, { method: 'DELETE' });
+            if (!response.ok) {
+              throw new Error(`Delete failed: ${response.status}`);
+            }
+          }
+
+          loadSavedWorkflows();
+          if (selectedWorkflow && selectedWorkflow.workflow_id === id) resetToIdle();
+          showNotify('Workflow removed', 'success');
+        } catch (err) {
+          showNotify(`Failed to remove workflow: ${err.message}`, 'error');
+        }
+      };
+
+      const loadWorkflow = async (wf) => {
+        try {
+          const response = await fetch(`${API_URL}/workflow/load`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              workflow_id: wf.workflow_id,
+              state: wf.state || 'final',
+              version: wf.version
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Load failed: ${response.status}`);
+          }
+
+          const data = await response.json();
+          setSelectedWorkflow(wf);
+          setWorkflowData(data);
+          setAgentsData(data.agents);
+
+          // Set appropriate state based on workflow state
+          // Drafts are editable and should be in WORKFLOW_READY state
+          // Finals are saved and should be in SAVED state
+          if (wf.state === 'draft') {
+            setWorkflowState(STATES.WORKFLOW_READY);
+            setChatMessages([{
+              role: 'assistant',
+              content: `📂 Loaded draft workflow **"${wf.workflow_id}"**.\n\nYou can:\n- Type "test" to execute this workflow\n- Ask me to modify agents or tools\n- Click Edit to manually adjust agents\n- Type "save" to save as final when ready`
+            }]);
+          } else {
+            setWorkflowState(STATES.SAVED);
+            setChatMessages([{
+              role: 'assistant',
+              content: `📂 Loaded workflow **"${wf.workflow_id}"** (v${wf.version || '1.0'}).\n\nThis is a saved workflow. You can execute it or clone it to make changes.`
+            }]);
+          }
+
+          setIsLoading(false);
+        } catch (err) {
+          showNotify(`Failed to load workflow: ${err.message}`, 'error');
+        }
+      };
+
+      const renderEditModal = () => {
+        if (!showEditModal || !editingAgent) return null;
+        const selectedTools = editingAgent.tools || [];
+        const availableTools = ['web_search', 'calculator', 'file_reader']; // Mock tools
+
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in" onClick={cancelAgentEdit}>
+            <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl animate-slide-up overflow-hidden" onClick={e => e.stopPropagation()}>
+              <div className="px-6 py-4 border-b border-slate-700 flex justify-between items-center bg-slate-800/50">
+                <div>
+                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                    <span className="p-1.5 bg-primary-500/20 rounded-lg text-primary-400"><Icons.Edit /></span>
+                    Edit {editingAgent.name}
+                  </h3>
+                  {isEditingAllAgents && (
+                    <div className="text-xs text-slate-400 mt-1">
+                      Agent {editingAgentIndex + 1} of {agentsData?.length || 0}
+                    </div>
+                  )}
+                </div>
+                <button className="text-slate-400 hover:text-white transition-colors" onClick={cancelAgentEdit}>
+                  <Icons.X />
+                </button>
+              </div>
+
+              <div className="p-6 overflow-y-auto space-y-5">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Name</label>
+                    <input className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-primary-500"
+                      value={editingAgent.name || ''} onChange={e => updateEditingAgent('name', e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Role</label>
+                    <input className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-primary-500"
+                      value={editingAgent.role || ''} onChange={e => updateEditingAgent('role', e.target.value)} />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Goal</label>
+                  <textarea className="w-full h-20 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-primary-500 resize-none"
+                    value={editingAgent.goal || ''} onChange={e => updateEditingAgent('goal', e.target.value)} />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Backstory</label>
+                  <textarea className="w-full h-20 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-primary-500 resize-none"
+                    value={editingAgent.backstory || ''} onChange={e => updateEditingAgent('backstory', e.target.value)} />
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tools</label>
+                  <div className="text-xs text-slate-500">Tool management will be available in Phase 3</div>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedTools.map(toolId => (
+                      <span key={toolId} className="px-3 py-1 bg-primary-500/20 border border-primary-500/50 rounded-lg text-xs text-primary-300">
+                        {toolId}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-slate-700">
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Model</label>
+                    <select className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-primary-500"
+                      value={editingAgent.llm_config?.model || DEFAULT_MODEL} onChange={e => updateEditingAgent('llm_config', { ...editingAgent.llm_config, model: e.target.value })}>
+                      <optgroup label="OpenAI">
+                        <option value="gpt-4o-mini">GPT-4o Mini</option>
+                        <option value="gpt-4">GPT-4</option>
+                      </optgroup>
+                      <optgroup label="Anthropic">
+                        <option value="claude-sonnet">Claude Sonnet</option>
+                      </optgroup>
+                      <optgroup label="OpenRouter">
+                        <option value="openrouter/anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet (OpenRouter)</option>
+                        <option value="openrouter/openai/gpt-4o-mini">GPT-4o Mini (OpenRouter)</option>
+                        <option value="openrouter/google/gemini-pro-1.5">Gemini Pro 1.5 (OpenRouter)</option>
+                        <option value="openrouter/meta-llama/llama-3.1-8b-instruct">Llama 3.1 8B (OpenRouter)</option>
+                        <option value="openrouter/mistralai/devstral-2512:free">Nvidia Nemotron 30B (OpenRouter - Free)</option>
+                      </optgroup>
+                      <optgroup label="Other">
+                        <option value="llama3.1:8b">Llama 3.1 8B (Local)</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Temperature ({editingAgent.llm_config?.temperature || 0.7})</label>
+                    <input type="range" min="0" max="2" step="0.1" className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary-500"
+                      value={editingAgent.llm_config?.temperature || 0.7} onChange={e => updateEditingAgent('llm_config', { ...editingAgent.llm_config, temperature: parseFloat(e.target.value) })} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 border-t border-slate-700 bg-slate-800/50 flex justify-between items-center">
+                {isEditingAllAgents && (
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-primary-500 transition-all duration-300"
+                        style={{ width: `${((editingAgentIndex + 1) / (agentsData?.length || 1)) * 100}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-xs text-slate-500">{editingAgentIndex + 1}/{agentsData?.length}</span>
+                  </div>
+                )}
+                <div className={`flex gap-3 ${!isEditingAllAgents ? 'ml-auto' : ''}`}>
+                  <button className="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" onClick={cancelAgentEdit}>
+                    {isEditingAllAgents ? 'Skip' : 'Cancel'}
+                  </button>
+                  <button className="px-4 py-2 rounded-lg text-sm font-medium bg-primary-600 hover:bg-primary-500 text-white shadow-lg shadow-primary-500/20 transition-all flex items-center gap-2" onClick={saveAgentEdit}>
+                    {isEditingAllAgents && editingAgentIndex < (agentsData?.length || 1) - 1 ? (
+                      <>Save & Next <Icons.ArrowRight /></>
+                    ) : (
+                      'Save Changes'
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // Render workflow chat modal
+      const renderWorkflowChatModal = () => {
+        if (!showWorkflowChatModal) return null;
+
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-sm animate-fade-in">
+            <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-3xl h-[80vh] flex flex-col shadow-2xl animate-slide-up overflow-hidden">
+              {/* Header */}
+              <div className="px-6 py-4 border-b border-slate-700 bg-gradient-to-r from-slate-800 to-slate-900 flex justify-between items-center">
+                <div>
+                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                    <span className="p-1.5 bg-emerald-500/20 rounded-lg text-emerald-400"><Icons.Message /></span>
+                    Chat with {workflowData?.system_name || 'Workflow'}
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1">Test your workflow by having a conversation with it</p>
+                </div>
+                <button className="text-slate-400 hover:text-white transition-colors p-2 hover:bg-slate-700 rounded-lg" onClick={closeWorkflowChatModal}>
+                  <Icons.X />
+                </button>
+              </div>
+
+              {/* Chat Messages */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                {workflowChatMessages.map((msg, i) => {
+                  const isUser = msg.role === 'user';
+                  return (
+                    <div key={i} className={`flex ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`}>
+                      <div className={`max-w-[85%] rounded-2xl p-4 shadow-lg ${isUser
+                        ? 'bg-emerald-600 text-white rounded-tr-sm'
+                        : 'bg-slate-800/80 border border-slate-700 text-slate-200 rounded-tl-sm'
+                        }`}>
+                        <div className="text-[10px] font-bold uppercase tracking-wider opacity-70 mb-1 flex items-center gap-1">
+                          {isUser ? 'You' : <><Icons.Bot /> {workflowData?.system_name || 'Workflow'}</>}
+                        </div>
+                        <div className={`text-sm leading-relaxed ${!isUser ? 'prose-custom' : ''}`} dangerouslySetInnerHTML={isUser ? undefined : { __html: formatMessage(msg.content) }}>
+                          {isUser ? msg.content : undefined}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+                {workflowChatLoading && (
+                  <div className="flex justify-start animate-fade-in">
+                    <div className="bg-slate-800/80 border border-slate-700 rounded-2xl rounded-tl-sm p-4 flex items-center gap-3">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-2 h-2 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      </div>
+                      <span className="text-xs text-slate-400 font-medium">Workflow processing...</span>
+                    </div>
+                  </div>
+                )}
+                <div ref={workflowChatEndRef}></div>
+              </div>
+
+              {/* Input Area */}
+              <div className="p-4 bg-slate-800/50 border-t border-slate-700 flex gap-3">
+                <textarea
+                  className="flex-1 bg-slate-950 border border-slate-700 hover:border-slate-600 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all resize-none"
+                  placeholder="Type a message to test the workflow... (e.g., 'Generate code for factorial of 5')"
+                  rows="1"
+                  style={{ minHeight: '46px', maxHeight: '120px' }}
+                  value={workflowChatInput}
+                  onChange={e => setWorkflowChatInput(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      sendWorkflowChatMessage();
+                    }
+                  }}
+                  disabled={workflowChatLoading}
+                />
+                <button onClick={sendWorkflowChatMessage} disabled={workflowChatLoading || !workflowChatInput.trim()}
+                  className="bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl px-5 font-semibold transition-all shadow-lg shadow-emerald-500/20 flex items-center gap-2">
+                  <span>Send</span> <Icons.Send />
+                </button>
+              </div>
+
+              {/* Footer info */}
+              <div className="px-6 py-2 bg-slate-900 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500">
+                <span>Pattern: {workflowData?.communication_pattern || 'sequential'}</span>
+                <span>{workflowChatMessages.length} messages</span>
+                {currentThreadId && <span className="font-mono">Thread: {currentThreadId.substring(0, 8)}...</span>}
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // Get agents array for rendering
+      const getAgentsArray = () => {
+        if (!agentsData) return [];
+        // agentsData is already an array in the new structure
+        return Array.isArray(agentsData) ? agentsData : [];
+      };
+
+      // --- Main Render ---
+      return (
+        <div className="flex h-screen bg-slate-950 text-slate-200 font-sans selection:bg-primary-500/30">
+
+          {/* Sidebar */}
+          <div className="w-72 bg-slate-900 border-r border-slate-800 flex flex-col flex-shrink-0 z-20">
+            <div className="p-6 border-b border-slate-800 bg-gradient-to-br from-slate-900 to-slate-800">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-violet-600 flex items-center justify-center text-white shadow-lg shadow-primary-500/20">
+                  <Icons.Workflow />
+                </div>
+                <h1 className="text-lg font-bold text-white tracking-tight">Workflow<span className="text-primary-400">Builder</span></h1>
+              </div>
+              <p className="text-xs text-slate-500 font-medium ml-11">AI Automation Platform</p>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-4 space-y-1">
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest px-3 mb-3 mt-2">Your Workflows</div>
+              {savedWorkflows.length > 0 ? (
+                savedWorkflows.map(wf => {
+                  const isActive = selectedWorkflow && selectedWorkflow.workflow_id === wf.workflow_id;
+                  return (
+                    <div key={wf.workflow_id}
+                      onClick={() => loadWorkflow(wf)}
+                      className={`group relative flex items-center justify-between p-3 rounded-xl cursor-pointer transition-all duration-200 border
+                        ${isActive
+                          ? 'bg-primary-500/10 border-primary-500/30'
+                          : 'bg-transparent border-transparent hover:bg-slate-800 hover:border-slate-700/50'}`}>
+
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <div className={`text-sm font-medium truncate ${isActive ? 'text-primary-200' : 'text-slate-300 group-hover:text-white'}`}>{wf.workflow_id}</div>
+                          {wf.state === 'draft' && (
+                            <span className="px-1.5 py-0.5 text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded">DRAFT</span>
+                          )}
+                        </div>
+                        <div className="text-xs text-slate-500 mt-0.5 font-medium">
+                          {wf.state === 'draft' ? 'Draft · Not saved' : `Final${wf.version ? ` · v${wf.version}` : ''}`}
+                        </div>
+                      </div>
+
+                      <button onClick={(e) => deleteWorkflow(wf.workflow_id, wf.state, wf.version, e)}
+                        className="opacity-0 group-hover:opacity-100 p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded-md transition-all">
+                        <Icons.Trash />
+                      </button>
+
+                      {isActive && <div className="absolute left-0 top-1/2 -translate-y-1/2 h-8 w-1 bg-primary-500 rounded-r-full"></div>}
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="text-center py-8 px-4 border border-dashed border-slate-800 rounded-xl bg-slate-900/50">
+                  <p className="text-xs text-slate-500">No saved workflows yet</p>
+                </div>
+              )}
+            </div>
+
+            <div className="p-4 border-t border-slate-800 bg-slate-900">
+              <button onClick={createNewWorkflow}
+                className="w-full flex items-center justify-center gap-2 py-3 bg-white text-slate-900 hover:bg-slate-100 rounded-xl text-sm font-bold shadow-lg transition-all">
+                <span className="text-primary-600"><Icons.Plus /></span> New Workflow
+              </button>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="flex-1 flex flex-col min-w-0 relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-slate-950">
+            <div className="absolute top-0 left-0 w-full h-[500px] bg-primary-500/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2"></div>
+
+            {workflowState !== STATES.IDLE ? (
+              <>
+                {/* Header */}
+                <div className="px-8 py-5 border-b border-slate-800/50 backdrop-blur-sm z-10 flex justify-between items-end">
+                  <div>
+                    <h2 className="text-2xl font-bold text-white tracking-tight">{workflowData?.name || 'New Workflow'}</h2>
+                    <p className="text-sm text-slate-400 mt-1">
+                      {workflowState === STATES.CHATTING && 'Describe your workflow to generate agents'}
+                      {workflowState === STATES.WORKFLOW_READY && 'Workflow ready - test or modify'}
+                      {workflowState === STATES.TESTING && 'Testing complete - save workflow'}
+                      {workflowState === STATES.SAVED && 'Workflow saved successfully'}
+                    </p>
+                  </div>
+                  {workflowData && (
+                    <div className="text-xs font-mono text-slate-600 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
+                      Mode: {workflowData.communication_pattern || 'sequential'}
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-8 relative z-0">
+                  <div className="max-w-4xl mx-auto pb-20">
+
+                    {/* Chat Area */}
+                    <div className="glass rounded-2xl border border-slate-700/50 shadow-2xl mb-8 overflow-hidden flex flex-col min-h-[300px] max-h-[500px]">
+                      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                        {chatMessages.length === 0 && (
+                          <div className="flex flex-col items-center justify-center h-full text-center p-8 opacity-50">
+                            <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mb-4"><Icons.Sparkles /></div>
+                            <p className="text-slate-400 text-sm">Describe your workflow goal to generate an AI agent team</p>
+                          </div>
+                        )}
+                        {chatMessages.map((msg, i) => {
+                          const isUser = msg.role === 'user';
+                          return (
+                            <div key={i} className={`flex ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`}>
+                              <div className={`max-w-[85%] rounded-2xl p-4 shadow-lg ${isUser
+                                ? 'bg-primary-600 text-white rounded-tr-sm'
+                                : 'bg-slate-800/80 border border-slate-700 text-slate-200 rounded-tl-sm'
+                                }`}>
+                                <div className="text-[10px] font-bold uppercase tracking-wider opacity-70 mb-1 flex items-center gap-1">
+                                  {isUser ? 'You' : <><Icons.Bot /> AI Assistant</>}
+                                </div>
+                                <div className={`text-sm leading-relaxed ${!isUser ? 'prose-custom' : ''}`} dangerouslySetInnerHTML={isUser ? undefined : { __html: formatMessage(msg.content) }}>
+                                  {isUser ? msg.content : undefined}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                        {isLoading && (
+                          <div className="flex justify-start animate-fade-in">
+                            <div className="bg-slate-800/80 border border-slate-700 rounded-2xl rounded-tl-sm p-4 flex items-center gap-3">
+                              <div className="flex space-x-1">
+                                <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                                <div className="w-2 h-2 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                              </div>
+                              <span className="text-xs text-slate-400 font-medium">Processing...</span>
+                            </div>
+                          </div>
+                        )}
+                        <div ref={chatEndRef}></div>
+                      </div>
+
+                      {/* Input Area */}
+                      <div className="p-4 bg-slate-900/50 border-t border-slate-800 flex gap-3">
+                        <textarea
+                          className="flex-1 bg-slate-950 border border-slate-700 hover:border-slate-600 focus:border-primary-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary-500 transition-all resize-none"
+                          placeholder="e.g., Create a research team to analyze crypto trends and write a blog post..."
+                          rows="1"
+                          style={{ minHeight: '46px', maxHeight: '120px' }}
+                          value={inputText}
+                          onChange={e => setInputText(e.target.value)}
+                          onKeyDown={e => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                              e.preventDefault();
+                              sendMessage();
+                            }
+                          }}
+                          disabled={isLoading}
+                        />
+                        <button onClick={sendMessage} disabled={isLoading || !inputText.trim()}
+                          className="bg-primary-600 hover:bg-primary-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl px-5 font-semibold transition-all shadow-lg shadow-primary-500/20 flex items-center gap-2">
+                          <span>Send</span> <Icons.Send />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* HITL Action Buttons - Show after test */}
+                    {showHitlOptions && workflowState === STATES.TESTING && (
+                      <div className="animate-slide-up mb-6">
+                        <div className="glass rounded-xl border border-slate-700/50 p-4">
+                          <h4 className="text-sm font-bold text-slate-300 mb-3 flex items-center gap-2">
+                            <span className="w-5 h-5 rounded bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs">?</span>
+                            What would you like to do with this workflow?
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            <button
+                              onClick={() => handleHitlAction('chat')}
+                              className="px-4 py-2 bg-emerald-600/20 border border-emerald-500/50 text-emerald-400 rounded-lg text-sm font-medium hover:bg-emerald-600/30 transition-all flex items-center gap-2"
+                            >
+                              <Icons.Message /> Chat with Workflow
+                            </button>
+                            <button
+                              onClick={() => handleHitlAction('approve')}
+                              className="px-4 py-2 bg-green-600/20 border border-green-500/50 text-green-400 rounded-lg text-sm font-medium hover:bg-green-600/30 transition-all flex items-center gap-2"
+                            >
+                              <Icons.Check /> Approve
+                            </button>
+                            <button
+                              onClick={() => handleHitlAction('reject')}
+                              className="px-4 py-2 bg-red-600/20 border border-red-500/50 text-red-400 rounded-lg text-sm font-medium hover:bg-red-600/30 transition-all flex items-center gap-2"
+                            >
+                              <Icons.X /> Reject
+                            </button>
+                            <button
+                              onClick={() => handleHitlAction('modify')}
+                              className="px-4 py-2 bg-blue-600/20 border border-blue-500/50 text-blue-400 rounded-lg text-sm font-medium hover:bg-blue-600/30 transition-all flex items-center gap-2"
+                            >
+                              <Icons.Edit /> Modify
+                            </button>
+                            <button
+                              onClick={() => handleHitlAction('edit')}
+                              className="px-4 py-2 bg-violet-600/20 border border-violet-500/50 text-violet-400 rounded-lg text-sm font-medium hover:bg-violet-600/30 transition-all flex items-center gap-2"
+                            >
+                              <Icons.Cpu /> Edit All Agents
+                            </button>
+                            <button
+                              onClick={() => handleHitlAction('defer')}
+                              className="px-4 py-2 bg-slate-600/20 border border-slate-500/50 text-slate-400 rounded-lg text-sm font-medium hover:bg-slate-600/30 transition-all flex items-center gap-2"
+                            >
+                              <Icons.Workflow /> Defer
+                            </button>
+                            <button
+                              onClick={saveWorkflowFinal}
+                              className="px-4 py-2 bg-primary-600/20 border border-primary-500/50 text-primary-400 rounded-lg text-sm font-medium hover:bg-primary-600/30 transition-all flex items-center gap-2"
+                            >
+                              <Icons.Save /> Save Workflow
+                            </button>
+                          </div>
+                          {currentThreadId && (
+                            <div className="mt-3 text-xs text-slate-500 font-mono">
+                              Thread ID: {currentThreadId.substring(0, 8)}... (conversation continues)
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Agents Preview */}
+                    {getAgentsArray().length > 0 && (
+                      <div className="animate-slide-up">
+                        <div className="flex items-center justify-between mb-4 px-2">
+                          <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                            <span className="w-6 h-6 rounded bg-primary-500/20 text-primary-400 flex items-center justify-center text-xs"><Icons.Cpu /></span>
+                            Workflow Agents
+                          </h3>
+                          <span className="text-xs font-mono text-slate-500 bg-slate-900 border border-slate-800 px-2 py-1 rounded">{getAgentsArray().length} Agents</span>
+                        </div>
+
+                        <div className="space-y-4 relative">
+                          <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-gradient-to-b from-slate-700 via-primary-500/30 to-slate-700 -z-10"></div>
+
+                          {getAgentsArray().map((agent, idx) => (
+                            <div key={agent.id || agent.agent_id || idx} className="relative group">
+                              <div className="glass-card rounded-xl p-5 pl-16 relative overflow-hidden">
+                                <div className="absolute left-3 top-5 w-7 h-7 bg-slate-800 border border-slate-600 rounded-full flex items-center justify-center text-xs font-bold text-slate-300 shadow-lg z-10 group-hover:border-primary-500 group-hover:text-primary-400 transition-colors">
+                                  {idx + 1}
+                                </div>
+
+                                <div className="flex justify-between items-start mb-2">
+                                  <div>
+                                    <h4 className="font-bold text-slate-100">{agent.name}</h4>
+                                    <div className="text-xs text-primary-400 font-medium uppercase tracking-wide mt-0.5">{agent.role}</div>
+                                  </div>
+                                  {workflowState === STATES.WORKFLOW_READY && (
+                                    <button onClick={() => openEditAgent(agent)} className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors">
+                                      <Icons.Edit />
+                                    </button>
+                                  )}
+                                </div>
+
+                                <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                                  {agent.responsibilities?.join(', ') || agent.goal || 'No responsibilities listed'}
+                                </p>
+
+                                <div className="flex flex-wrap gap-2">
+                                  {agent.tools && agent.tools.length > 0 ? (
+                                    agent.tools.map(toolId => (
+                                      <span key={toolId} className="px-2.5 py-1 bg-slate-800 border border-slate-700 rounded-md text-[10px] font-semibold text-slate-300 uppercase tracking-wide">
+                                        {toolId}
+                                      </span>
+                                    ))
+                                  ) : (
+                                    <span className="text-xs text-slate-600 italic">No tools assigned</span>
+                                  )}
+                                </div>
+
+                                <div className="mt-3 pt-3 border-t border-slate-700/50 flex items-center gap-4 text-xs text-slate-500">
+                                  <span>Model: {agent.llm_config?.model || DEFAULT_MODEL}</span>
+                                  <span>Temp: {agent.llm_config?.temperature || 0.7}</span>
+                                </div>
+                              </div>
+                              {idx < getAgentsArray().length - 1 && (
+                                <div className="flex justify-start pl-5 py-1">
+                                  <div className="text-slate-600"><Icons.ArrowDown /></div>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Footer Actions */}
+                <div className="p-4 border-t border-slate-800 bg-slate-900/80 backdrop-blur z-20 flex items-center gap-4">
+                  <button onClick={resetToIdle} className="px-6 py-2.5 rounded-xl border border-slate-700 text-slate-300 font-medium hover:bg-slate-800 hover:text-white transition-all">
+                    Back to Start
+                  </button>
+
+                  <div className="ml-auto">
+                    {workflowState === STATES.SAVED && (
+                      <button onClick={createNewWorkflow} className="px-8 py-2.5 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-bold shadow-lg shadow-primary-500/25 transition-all flex items-center gap-2">
+                        <Icons.Plus /> New Workflow
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </>
+            ) : (
+              /* Empty State */
+              <div className="flex flex-col items-center justify-center h-full p-8 text-center animate-fade-in relative z-10">
+                <div className="w-32 h-32 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center mb-8 shadow-2xl relative">
+                  <div className="absolute inset-0 bg-primary-500/20 rounded-full blur-xl animate-pulse-slow"></div>
+                  <span className="text-primary-400 relative z-10"><Icons.Sparkles /></span>
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-3 tracking-tight">Design Your AI Workforce</h3>
+                <p className="text-slate-400 max-w-md mb-10 text-lg leading-relaxed">
+                  Describe a task, and our engine will architect a team of specialized AI agents to automate it for you.
+                </p>
+                <button onClick={createNewWorkflow}
+                  className="group relative px-8 py-4 bg-white text-slate-950 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-white/20 hover:scale-105 transition-all duration-300">
+                  <span className="flex items-center gap-3">
+                    <span className="p-1 bg-slate-950 rounded-full text-white"><Icons.Plus /></span>
+                    Start New Workflow
+                  </span>
+                </button>
+              </div>
+            )}
+
+            {/* Notification Toast */}
+            {notification && (
+              <div className={`fixed top-6 right-6 px-6 py-4 rounded-xl shadow-2xl border flex items-center gap-3 animate-slide-up z-50 ${notification.type === 'error' ? 'bg-red-500/10 border-red-500/50 text-red-200' : 'bg-emerald-500/10 border-emerald-500/50 text-emerald-200'
+                }`}>
+                <div className={`w-2 h-2 rounded-full ${notification.type === 'error' ? 'bg-red-500' : 'bg-emerald-500'}`}></div>
+                <span className="font-medium text-sm">{notification.message}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Edit Modal */}
+          {renderEditModal()}
+
+          {/* Workflow Chat Modal */}
+          {renderWorkflowChatModal()}
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+
+</html>

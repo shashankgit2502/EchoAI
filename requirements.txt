@@ -1,0 +1,60 @@
+# -------------------------
+# Core Web Framework
+# -------------------------
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.6.0
+python-dotenv>=1.0.1
+
+# -------------------------
+# JSON / Schema Validation
+# -------------------------
+jsonschema>=4.21.1
+
+# -------------------------
+# LangChain / LangGraph
+# -------------------------
+langchain-core>=0.1.40
+langgraph>=0.0.40
+
+# -------------------------
+# LLM Providers (multi-LLM support)
+# -------------------------
+openai>=1.12.0
+anthropic>=0.25.0
+google-generativeai>=0.5.0
+
+# -------------------------
+# MCP / HTTP Clients
+# -------------------------
+httpx>=0.27.0
+requests>=2.31.0
+
+# -------------------------
+# Async / Reliability
+# -------------------------
+tenacity>=8.2.3
+
+# -------------------------
+# Observability (OpenTelemetry)
+# -------------------------
+opentelemetry-api>=1.23.0
+opentelemetry-sdk>=1.23.0
+opentelemetry-exporter-otlp>=1.23.0
+opentelemetry-instrumentation-fastapi>=0.44b0
+opentelemetry-instrumentation-httpx>=0.44b0
+
+# -------------------------
+# Utilities
+# -------------------------
+python-dateutil>=2.9.0.post0
+rich>=13.7.0
+
+# -------------------------
+# Testing
+# -------------------------
+pytest>=8.0.0
+pytest-asyncio>=0.23.5
+
+langgraph-checkpoint-sqlite
+langchain >= 1.0.0
