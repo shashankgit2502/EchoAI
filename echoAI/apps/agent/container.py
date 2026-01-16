@@ -7,6 +7,7 @@ from echolib.services import TemplateRepository, LangGraphBuilder, AgentService
 from .registry.registry import AgentRegistry
 from .factory.factory import AgentFactory
 from .permissions.permissions import AgentPermissions
+from .designer.agent_designer import AgentDesigner
 
 # Existing services (keep for backward compatibility)
 _tpl = TemplateRepository()
@@ -17,6 +18,7 @@ _agentsvc = AgentService(_tpl, _graph)
 _registry = AgentRegistry()
 _factory = AgentFactory(tool_registry={})  # TODO: Add real tool registry
 _permissions = AgentPermissions()
+_designer = AgentDesigner()
 
 # Register existing services
 container.register('agent.service', lambda: _agentsvc)
@@ -27,3 +29,4 @@ container.register('logger', lambda: OTelLogger())
 container.register('agent.registry', lambda: _registry)
 container.register('agent.factory', lambda: _factory)
 container.register('agent.permissions', lambda: _permissions)
+container.register('agent.designer', lambda: _designer)

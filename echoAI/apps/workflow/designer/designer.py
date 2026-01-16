@@ -15,17 +15,19 @@ class WorkflowDesigner:
     Uses LLM to generate workflows from natural language prompts.
     """
 
-    def __init__(self, llm_service=None, api_key: Optional[str] = None):
+    def __init__(self, llm_service=None, api_key: Optional[str] = None, agent_registry=None):
         """
         Initialize designer.
 
         Args:
             llm_service: LLM service for prompt analysis
             api_key: OpenAI API key (optional, reads from env if not provided)
+            agent_registry: Agent registry for saving agents
         """
         self.llm_service = llm_service
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self._openai_client = None
+        self.agent_registry = agent_registry
 
     def _get_openai_client(self):
         """Lazy initialization of ChatOpenAI client (or Ollama)."""
@@ -222,6 +224,14 @@ Rules:
         # Convert agents list to dict
         agent_dict = {agent["agent_id"]: agent for agent in agents}
 
+        # Save agents to registry if available
+        if self.agent_registry:
+            for agent in agents:
+                try:
+                    self.agent_registry.register_agent(agent)
+                except Exception as e:
+                    print(f"Warning: Failed to register agent {agent.get('agent_id')}: {e}")
+
         return workflow, agent_dict
 
     def _design_with_heuristics(
@@ -275,6 +285,14 @@ Rules:
         }
 
         agent_dict = {agent["agent_id"]: agent for agent in agents}
+
+        # Save agents to registry if available
+        if self.agent_registry:
+            for agent in agents:
+                try:
+                    self.agent_registry.register_agent(agent)
+                except Exception as e:
+                    print(f"Warning: Failed to register agent {agent.get('agent_id')}: {e}")
 
         return workflow, agent_dict
 

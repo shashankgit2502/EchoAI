@@ -1,0 +1,44 @@
+{
+  "models": [
+    {
+      "id": "mistral-nemo-12b",
+      "name": "Mistral Nemo 12B",
+      "provider": "ollama",
+      "base_url": "http://10.188.100.131:8004/v1",
+      "api_key": "ollama",
+      "model_name": "mistral-nemo:12b-instruct-2407-fp16"
+    },
+    {
+      "id": "gpt-4o-mini",
+      "name": "GPT-4o Mini",
+      "provider": "openai",
+      "base_url": null,
+      "api_key_env": "OPENAI_API_KEY",
+      "model_name": "gpt-4o-mini"
+    },
+    {
+      "id": "gpt-4o",
+      "name": "GPT-4o",
+      "provider": "openai",
+      "base_url": null,
+      "api_key_env": "OPENAI_API_KEY",
+      "model_name": "gpt-4o"
+    },
+    {
+      "id": "claude-sonnet-4-5",
+      "name": "Claude Sonnet 4.5",
+      "provider": "anthropic",
+      "base_url": null,
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "model_name": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "claude-opus-4-5",
+      "name": "Claude Opus 4.5",
+      "provider": "anthropic",
+      "base_url": null,
+      "api_key_env": "ANTHROPIC_API_KEY",
+      "model_name": "claude-opus-4-5-20251101"
+    }
+  ]
+}

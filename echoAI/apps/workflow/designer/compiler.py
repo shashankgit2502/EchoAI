@@ -233,7 +233,7 @@ class WorkflowCompiler:
         agent_config: Dict[str, Any]
     ):
         """
-        Create agent node function with REAL LLM execution.
+        Create agent node function with REAL LLM execution and HITL support.
 
         Args:
             agent_id: Agent identifier
@@ -242,9 +242,13 @@ class WorkflowCompiler:
         Returns:
             Callable node function
         """
+        # Check if this is a HITL node
+        node_type = agent_config.get("metadata", {}).get("node_type")
+        is_hitl_node = (node_type == "HITL")
+
         def agent_node(state: Dict[str, Any]) -> Dict[str, Any]:
             """
-            Agent node execution function with real LLM calls.
+            Agent node execution function with real LLM calls and HITL support.
 
             Args:
                 state: Current workflow state
@@ -252,6 +256,8 @@ class WorkflowCompiler:
             Returns:
                 Updated state
             """
+            from ..runtime.hitl import HITLManager
+
             # Get agent configuration
             agent_name = agent_config.get("name", agent_id)
             agent_role = agent_config.get("role", "Processing")
@@ -263,8 +269,43 @@ class WorkflowCompiler:
             # Extract inputs from state
             inputs = {key: state.get(key) for key in input_schema if key in state}
 
-            # Build prompt for LLM
-            prompt = f"""You are {agent_name}, a specialized agent with the following role:
+            # If this is a HITL node, request approval BEFORE executing
+            if is_hitl_node:
+                hitl = HITLManager()
+
+                # Get workflow and run IDs from state
+                workflow_id = state.get("workflow_id", "unknown")
+                run_id = state.get("run_id", "unknown")
+
+                # Request approval
+                context = {
+                    "agent_output": {"pending": "awaiting approval before execution"},
+                    "state_snapshot": dict(state),
+                    "inputs": inputs
+                }
+
+                interrupt_info = hitl.request_approval(
+                    run_id=run_id,
+                    workflow_id=workflow_id,
+                    blocked_at=agent_id,
+                    context=context
+                )
+
+                # Check HITL status - execution pauses here
+                status = hitl.get_status(run_id)
+
+                if status.get("state") == "rejected":
+                    # Execution was rejected
+                    raise RuntimeError(f"Workflow rejected at HITL checkpoint: {agent_id}")
+
+                elif status.get("state") == "modified":
+                    # Agent was modified - reload configuration
+                    # In production, reload agent config here
+                    pass
+
+            # Build prompt for LLM (only if not a pure HITL node)
+            if not is_hitl_node or llm_config:
+                prompt = f"""You are {agent_name}, a specialized agent with the following role:
 {agent_role}
 
 {agent_description}
@@ -276,27 +317,31 @@ Inputs:
 
 Please provide your response in a clear, structured format. Focus on your specific role and responsibilities."""
 
-            # Execute real LLM call
-            try:
-                llm_response = self._execute_llm_call(llm_config, prompt)
+                # Execute real LLM call
+                try:
+                    llm_response = self._execute_llm_call(llm_config, prompt)
 
-                # Create outputs based on LLM response
-                outputs = {}
-                for key in output_schema:
-                    outputs[key] = llm_response
+                    # Create outputs based on LLM response
+                    outputs = {}
+                    for key in output_schema:
+                        outputs[key] = llm_response
 
-            except Exception as e:
-                # Fallback if LLM call fails
-                outputs = {
-                    key: f"Error in {agent_name}: {str(e)}" for key in output_schema
-                }
+                except Exception as e:
+                    # Fallback if LLM call fails
+                    outputs = {
+                        key: f"Error in {agent_name}: {str(e)}" for key in output_schema
+                    }
+            else:
+                # HITL node - just pass through
+                outputs = {key: state.get(key) for key in output_schema if key in state}
 
             # Add message to history
             message = {
                 "agent": agent_id,
                 "role": agent_role,
                 "inputs": inputs,
-                "outputs": outputs
+                "outputs": outputs,
+                "hitl_checkpoint": is_hitl_node
             }
 
             messages = state.get("messages", [])

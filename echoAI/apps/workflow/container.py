@@ -13,6 +13,7 @@ from .runtime.guards import RuntimeGuards
 from .runtime.hitl import HITLManager
 from .visualization.graph_mapper import GraphMapper
 from .visualization.graph_editor import GraphEditor
+from .visualization.node_mapper import NodeMapper
 
 # Import agent registry from agent app
 from apps.agent.registry.registry import AgentRegistry
@@ -27,13 +28,14 @@ _wfsvc = WorkflowService(_agentsvc, _bus)
 # New orchestrator services
 _storage = WorkflowStorage()
 _validator = WorkflowValidator(tool_registry={})  # TODO: Add real tool registry
-_designer = WorkflowDesigner()
+_agent_registry = AgentRegistry()
+_designer = WorkflowDesigner(agent_registry=_agent_registry)
 _compiler = WorkflowCompiler()
 _guards = RuntimeGuards()
 _hitl = HITLManager()
 _graph_mapper = GraphMapper(storage=_storage)
 _graph_editor = GraphEditor()
-_agent_registry = AgentRegistry()
+_node_mapper = NodeMapper(tool_registry=None)  # TODO: Add tool registry when ready
 _executor = WorkflowExecutor(
     storage=_storage,
     compiler=_compiler,
@@ -56,4 +58,5 @@ container.register('workflow.guards', lambda: _guards)
 container.register('workflow.hitl', lambda: _hitl)
 container.register('workflow.graph_mapper', lambda: _graph_mapper)
 container.register('workflow.graph_editor', lambda: _graph_editor)
+container.register('workflow.node_mapper', lambda: _node_mapper)
 container.register('workflow.executor', lambda: _executor)

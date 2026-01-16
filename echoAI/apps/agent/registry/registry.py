@@ -24,10 +24,13 @@ class AgentRegistry:
             storage_dir: Directory for agent storage
         """
         if storage_dir is None:
-            storage_dir = Path(__file__).parent.parent / "storage" / "agents"
+            storage_dir = Path(__file__).parent.parent.parent / "storage" / "agents"
 
         self.storage_dir = Path(storage_dir)
         self.storage_dir.mkdir(parents=True, exist_ok=True)
+
+        # Master list file
+        self.master_list_file = self.storage_dir / "ai_agents.json"
 
         # In-memory cache
         self._cache: Dict[str, Dict[str, Any]] = {}
@@ -61,6 +64,10 @@ class AgentRegistry:
     def _load_all(self) -> None:
         """Load all agents from storage into cache."""
         for file in self.storage_dir.glob("*.json"):
+            # Skip master list file
+            if file.name == "ai_agents.json":
+                continue
+
             try:
                 with open(file) as f:
                     agent = json.load(f)
@@ -70,6 +77,48 @@ class AgentRegistry:
             except Exception as e:
                 # Skip corrupted files
                 print(f"Warning: Failed to load agent from {file}: {e}")
+
+    def _load_master_list(self) -> Dict[str, Any]:
+        """Load master agent list."""
+        if self.master_list_file.exists():
+            try:
+                with open(self.master_list_file) as f:
+                    return json.load(f)
+            except Exception:
+                return {"agents": []}
+        return {"agents": []}
+
+    def _save_master_list(self, master_list: Dict[str, Any]) -> None:
+        """Save master agent list."""
+        self._atomic_write_json(self.master_list_file, master_list)
+
+    def _update_master_list_add(self, agent: Dict[str, Any]) -> None:
+        """Add agent to master list."""
+        master_list = self._load_master_list()
+
+        # Create summary entry
+        agent_summary = {
+            "agent_id": agent.get("agent_id"),
+            "name": agent.get("name"),
+            "icon": agent.get("icon", "🤖"),
+            "role": agent.get("role"),
+            "description": agent.get("description", "")
+        }
+
+        # Check if already exists
+        existing_ids = [a.get("agent_id") for a in master_list["agents"]]
+        if agent_summary["agent_id"] not in existing_ids:
+            master_list["agents"].append(agent_summary)
+            self._save_master_list(master_list)
+
+    def _update_master_list_remove(self, agent_id: str) -> None:
+        """Remove agent from master list."""
+        master_list = self._load_master_list()
+        master_list["agents"] = [
+            a for a in master_list["agents"]
+            if a.get("agent_id") != agent_id
+        ]
+        self._save_master_list(master_list)
 
     def register_agent(self, agent: Dict[str, Any]) -> Dict[str, str]:
         """
@@ -97,6 +146,9 @@ class AgentRegistry:
 
         # Update cache
         self._cache[agent_id] = agent
+
+        # Update master list
+        self._update_master_list_add(agent)
 
         return {
             "agent_id": agent_id,
@@ -179,6 +231,9 @@ class AgentRegistry:
         # Remove from cache
         del self._cache[agent_id]
 
+        # Update master list
+        self._update_master_list_remove(agent_id)
+
     def get_agents_by_role(self, role: str) -> List[Dict[str, Any]]:
         """
         Get agents by role.
@@ -225,3 +280,12 @@ class AgentRegistry:
         """
         required_fields = ["agent_id", "name", "role"]
         return all(field in agent for field in required_fields)
+
+    def get_master_list(self) -> Dict[str, Any]:
+        """
+        Get the master agent list (for workflow builder display).
+
+        Returns:
+            Master list with all agent summaries
+        """
+        return self._load_master_list()

@@ -94,10 +94,12 @@ class WorkflowExecutor:
         run_id = new_id("run_")
 
         try:
-            # Prepare initial state
+            # Prepare initial state with workflow and run IDs
             initial_state = {
                 **input_payload,
-                "messages": []
+                "messages": [],
+                "workflow_id": workflow_id,
+                "run_id": run_id
             }
 
             # Run the compiled graph

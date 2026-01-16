@@ -6,10 +6,7 @@
     "agent_id",
     "name",
     "role",
-    "llm",
-    "tools",
-    "input_schema",
-    "output_schema"
+    "tools"
   ],
   "properties": {
     "agent_id": {
@@ -26,9 +23,21 @@
     "description": {
       "type": "string"
     },
+    "icon": {
+      "type": "string",
+      "description": "Emoji icon for agent"
+    },
+    "prompt": {
+      "type": "string",
+      "description": "System prompt for agent behavior"
+    },
+    "model": {
+      "type": "string",
+      "description": "Model identifier (e.g., 'mistral-nemo-12b', 'gpt-4o-mini')"
+    },
     "llm": {
       "type": "object",
-      "required": ["provider", "model"],
+      "description": "DEPRECATED: Use 'model' field instead. Kept for backward compatibility.",
       "properties": {
         "provider": {
           "type": "string",
@@ -49,9 +58,51 @@
     },
     "tools": {
       "type": "array",
-      "description": "MCP tool identifiers",
+      "description": "Tool names (e.g., 'Web Search', 'Web Fetch')",
       "items": {
         "type": "string"
+      }
+    },
+    "variables": {
+      "type": "array",
+      "description": "Runtime variables for agent context",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["string", "number", "boolean", "object", "array"]
+          },
+          "defaultValue": {
+            "description": "Default value for the variable"
+          }
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "description": "Agent execution settings",
+      "properties": {
+        "temperature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "max_token": {
+          "type": "number"
+        },
+        "top_p": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "max_iteration": {
+          "type": "number"
+        }
       }
     },
     "input_schema": {
