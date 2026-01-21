@@ -738,7 +738,10 @@
       const [maxIterations, setMaxIterations] = useState(5);
       const [selectedTools, setSelectedTools] = useState([]);
       const [toolConfigs, setToolConfigs] = useState({});
-      const [variables, setVariables] = useState({});
+      const [variables, setVariables] = useState([]);
+
+      // API Base URL
+      const API_BASE_URL = 'http://localhost:8000';
 
       // UI state
       const [showToolConfigModal, setShowToolConfigModal] = useState(false);
@@ -842,27 +845,39 @@
           const saved = localStorage.getItem('agent_library');
           if (saved) {
             const parsedAgents = JSON.parse(saved);
-            
-            // Convert to object format (Edge-safe)
+
+            // Convert to array of objects format (Edge-safe)
             const normalizedAgents = [];
             for (let i = 0; i < parsedAgents.length; i++) {
               const agent = parsedAgents[i];
-              let agentVars = {};
-              
+              let agentVars = [];
+
               if (agent.variables) {
                 if (Array.isArray(agent.variables)) {
-                  // Old array format - convert
+                  // Already array format - ensure proper structure
                   for (let j = 0; j < agent.variables.length; j++) {
                     const v = agent.variables[j];
                     if (v.name) {
-                      agentVars[v.name] = v.value || '';
+                      agentVars.push({
+                        name: v.name,
+                        type: v.type || 'string',
+                        defaultValue: v.defaultValue !== undefined ? v.defaultValue : (v.value || '')
+                      });
                     }
                   }
-                } else {
-                  agentVars = agent.variables;
+                } else if (typeof agent.variables === 'object') {
+                  // Old object format {name: value} - convert to array
+                  const keys = Object.keys(agent.variables);
+                  for (let j = 0; j < keys.length; j++) {
+                    agentVars.push({
+                      name: keys[j],
+                      type: 'string',
+                      defaultValue: agent.variables[keys[j]] || ''
+                    });
+                  }
                 }
               }
-              
+
               normalizedAgents.push({
                 id: agent.id,
                 name: agent.name,
@@ -882,7 +897,7 @@
                 updatedAt: agent.updatedAt
               });
             }
-            
+
             setAgents(normalizedAgents);
             
             // Set next ID
@@ -919,7 +934,55 @@
         setTimeout(() => setNotification(null), 3000);
       };
 
-      const sendChatMessage = () => {
+      // Call backend API to design agent from prompt
+      const designAgentFromPrompt = async (prompt, tools = [], vars = []) => {
+        try {
+          const response = await fetch(`${API_BASE_URL}/agents/design/prompt`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              prompt: prompt,
+              model: model,
+              icon: '🤖',
+              tools: tools,
+              variables: vars
+            })
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Failed to design agent');
+          }
+
+          return await response.json();
+        } catch (error) {
+          console.error('API Error:', error);
+          throw error;
+        }
+      };
+
+      // Call backend API to register agent
+      const registerAgentToBackend = async (agentData) => {
+        try {
+          const response = await fetch(`${API_BASE_URL}/agents/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(agentData)
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Failed to register agent');
+          }
+
+          return await response.json();
+        } catch (error) {
+          console.error('API Error:', error);
+          throw error;
+        }
+      };
+
+      const sendChatMessage = async () => {
         if (!currentInput.trim() && conversationStep !== 'initial') return;
 
         const messageToSend = currentInput.trim() || userPrompt.trim();
@@ -930,87 +993,153 @@
         setUserPrompt('');
         setIsGenerating(true);
 
-        setTimeout(() => {
+        try {
           let assistantResponse = '';
-          
+
           if (conversationStep === 'initial') {
-            // First message - acknowledge and create agent
-            const prompt = messageToSend.toLowerCase();
-            
-            // Generate agent details
-            let generatedName = 'New Agent';
-            let generatedRole = 'AI Assistant';
-            let generatedGoal = messageToSend.trim();
-            let generatedBackstory = 'An AI agent designed to help with specific tasks.';
+            // First message - call backend API to design agent
+            try {
+              const result = await designAgentFromPrompt(messageToSend, selectedTools, variables);
+              const agent = result.agent;
 
-            if (prompt.includes('research') || prompt.includes('find') || prompt.includes('stock') || prompt.includes('analyze')) {
-              generatedName = 'Stock Research Advisor';
-              generatedRole = 'Stock Market Research Analyst';
-              generatedBackstory = 'Expert at researching stocks, performing technical and fundamental analysis.';
-            } else if (prompt.includes('write') || prompt.includes('content')) {
-              generatedName = 'Content Writer';
-              generatedRole = 'Content Creation Specialist';
-              generatedBackstory = 'Skilled writer with expertise in creating engaging content.';
-            } else if (prompt.includes('data')) {
-              generatedName = 'Data Analyst';
-              generatedRole = 'Data Analysis Expert';
-              generatedBackstory = 'Specialist in analyzing data and extracting actionable insights.';
-            } else if (prompt.includes('code') || prompt.includes('develop')) {
-              generatedName = 'Code Assistant';
-              generatedRole = 'Software Development Expert';
-              generatedBackstory = 'Experienced programmer skilled in various programming languages.';
-            } else if (prompt.includes('customer') || prompt.includes('support')) {
-              generatedName = 'Customer Support Agent';
-              generatedRole = 'Customer Service Specialist';
-              generatedBackstory = 'Dedicated to providing excellent customer support.';
+              // Set agent fields from API response
+              setAgentName(agent.name || 'New Agent');
+              setAgentRole(agent.role || 'AI Assistant');
+              setAgentGoal(agent.prompt || agent.description || messageToSend.trim());
+              setAgentBackstory(agent.description || 'An AI agent designed to help with specific tasks.');
+              setSuggestedName(agent.name || 'New Agent');
+
+              // Set AI settings from LLM recommendations
+              if (agent.settings) {
+                if (agent.settings.temperature !== undefined) {
+                  setTemperature(agent.settings.temperature);
+                }
+                if (agent.settings.max_token !== undefined) {
+                  setMaxTokens(agent.settings.max_token);
+                }
+                if (agent.settings.top_p !== undefined) {
+                  setTopP(agent.settings.top_p);
+                }
+                if (agent.settings.max_iteration !== undefined) {
+                  setMaxIterations(agent.settings.max_iteration);
+                }
+              }
+
+              // Set variables if returned
+              if (agent.variables && Array.isArray(agent.variables)) {
+                setVariables(agent.variables);
+              }
+
+              // Set tools if returned
+              if (agent.tools && Array.isArray(agent.tools)) {
+                setSelectedTools(agent.tools);
+              }
+
+              assistantResponse = `Your agent "${agent.name}" has been designed!\n\nRole: ${agent.role}\nDescription: ${agent.description || 'AI agent designed for your specific needs.'}\n\nNext, let's confirm the name. I suggest: ${agent.name}.\n\nWould you like to use this name, or do you have another name in mind?`;
+              setConversationStep('name');
+            } catch (apiError) {
+              // Fallback to local generation if API fails
+              console.warn('Backend API unavailable, using local generation:', apiError.message);
+
+              const prompt = messageToSend.toLowerCase();
+              let generatedName = 'New Agent';
+              let generatedRole = 'AI Assistant';
+              let generatedGoal = messageToSend.trim();
+              let generatedBackstory = 'An AI agent designed to help with specific tasks.';
+
+              if (prompt.includes('research') || prompt.includes('find') || prompt.includes('stock') || prompt.includes('analyze')) {
+                generatedName = 'Stock Research Advisor';
+                generatedRole = 'Stock Market Research Analyst';
+                generatedBackstory = 'Expert at researching stocks, performing technical and fundamental analysis.';
+              } else if (prompt.includes('write') || prompt.includes('content')) {
+                generatedName = 'Content Writer';
+                generatedRole = 'Content Creation Specialist';
+                generatedBackstory = 'Skilled writer with expertise in creating engaging content.';
+              } else if (prompt.includes('data')) {
+                generatedName = 'Data Analyst';
+                generatedRole = 'Data Analysis Expert';
+                generatedBackstory = 'Specialist in analyzing data and extracting actionable insights.';
+              } else if (prompt.includes('code') || prompt.includes('develop')) {
+                generatedName = 'Code Assistant';
+                generatedRole = 'Software Development Expert';
+                generatedBackstory = 'Experienced programmer skilled in various programming languages.';
+              } else if (prompt.includes('customer') || prompt.includes('support')) {
+                generatedName = 'Customer Support Agent';
+                generatedRole = 'Customer Service Specialist';
+                generatedBackstory = 'Dedicated to providing excellent customer support.';
+              }
+
+              setAgentName(generatedName);
+              setAgentRole(generatedRole);
+              setAgentGoal(generatedGoal);
+              setAgentBackstory(generatedBackstory);
+              setSuggestedName(generatedName);
+
+              assistantResponse = `Your agent has been set up (offline mode). I suggest the name: ${generatedName}.\n\nWould you like to use this name, or do you have another name in mind?`;
+              setConversationStep('name');
             }
-
-            // Set agent fields
-            setAgentName(generatedName);
-            setAgentRole(generatedRole);
-            setAgentGoal(generatedGoal);
-            setAgentBackstory(generatedBackstory);
-            setSuggestedName(generatedName);
-
-            assistantResponse = `Your agent has been set up to ${generatedGoal.toLowerCase()}. The agent will always base its suggestions on reputable, up-to-date sources and will explain the reasoning behind each recommendation. It will not provide personalized financial advice or guarantee investment outcomes.\n\nNext, let's choose a name for your agent. I suggest the name: ${generatedName}.\n\nWould you like to use this name, or do you have another name in mind? Please confirm your choice.`;
-            
-            setConversationStep('name');
           } else if (conversationStep === 'name') {
             // Handle name confirmation
-            const input = messageToSend.toLowerCase();
-            
-            if (input.includes('yes') || input.includes('sure') || input.includes('ok') || input.includes('confirm') || input === suggestedName.toLowerCase()) {
-              // Keep suggested name
-              assistantResponse = `The agent's name is now set to ${suggestedName}.\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
+            const input = messageToSend.toLowerCase().trim();
+
+            // Check if user is confirming the suggested name
+            const confirmationPhrases = [
+              'yes', 'sure', 'ok', 'okay', 'confirm', 'fine', 'good', 'great', 'perfect',
+              'looks good', 'sounds good', 'that works', 'thats fine', "that's fine",
+              'this is fine', 'this name is fine', 'keep it', 'use it', 'use this',
+              'go ahead', 'proceed', 'correct', 'right', 'yep', 'yeah', 'yup',
+              'agreed', 'accept', 'approved', 'love it', 'like it', 'nice'
+            ];
+
+            const isConfirmation = confirmationPhrases.some(phrase =>
+              input === phrase || input.includes(phrase)
+            );
+
+            if (isConfirmation) {
+              assistantResponse = `The agent's name is set to "${suggestedName}".\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
               setConversationStep('refine');
             } else {
-              // User provided custom name
+              // User provided a new name
               setAgentName(messageToSend.trim());
-              assistantResponse = `The agent's name is now set to ${messageToSend.trim()}.\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
+              assistantResponse = `The agent's name is now set to "${messageToSend.trim()}".\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
               setConversationStep('refine');
             }
           } else if (conversationStep === 'refine') {
             // Handle refinements
-            const refinement = messageToSend.toLowerCase();
-            
-            if (refinement.includes('no') || refinement.includes('looks good') || refinement.includes('done') || refinement.includes('finish')) {
+            const refinement = messageToSend.toLowerCase().trim();
+
+            // Check if user is saying they don't want any changes
+            const noChangePhrases = [
+              'no', 'nope', 'none', 'nothing', 'looks good', 'done', 'finish', 'finalize',
+              'that\'s it', 'thats it', 'good to go', 'ready', 'complete', 'skip',
+              'no changes', 'no more', 'all good', 'perfect', 'fine', 'ok', 'okay',
+              'no thanks', 'no thank you', 'not now', 'later', 'move on', 'proceed'
+            ];
+
+            const isNoChange = noChangePhrases.some(phrase =>
+              refinement === phrase || refinement.startsWith(phrase + ' ') || refinement.startsWith(phrase + ',')
+            );
+
+            if (isNoChange) {
               assistantResponse = `Great! Your agent is ready. You can now:\n\n• Click "Configure" tab to add tools, variables, and fine-tune settings\n• Or click "💾 Save Agent" to save as-is and start using it`;
               setConversationStep('done');
             } else {
-              // Add refinement to goal or backstory
               const currentGoal = agentGoal;
               setAgentGoal(`${currentGoal}. ${messageToSend.trim()}`);
               assistantResponse = `I've updated the agent's instructions to include: "${messageToSend.trim()}"\n\nWould you like to add any other requirements, or are we ready to finalize?`;
             }
           } else {
-            // Done state
             assistantResponse = `Your agent is ready! Switch to the "Configure" tab to add tools and customize further, or save the agent to start using it.`;
           }
 
           const botMessage = { role: 'assistant', content: assistantResponse };
           setChatMessages([...updatedMessages, botMessage]);
+        } catch (error) {
+          const errorMessage = { role: 'assistant', content: `Error: ${error.message}. Please try again.` };
+          setChatMessages([...updatedMessages, errorMessage]);
+        } finally {
           setIsGenerating(false);
-        }, 1000);
+        }
       };
 
       const useTemplate = (template) => {
@@ -1036,7 +1165,24 @@
         setMaxIterations(5);
         setSelectedTools([]);
         setToolConfigs({});
-        setVariables({});
+        setVariables([]);
+      };
+
+      // Helper to convert old object format to new array format
+      const convertVariablesToArray = (vars) => {
+        if (!vars) return [];
+        if (Array.isArray(vars)) return vars;
+        // Convert object format {name: value} to array [{name, type, defaultValue}]
+        const result = [];
+        const keys = Object.keys(vars);
+        for (let i = 0; i < keys.length; i++) {
+          result.push({
+            name: keys[i],
+            type: 'string',
+            defaultValue: vars[keys[i]] || ''
+          });
+        }
+        return result;
       };
 
       const loadAgent = (agent) => {
@@ -1053,11 +1199,11 @@
         setMaxIterations(agent.maxIterations);
         setSelectedTools(agent.tools || []);
         setToolConfigs(agent.toolConfigs || {});
-        setVariables(agent.variables || {});
+        setVariables(convertVariablesToArray(agent.variables));
         setIsEditing(true);
       };
 
-      const saveAgent = () => {
+      const saveAgent = async () => {
         if (!agentName.trim() || !agentRole.trim() || !agentGoal.trim()) {
           showNotification('Please fill in required fields: Name, Role, Goal', 'error');
           return;
@@ -1081,6 +1227,40 @@
           createdAt: selectedAgent ? selectedAgent.createdAt : new Date().toISOString(),
           updatedAt: new Date().toISOString()
         };
+
+        // Try to register/update agent in backend
+        try {
+          const backendPayload = {
+            agent_id: agentData.id,
+            name: agentData.name,
+            role: agentData.role,
+            description: agentData.backstory,
+            prompt: agentData.goal,
+            icon: '🤖',
+            model: agentData.model,
+            tools: agentData.tools,
+            variables: agentData.variables,
+            settings: {
+              temperature: agentData.temperature,
+              max_token: agentData.maxTokens,
+              top_p: agentData.topP,
+              max_iteration: agentData.maxIterations
+            },
+            permissions: {
+              can_call_agents: agentData.allowDelegation,
+              allowed_agents: []
+            },
+            metadata: {
+              created_at: agentData.createdAt,
+              updated_at: agentData.updatedAt
+            }
+          };
+
+          await registerAgentToBackend(backendPayload);
+          console.log('Agent registered to backend successfully');
+        } catch (error) {
+          console.warn('Backend registration failed (continuing with local save):', error.message);
+        }
 
         if (selectedAgent) {
           // Update existing - Edge-safe
@@ -1158,7 +1338,7 @@
           maxIterations: agent.maxIterations,
           tools: agent.tools || [],
           toolConfigs: agent.toolConfigs || {},
-          variables: agent.variables || {},
+          variables: convertVariablesToArray(agent.variables),
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()
         };
@@ -1214,19 +1394,31 @@
                 throw new Error('Invalid agent format: missing required fields');
               }
 
-              // Handle variables conversion (Edge-safe)
-              let importedVars = {};
+              // Handle variables conversion (Edge-safe) - convert to array of objects
+              let importedVars = [];
               if (agentData.variables) {
                 if (Array.isArray(agentData.variables)) {
-                  // Convert array [{name, value}] to object {name: value}
+                  // Already array format - ensure proper structure
                   for (let i = 0; i < agentData.variables.length; i++) {
                     const v = agentData.variables[i];
                     if (v.name) {
-                      importedVars[v.name] = v.value || '';
+                      importedVars.push({
+                        name: v.name,
+                        type: v.type || 'string',
+                        defaultValue: v.defaultValue !== undefined ? v.defaultValue : (v.value || '')
+                      });
                     }
                   }
                 } else if (typeof agentData.variables === 'object') {
-                  importedVars = agentData.variables;
+                  // Convert object format {name: value} to array
+                  const keys = Object.keys(agentData.variables);
+                  for (let i = 0; i < keys.length; i++) {
+                    importedVars.push({
+                      name: keys[i],
+                      type: 'string',
+                      defaultValue: agentData.variables[keys[i]] || ''
+                    });
+                  }
                 }
               }
 
@@ -1346,26 +1538,24 @@
       const addVariable = () => {
         const name = prompt('Enter variable name:');
         if (name && name.trim()) {
-          setVariables({
+          setVariables([
             ...variables,
-            [name.trim()]: ''
-          });
+            { name: name.trim(), type: 'string', defaultValue: '' }
+          ]);
         }
       };
 
-      const updateVariable = (name, value) => {
-        setVariables({
-          ...variables,
-          [name]: value
-        });
+      const updateVariable = (index, field, value) => {
+        const newVars = [...variables];
+        newVars[index] = { ...newVars[index], [field]: value };
+        setVariables(newVars);
       };
 
-      const removeVariable = (name) => {
-        const newVars = {};
-        const keys = Object.keys(variables);
-        for (let i = 0; i < keys.length; i++) {
-          if (keys[i] !== name) {
-            newVars[keys[i]] = variables[keys[i]];
+      const removeVariable = (index) => {
+        const newVars = [];
+        for (let i = 0; i < variables.length; i++) {
+          if (i !== index) {
+            newVars.push(variables[i]);
           }
         }
         setVariables(newVars);
@@ -1449,8 +1639,8 @@
                         {agent.tools && agent.tools.length > 0 && (
                           <span>🛠️ {agent.tools.length}</span>
                         )}
-                        {agent.variables && Object.keys(agent.variables).length > 0 && (
-                          <span>📊 {Object.keys(agent.variables).length}</span>
+                        {agent.variables && agent.variables.length > 0 && (
+                          <span>📊 {agent.variables.length}</span>
                         )}
                       </div>
                     </div>
@@ -1944,21 +2134,36 @@
                       Define variables/context that can be passed to this agent
                     </div>
 
-                    {Object.keys(variables).length > 0 ? (
+                    {variables.length > 0 ? (
                       <div className="variable-list">
-                        {Object.entries(variables).map(([name, value]) => (
-                          <div key={name} className="variable-item">
-                            <div className="variable-name">{name}</div>
+                        {variables.map((variable, index) => (
+                          <div key={index} className="variable-item" style={{ flexWrap: 'wrap', gap: '8px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: '1', minWidth: '200px' }}>
+                              <div className="variable-name" style={{ minWidth: '120px' }}>{variable.name}</div>
+                              <select
+                                className="form-select"
+                                style={{ width: '100px', padding: '6px 8px', fontSize: '12px' }}
+                                value={variable.type}
+                                onChange={(e) => updateVariable(index, 'type', e.target.value)}
+                              >
+                                <option value="string">String</option>
+                                <option value="number">Number</option>
+                                <option value="boolean">Boolean</option>
+                                <option value="object">Object</option>
+                                <option value="array">Array</option>
+                              </select>
+                            </div>
                             <input
                               type="text"
                               className="variable-input"
-                              value={value}
-                              onChange={(e) => updateVariable(name, e.target.value)}
+                              style={{ flex: '1', minWidth: '150px' }}
+                              value={variable.defaultValue}
+                              onChange={(e) => updateVariable(index, 'defaultValue', e.target.value)}
                               placeholder="Default value"
                             />
                             <button
                               className="variable-delete"
-                              onClick={() => removeVariable(name)}
+                              onClick={() => removeVariable(index)}
                             >
                               ×
                             </button>

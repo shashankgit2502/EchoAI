@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_01683924a5c5427e9907b6b190593c0f",
+  "name": "Validator",
+  "role": "Validate the optimized code",
+  "description": "Ensures the optimized code meets the original requirements and performs as expected by running validation tests.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "optimized_code",
+    "test_cases"
+  ],
+  "output_schema": [
+    "validation_report",
+    "final_code"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:23:56.801635",
+    "registered_at": "2026-01-21T03:23:56.874235"
+  }
+}

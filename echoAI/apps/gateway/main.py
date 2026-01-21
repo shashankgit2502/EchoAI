@@ -1,5 +1,6 @@
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from echolib.config import settings
 
 # Import containers to register providers
@@ -25,6 +26,15 @@ from apps.connector.routes import router as conn_router
 from apps.chat.routes import router as chat_router
 
 app = FastAPI(title=f"{settings.app_name} (Gateway)")
+
+# CORS middleware - allow all origins for development
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get('/healthz')
 async def healthz():

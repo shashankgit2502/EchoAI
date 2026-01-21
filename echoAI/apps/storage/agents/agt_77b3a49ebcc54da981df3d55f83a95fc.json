@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_77b3a49ebcc54da981df3d55f83a95fc",
+  "name": "CodeWriter",
+  "role": "Code Implementation",
+  "description": "Writes and generates code based on given requirements or specifications.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "requirements",
+    "specifications"
+  ],
+  "output_schema": [
+    "code",
+    "implementation_notes"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-20T18:06:06.394197",
+    "registered_at": "2026-01-20T18:06:06.394197"
+  }
+}

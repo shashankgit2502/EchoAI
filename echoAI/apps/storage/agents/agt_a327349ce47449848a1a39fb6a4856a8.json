@@ -1,0 +1,30 @@
+{
+  "agent_id": "agt_a327349ce47449848a1a39fb6a4856a8",
+  "name": "Executor",
+  "role": "Execution flow manager",
+  "description": "Executes the optimized code in the target environment and monitors runtime behavior.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "optimized_code",
+    "execution_environment",
+    "performance_metrics"
+  ],
+  "output_schema": [
+    "execution_logs",
+    "runtime_metrics"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:12:45.338093",
+    "registered_at": "2026-01-21T03:12:45.414638"
+  }
+}

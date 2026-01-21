@@ -1,0 +1,35 @@
+{
+  "agent_id": "agt_2cf7b46d68054607a23e69ff9fc6b7ab",
+  "name": "Custom Agent",
+  "icon": "\ud83e\udd16",
+  "role": "Processing",
+  "description": "Create me an agent that performs coding in python review that code and if required give me the better optimised version.",
+  "prompt": "Create me an agent that performs coding in python review that code and if required give me the better optimised version.",
+  "model": "gpt-4",
+  "tools": [],
+  "variables": [],
+  "settings": {
+    "temperature": 0.7,
+    "max_token": 2000,
+    "top_p": 0.9,
+    "max_iteration": 5
+  },
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false,
+    "allowed_agents": []
+  },
+  "metadata": {
+    "created_by": "agent_designer",
+    "created_at": "2026-01-20T10:21:34.383496",
+    "tags": [
+      "auto-generated"
+    ],
+    "registered_at": "2026-01-20T10:21:34.383496"
+  }
+}

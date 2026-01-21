@@ -1,0 +1,30 @@
+{
+  "agent_id": "agt_d110e6d3ad3246df8956850d667e6463",
+  "name": "Code Parser",
+  "role": "Parse and validate input code",
+  "description": "Analyzes the input code for syntax errors, dependencies, and structure.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "raw_code",
+    "language"
+  ],
+  "output_schema": [
+    "parsed_code",
+    "dependencies",
+    "errors"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:19:08.260640",
+    "registered_at": "2026-01-21T03:19:08.261644"
+  }
+}

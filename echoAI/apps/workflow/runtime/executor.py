@@ -83,7 +83,15 @@ class WorkflowExecutor:
         agent_defs = {}
         for agent_id in workflow.get("agents", []):
             try:
-                agent_defs[agent_id] = self.agent_registry.get_agent(agent_id)
+                agent = self.agent_registry.get_agent(agent_id)
+                if agent is None:
+                    # Agent not in cache - try reloading from disk
+                    print(f"Warning: Agent '{agent_id}' not in cache, reloading registry...")
+                    self.agent_registry._load_all()  # Reload all agents from disk
+                    agent = self.agent_registry.get_agent(agent_id)
+                    if agent is None:
+                        raise RuntimeError(f"Agent '{agent_id}' not found in registry after reload")
+                agent_defs[agent_id] = agent
             except FileNotFoundError:
                 raise RuntimeError(f"Agent '{agent_id}' not found in registry")
 
@@ -95,6 +103,10 @@ class WorkflowExecutor:
 
         try:
             # Prepare initial state with workflow and run IDs
+            # Ensure input_payload is a dict (not None)
+            if input_payload is None:
+                input_payload = {}
+
             initial_state = {
                 **input_payload,
                 "messages": [],

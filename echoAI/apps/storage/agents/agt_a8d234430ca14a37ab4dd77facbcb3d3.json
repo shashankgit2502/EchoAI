@@ -1,0 +1,30 @@
+{
+  "agent_id": "agt_a8d234430ca14a37ab4dd77facbcb3d3",
+  "name": "CodeOptimizer",
+  "role": "Optimize the code based on analysis",
+  "description": "Applies optimization techniques to improve code performance and efficiency.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "code",
+    "optimization_suggestions",
+    "bottlenecks"
+  ],
+  "output_schema": [
+    "optimized_code",
+    "optimization_summary"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:16:40.487057",
+    "registered_at": "2026-01-21T03:16:40.535509"
+  }
+}

@@ -1,0 +1,1 @@
+console.log(lines.slice(start,end).map((l,i)= ${l}`).join('\\n'));) 

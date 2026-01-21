@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_16e20d14e2ce4b8cae98fa157a30b6d8",
+  "name": "Code Analyzer",
+  "role": "Analyze the input code for syntax, structure, and potential issues",
+  "description": "Performs static analysis on the provided code to identify syntax errors, inefficiencies, and areas for improvement.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "code_content",
+    "language"
+  ],
+  "output_schema": [
+    "analysis_report",
+    "suggested_improvements"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:23:56.801635",
+    "registered_at": "2026-01-21T03:23:56.801635"
+  }
+}

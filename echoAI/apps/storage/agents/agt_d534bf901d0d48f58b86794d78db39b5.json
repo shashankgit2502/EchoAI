@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_d534bf901d0d48f58b86794d78db39b5",
+  "name": "CodeTester",
+  "role": "Testing and Optimization",
+  "description": "Tests the code for functionality and performance, and suggests optimizations if needed.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "code",
+    "review_report"
+  ],
+  "output_schema": [
+    "test_results",
+    "optimization_suggestions"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-20T18:06:06.394197",
+    "registered_at": "2026-01-20T18:06:06.442670"
+  }
+}

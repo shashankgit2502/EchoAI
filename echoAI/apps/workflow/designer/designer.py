@@ -1,6 +1,16 @@
 """
 LLM-based workflow designer.
 Analyzes user prompts and generates workflow + agent definitions using real LLM.
+
+LLM Provider Configuration:
+---------------------------
+This module supports multiple LLM providers. Configure via .env file:
+- OPTION 1: Ollama (On-Premise) - Set USE_OLLAMA=true
+- OPTION 2: OpenRouter (Current) - Set USE_OPENROUTER=true
+- OPTION 3: Azure OpenAI - Set USE_AZURE=true
+- OPTION 4: OpenAI Direct - Set USE_OPENAI=true
+
+See .env file for detailed configuration options.
 """
 import json
 import os
@@ -30,36 +40,106 @@ class WorkflowDesigner:
         self.agent_registry = agent_registry
 
     def _get_openai_client(self):
-        """Lazy initialization of ChatOpenAI client (or Ollama)."""
+        """
+        Get LLM client based on environment configuration.
+
+        Provider Priority (based on .env settings):
+        1. USE_AZURE=true -> Azure OpenAI
+        2. USE_OPENROUTER=true -> OpenRouter (current default)
+        3. USE_OLLAMA=true -> Ollama (on-premise)
+        4. USE_OPENAI=true -> OpenAI Direct
+        """
         if self._openai_client is None:
             try:
                 from langchain_openai import ChatOpenAI
+                # For Azure deployment - uncomment the line below
+                # from langchain_openai import AzureChatOpenAI
 
-                # Check if using Ollama
-                use_ollama = os.getenv("USE_OLLAMA", "true").lower() == "true"
+                # =================================================================
+                # OPTION 1: AZURE OPENAI (For Azure Deployment)
+                # =================================================================
+                # Uncomment this block when deploying to Azure
+                # -----------------------------------------------------------------
+                # if os.getenv("USE_AZURE", "false").lower() == "true":
+                #     self._openai_client = AzureChatOpenAI(
+                #         azure_deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
+                #         api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview"),
+                #         azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+                #         api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+                #         temperature=0.3,
+                #         max_tokens=4000
+                #     )
+                #     return self._openai_client
 
-                if use_ollama:
-                    ollama_url = os.getenv("OLLAMA_BASE_URL", "http://10.188.100.131:8004/v1")
-                    model = os.getenv("OLLAMA_MODEL", "mistral-nemo:12b-instruct-2407-fp16")
-                    self._openai_client = ChatOpenAI(
-                        base_url=ollama_url,
-                        api_key="ollama",
-                        model=model,
-                        temperature=0.3
+                # =================================================================
+                # OPTION 2: OPENROUTER (Current - For Development)
+                # =================================================================
+                # Using OpenRouter with free tier model - CURRENTLY ACTIVE
+                # -----------------------------------------------------------------
+                if os.getenv("USE_OPENROUTER", "true").lower() == "true":
+                    openrouter_key = os.getenv(
+                        "OPENROUTER_API_KEY",
+                        "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"
                     )
-                else:
+                    openrouter_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+                    openrouter_model = os.getenv("OPENROUTER_MODEL", "mistralai/devstral-2512:free")
                     self._openai_client = ChatOpenAI(
-                        api_key=self.api_key,
-                        model="gpt-4o-mini",
-                        temperature=0.3
+                        base_url=openrouter_url,
+                        api_key=openrouter_key,
+                        model=openrouter_model,
+                        temperature=0.3,
+                        max_tokens=4000
                     )
+                    return self._openai_client
+
+                # =================================================================
+                # OPTION 3: OLLAMA (On-Premise/Local)
+                # =================================================================
+                # Uncomment this block for local Ollama deployment
+                # -----------------------------------------------------------------
+                # if os.getenv("USE_OLLAMA", "false").lower() == "true":
+                #     ollama_url = os.getenv("OLLAMA_BASE_URL", "http://10.188.100.131:8004/v1")
+                #     ollama_model = os.getenv("OLLAMA_MODEL", "mistral-nemo:12b-instruct-2407-fp16")
+                #     self._openai_client = ChatOpenAI(
+                #         base_url=ollama_url,
+                #         api_key="ollama",
+                #         model=ollama_model,
+                #         temperature=0.3,
+                #         max_tokens=4000
+                #     )
+                #     return self._openai_client
+
+                # =================================================================
+                # OPTION 4: OPENAI DIRECT
+                # =================================================================
+                # Uncomment this block for direct OpenAI API
+                # -----------------------------------------------------------------
+                # if os.getenv("USE_OPENAI", "false").lower() == "true":
+                #     self._openai_client = ChatOpenAI(
+                #         api_key=os.getenv("OPENAI_API_KEY", self.api_key),
+                #         model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
+                #         temperature=0.3,
+                #         max_tokens=4000
+                #     )
+                #     return self._openai_client
+
+                # =================================================================
+                # FALLBACK: OpenRouter (always available)
+                # =================================================================
+                self._openai_client = ChatOpenAI(
+                    base_url="https://openrouter.ai/api/v1",
+                    api_key="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",
+                    model="mistralai/devstral-2512:free",
+                    temperature=0.3,
+                    max_tokens=4000
+                )
 
             except ImportError:
                 raise ImportError(
                     "langchain-openai not installed. Run: pip install langchain-openai"
                 )
             except Exception as e:
-                raise RuntimeError(f"Failed to initialize ChatOpenAI client: {e}")
+                raise RuntimeError(f"Failed to initialize LLM client: {e}")
         return self._openai_client
 
     def design_from_prompt(
@@ -79,20 +159,16 @@ class WorkflowDesigner:
         """
         if default_llm is None:
             default_llm = {
-                "provider": "openai",
-                "model": "gpt-4o-mini",
+                "provider": "openrouter",
+                "model": "mistralai/devstral-2512:free",
                 "temperature": 0.2
             }
 
-        # Use LLM to analyze prompt if API key available
-        if self.api_key:
-            try:
-                return self._design_with_llm(user_prompt, default_llm)
-            except Exception as e:
-                print(f"LLM design failed, falling back to heuristics: {e}")
-                return self._design_with_heuristics(user_prompt, default_llm)
-        else:
-            # Fallback to heuristics if no API key
+        # Always try LLM first (OpenRouter is available)
+        try:
+            return self._design_with_llm(user_prompt, default_llm)
+        except Exception as e:
+            print(f"LLM design failed, falling back to heuristics: {e}")
             return self._design_with_heuristics(user_prompt, default_llm)
 
     def _design_with_llm(
@@ -141,7 +217,15 @@ Rules:
         response = llm.invoke(full_prompt)
 
         # Parse LLM response
-        llm_output = json.loads(response.content)
+        content = response.content if hasattr(response, 'content') else str(response)
+
+        # Extract JSON from response (handle markdown code blocks)
+        if "```json" in content:
+            content = content.split("```json")[1].split("```")[0].strip()
+        elif "```" in content:
+            content = content.split("```")[1].split("```")[0].strip()
+
+        llm_output = json.loads(content)
 
         # Build workflow from LLM design
         return self._build_workflow_from_llm_response(

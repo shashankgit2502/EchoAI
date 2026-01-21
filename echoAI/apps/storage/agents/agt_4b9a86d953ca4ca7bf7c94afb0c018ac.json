@@ -1,0 +1,30 @@
+{
+  "agent_id": "agt_4b9a86d953ca4ca7bf7c94afb0c018ac",
+  "name": "Validator",
+  "role": "Quality assurance",
+  "description": "Validates the optimized code for correctness, performance, and adherence to best practices.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "optimized_code",
+    "changes_summary",
+    "test_cases"
+  ],
+  "output_schema": [
+    "validation_report",
+    "performance_metrics"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:12:45.338093",
+    "registered_at": "2026-01-21T03:12:45.384540"
+  }
+}

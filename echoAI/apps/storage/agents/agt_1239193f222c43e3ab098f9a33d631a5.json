@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_1239193f222c43e3ab098f9a33d631a5",
+  "name": "CodeFormatter",
+  "role": "Formats the code according to standards",
+  "description": "Applies consistent formatting rules to the code to improve readability and maintainability.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "code_content",
+    "formatting_rules"
+  ],
+  "output_schema": [
+    "formatted_code"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-20T18:11:55.582223",
+    "registered_at": "2026-01-20T18:11:55.646016"
+  }
+}

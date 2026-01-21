@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_e2a0165689dd43ae9014d88fcf394053",
+  "name": "PerformanceAnalyzer",
+  "role": "Analyze execution performance",
+  "description": "Evaluates runtime, memory usage, and bottlenecks from execution logs.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "execution_logs",
+    "performance_metrics"
+  ],
+  "output_schema": [
+    "bottlenecks",
+    "optimization_suggestions"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:26:36.656924",
+    "registered_at": "2026-01-21T03:26:36.701476"
+  }
+}

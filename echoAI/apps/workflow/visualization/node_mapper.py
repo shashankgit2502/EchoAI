@@ -105,6 +105,7 @@ class NodeMapper:
         for node in canvas_nodes:
             agent_id = new_id("agt_")
             agent = self._convert_node_to_agent(node)
+            agent["agent_id"] = agent_id  # Set the generated agent_id
             agents_dict[agent_id] = agent
             agent_ids.append(agent_id)
             id_mapping[node["id"]] = agent_id
@@ -112,12 +113,14 @@ class NodeMapper:
         # Convert connections (preserve for arrow rendering)
         backend_connections = []
         for conn in connections:
-            backend_connections.append({
-                "id": conn.get("id", new_id("conn_")),
+            connection = {
                 "from": id_mapping[conn["from"]],
-                "to": id_mapping[conn["to"]],
-                "condition": conn.get("condition")  # for Conditional nodes
-            })
+                "to": id_mapping[conn["to"]]
+            }
+            # Only add condition if it exists (optional field, must be string if present, not None)
+            if conn.get("condition"):
+                connection["condition"] = conn.get("condition")
+            backend_connections.append(connection)
 
         # Infer execution model
         execution_model = self._infer_execution_model(canvas_nodes, connections)
@@ -128,10 +131,10 @@ class NodeMapper:
         # Extract HITL configuration
         hitl_config = self._extract_hitl(canvas_nodes, id_mapping)
 
-        # Build hierarchy if hierarchical
-        hierarchy = None
+        # Build hierarchy if hierarchical (omit if not hierarchical)
+        hierarchy_config = {}
         if execution_model == "hierarchical":
-            hierarchy = self._build_hierarchy(canvas_nodes, connections, id_mapping)
+            hierarchy_config = self._build_hierarchy(canvas_nodes, connections, id_mapping)
 
         # Build workflow
         workflow = {
@@ -143,9 +146,7 @@ class NodeMapper:
             "execution_model": execution_model,
             "agents": agent_ids,
             "connections": backend_connections,
-            "hierarchy": hierarchy,
             "state_schema": state_schema,
-            "human_in_loop": hitl_config,
             "metadata": {
                 "created_by": "workflow_builder",
                 "created_at": datetime.utcnow().isoformat(),
@@ -155,6 +156,12 @@ class NodeMapper:
                 }
             }
         }
+
+        # Add optional fields only if they have content (must be objects, not None)
+        if hierarchy_config:
+            workflow["hierarchy"] = hierarchy_config
+        if hitl_config and hitl_config.get("enabled"):
+            workflow["human_in_loop"] = hitl_config
 
         return workflow, agents_dict
 
@@ -208,12 +215,14 @@ class NodeMapper:
         node_type = node.get("type", "Agent")
         config = node.get("config", {})
 
-        # Base agent structure
+        # Base agent structure with all required fields
         agent = {
             "agent_id": "",  # Will be set by caller
             "name": node.get("name", node_type),
             "role": self._get_node_role(node_type),
             "description": f"{node_type} node",
+            "llm": self._extract_llm_config(config),  # Required field for all agents (uses defaults if empty)
+            "tools": [],  # Required field for all agents
             "input_schema": [],
             "output_schema": [],
             "constraints": {

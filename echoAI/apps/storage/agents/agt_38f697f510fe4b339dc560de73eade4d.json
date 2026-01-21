@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_38f697f510fe4b339dc560de73eade4d",
+  "name": "EditorManager",
+  "role": "Master agent coordinating the workflow",
+  "description": "Manages the overall workflow, delegates tasks to sub-agents, and ensures smooth operation of the coding editor.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "user_input",
+    "file_data"
+  ],
+  "output_schema": [
+    "processed_output",
+    "error_logs"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": true
+  },
+  "metadata": {
+    "created_at": "2026-01-20T18:11:55.582223",
+    "registered_at": "2026-01-20T18:11:55.582223"
+  }
+}

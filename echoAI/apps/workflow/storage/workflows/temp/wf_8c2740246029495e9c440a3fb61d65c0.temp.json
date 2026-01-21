@@ -1,0 +1,51 @@
+{
+  "workflow_id": "wf_8c2740246029495e9c440a3fb61d65c0",
+  "name": "Code Execution and Optimization",
+  "description": "Created from canvas on 2026-01-21",
+  "status": "testing",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_e9490aa14f2f4a47acecc03d3c092b66",
+    "agt_5f07cceefab94883b08216710687bbff",
+    "agt_b24318c6943b4b4aa58121a2da22d439",
+    "agt_9e8f9963f2214fe1b250e112142a03da",
+    "agt_1e3f57e192554faa902ccb9bc20e309d",
+    "agt_ce74f99413c944008c07e6b770d15dfc"
+  ],
+  "connections": [
+    {
+      "from": "agt_e9490aa14f2f4a47acecc03d3c092b66",
+      "to": "agt_5f07cceefab94883b08216710687bbff"
+    },
+    {
+      "from": "agt_5f07cceefab94883b08216710687bbff",
+      "to": "agt_b24318c6943b4b4aa58121a2da22d439"
+    },
+    {
+      "from": "agt_b24318c6943b4b4aa58121a2da22d439",
+      "to": "agt_9e8f9963f2214fe1b250e112142a03da"
+    },
+    {
+      "from": "agt_9e8f9963f2214fe1b250e112142a03da",
+      "to": "agt_1e3f57e192554faa902ccb9bc20e309d"
+    },
+    {
+      "from": "agt_1e3f57e192554faa902ccb9bc20e309d",
+      "to": "agt_ce74f99413c944008c07e6b770d15dfc"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-21T03:31:37.531703",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    },
+    "is_temp": true
+  }
+}

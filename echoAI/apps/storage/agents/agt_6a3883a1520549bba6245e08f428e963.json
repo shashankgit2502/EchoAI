@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_6a3883a1520549bba6245e08f428e963",
+  "name": "CodeAnalyzer",
+  "role": "Analyze code for optimization opportunities",
+  "description": "Reviews the code and execution results to identify inefficiencies and potential improvements.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "code",
+    "execution_result",
+    "errors",
+    "execution_time",
+    "memory_usage"
+  ],
+  "output_schema": [
+    "optimization_suggestions",
+    "bottlenecks"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:16:40.487057",
+    "registered_at": "2026-01-21T03:16:40.504070"
+  }
+}

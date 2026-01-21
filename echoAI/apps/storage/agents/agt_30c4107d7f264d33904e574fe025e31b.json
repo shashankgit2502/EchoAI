@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_30c4107d7f264d33904e574fe025e31b",
+  "name": "Code Analyzer",
+  "role": "Analyze execution results",
+  "description": "Evaluates the execution output and performance metrics to identify optimization opportunities.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "execution_output",
+    "performance_metrics"
+  ],
+  "output_schema": [
+    "optimization_suggestions",
+    "bottlenecks"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:19:08.260640",
+    "registered_at": "2026-01-21T03:19:08.309839"
+  }
+}

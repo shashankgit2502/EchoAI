@@ -1,12 +1,32 @@
 {
   "models": [
     {
+      "id": "openrouter-devstral",
+      "name": "Devstral (OpenRouter Free)",
+      "provider": "openrouter",
+      "base_url": "https://openrouter.ai/api/v1",
+      "api_key_env": "OPENROUTER_API_KEY",
+      "model_name": "mistralai/devstral-2512:free",
+      "is_default": true
+    },
+    {
       "id": "mistral-nemo-12b",
       "name": "Mistral Nemo 12B",
       "provider": "ollama",
       "base_url": "http://10.188.100.131:8004/v1",
       "api_key": "ollama",
-      "model_name": "mistral-nemo:12b-instruct-2407-fp16"
+      "model_name": "mistral-nemo:12b-instruct-2407-fp16",
+      "is_default": false
+    },
+    {
+      "id": "azure-gpt-4",
+      "name": "Azure GPT-4",
+      "provider": "azure",
+      "api_key_env": "AZURE_OPENAI_API_KEY",
+      "endpoint_env": "AZURE_OPENAI_ENDPOINT",
+      "deployment_env": "AZURE_OPENAI_DEPLOYMENT_NAME",
+      "api_version_env": "AZURE_OPENAI_API_VERSION",
+      "is_default": false
     },
     {
       "id": "gpt-4o-mini",
@@ -14,7 +34,8 @@
       "provider": "openai",
       "base_url": null,
       "api_key_env": "OPENAI_API_KEY",
-      "model_name": "gpt-4o-mini"
+      "model_name": "gpt-4o-mini",
+      "is_default": false
     },
     {
       "id": "gpt-4o",
@@ -22,7 +43,8 @@
       "provider": "openai",
       "base_url": null,
       "api_key_env": "OPENAI_API_KEY",
-      "model_name": "gpt-4o"
+      "model_name": "gpt-4o",
+      "is_default": false
     },
     {
       "id": "claude-sonnet-4-5",
@@ -30,7 +52,8 @@
       "provider": "anthropic",
       "base_url": null,
       "api_key_env": "ANTHROPIC_API_KEY",
-      "model_name": "claude-sonnet-4-5-20250929"
+      "model_name": "claude-sonnet-4-5-20250929",
+      "is_default": false
     },
     {
       "id": "claude-opus-4-5",
@@ -38,7 +61,8 @@
       "provider": "anthropic",
       "base_url": null,
       "api_key_env": "ANTHROPIC_API_KEY",
-      "model_name": "claude-opus-4-5-20251101"
+      "model_name": "claude-opus-4-5-20251101",
+      "is_default": false
     }
   ]
 }

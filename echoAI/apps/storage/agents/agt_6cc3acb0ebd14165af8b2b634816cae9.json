@@ -1,0 +1,30 @@
+{
+  "agent_id": "agt_6cc3acb0ebd14165af8b2b634816cae9",
+  "name": "CodeOptimizer",
+  "role": "Optimize the code",
+  "description": "Applies optimizations based on analysis (e.g., refactoring, algorithm improvements).",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "validated_code",
+    "bottlenecks",
+    "optimization_suggestions"
+  ],
+  "output_schema": [
+    "optimized_code",
+    "changes_summary"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:26:36.656924",
+    "registered_at": "2026-01-21T03:26:36.730042"
+  }
+}

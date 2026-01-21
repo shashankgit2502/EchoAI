@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_e2067c388ca24253bb327c37dfe4e8ec",
+  "name": "Code Analyzer",
+  "role": "Analyze the input code for syntax and structure",
+  "description": "Checks the code for syntax errors, structure, and basic quality metrics.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "code"
+  ],
+  "output_schema": [
+    "analysis_report",
+    "is_valid"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:41:42.334780",
+    "registered_at": "2026-01-21T03:41:42.334780"
+  }
+}

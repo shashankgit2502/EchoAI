@@ -5182,3 +5182,8 @@ agents.3.system_prompt
 2026-01-13 23:50:13,101 - app.runtime.executor - INFO - Found outputs from 7 agent(s)
 2026-01-13 23:50:13,101 - app.runtime.executor - INFO - Workflow programming_language_comparison_system completed successfully (run_id: 3f3edad3-7af0-4160-a55f-144670f53c93)
 2026-01-13 23:50:13,103 - app.services.runtime_service - INFO - Execution completed: 3f3edad3-7af0-4160-a55f-144670f53c93 (status: completed)
+2026-01-19 18:14:43,814 - app.main - INFO - Starting Workflow Orchestrator v1.0.0
+2026-01-19 18:14:43,815 - app.main - INFO - Storage path: C:\Users\Shashank Singh\Desktop\Phase 2 - ECHO\workflow-orchestrator\app\storage
+2026-01-19 18:14:43,815 - app.main - INFO - Checkpointing: True
+2026-01-19 18:14:43,815 - app.main - INFO - Architecture: Microservice-ready (Service Layer + Internal APIs)
+2026-01-19 18:14:43,815 - app.main - INFO - All service boundaries enforced

@@ -1,0 +1,31 @@
+{
+  "agent_id": "agt_d5bdbfcf0d9f46ae8f0ff4f3cc5d40a3",
+  "name": "CodeExecutor",
+  "role": "Execute the validated code",
+  "description": "Runs the code in a controlled environment and captures outputs/logs.",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "validated_code",
+    "dependencies_list",
+    "test_cases"
+  ],
+  "output_schema": [
+    "execution_logs",
+    "output_data",
+    "performance_metrics"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-21T03:26:36.656924",
+    "registered_at": "2026-01-21T03:26:36.672839"
+  }
+}
