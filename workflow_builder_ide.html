@@ -318,6 +318,11 @@
                     <h1 class="font-bold text-slate-800 text-sm">Agentic Workflow IDE</h1>
                     <span class="text-[9px] text-slate-400 font-semibold">Complete Specification v1.0</span>
                 </div>
+                <div class="ml-6 flex items-center gap-2">
+                    <span class="text-xs text-slate-500">Workflow:</span>
+                    <input type="text" v-model="workflowName" placeholder="Untitled Workflow"
+                           class="px-2 py-1 text-sm border border-slate-200 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 w-48">
+                </div>
             </div>
             <div class="flex items-center gap-2">
                 <button @click="clearCanvas" class="px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50 rounded">
@@ -326,11 +331,27 @@
                 <button @click="importWorkflow" class="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 rounded">
                     📥 Import
                 </button>
+                <button @click="loadWorkflowDialog" class="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 rounded">
+                    📂 Load
+                </button>
                 <button @click="exportWorkflow" class="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 rounded">
                     📤 Export
                 </button>
-                <button class="px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded shadow-sm hover:bg-indigo-700">
+                <button @click="saveWorkflow('draft')" class="px-3 py-1.5 text-xs font-semibold text-white bg-green-600 rounded shadow-sm hover:bg-green-700">
+                    💾 Save
+                </button>
+                <span v-if="saveStatus" class="text-xs text-green-600 font-medium">{{ saveStatus }}</span>
+                <!-- <button class="px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded shadow-sm hover:bg-indigo-700">
                     ▶ Run Workflow
+                </button> -->
+                <button @click="runWorkflow"
+                        :disabled="isExecuting"
+                        class="px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded shadow-sm hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed flex items-center gap-1">
+                    <span v-if="!isExecuting">▶ Run Workflow</span>
+                    <span v-else class="flex items-center gap-1">
+                        <span class="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        Running...
+                    </span>
                 </button>
                 <input type="file" ref="fileInput" @change="handleFileImport" accept=".json" style="display: none;">
             </div>
@@ -361,6 +382,8 @@
                 </div>
                 
                 <!-- Chat Tab -->
+                <!--
+                Legacy chat tab layout (kept for reference):
                 <div v-if="leftPaneTab === 'chat'" class="flex-1 flex flex-col overflow-hidden">
                     <div class="flex-1 overflow-y-auto p-4">
                         <div v-if="generatedWorkflows.length > 0" class="mb-4">
@@ -380,6 +403,77 @@
                                 <span class="text-xs font-semibold text-indigo-600">Generating workflow...</span>
                             </div>
                             <div class="text-[10px] text-slate-500">{{ generationStatus }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 border-t bg-slate-50">
+                        <textarea v-model="workflowPrompt" 
+                                  @keydown.enter.meta="generateWorkflow"
+                                  @keydown.enter.ctrl="generateWorkflow"
+                                  placeholder="Describe your workflow...&#10;&#10;Example: Create a customer support workflow that receives Slack messages, analyzes sentiment with AI, escalates urgent issues to a human, and logs all interactions to a database."
+                                  class="w-full h-32 px-3 py-2 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+                        <button @click="generateWorkflow" 
+                                :disabled="!workflowPrompt.trim() || isGenerating"
+                                class="w-full mt-3 py-2.5 bg-indigo-600 text-white text-xs font-bold uppercase rounded-lg hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                            <span v-if="!isGenerating">✨ Generate Workflow</span>
+                            <span v-else>Generating...</span>
+                        </button>
+                    </div>
+                </div>
+                -->
+                <div v-if="leftPaneTab === 'chat'" class="flex-1 flex flex-col overflow-hidden">
+                    <div class="flex-1 overflow-y-auto p-4 space-y-4">
+                        <div class="mb-2">
+                            <div class="text-xs font-bold text-slate-700 mb-2">Chat with Workflow</div>
+                            <div class="space-y-2 max-h-64 overflow-y-auto bg-white border rounded-lg p-3">
+                                <div v-if="chatMessages.length === 0" class="text-[10px] text-slate-400">
+                                    No chat yet. Start the conversation below.
+                                </div>
+                                <div v-for="(msg, idx) in chatMessages" :key="idx"
+                                     :class="msg.role === 'user' ? 'bg-indigo-50 border border-indigo-100 p-2 rounded-lg' : 'bg-slate-50 border border-slate-100 p-2 rounded-lg'">
+                                    <div class="text-[10px] text-slate-400 mb-1">
+                                        {{ msg.role === 'user' ? 'You' : 'Assistant' }} • {{ msg.timestamp }}
+                                    </div>
+                                    <div class="text-xs whitespace-pre-wrap">{{ msg.content }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="generatedWorkflows.length > 0" class="mb-4">
+                            <div class="text-xs font-bold text-slate-700 mb-2">Generated Workflows</div>
+                            <div class="space-y-2">
+                                <div v-for="(workflow, idx) in generatedWorkflows" :key="idx"
+                                     class="p-3 bg-slate-50 rounded-lg border hover:border-indigo-300 cursor-pointer transition">
+                                    <div class="text-xs font-semibold text-slate-700 mb-1">{{ workflow.title }}</div>
+                                    <div class="text-[10px] text-slate-400">{{ workflow.nodeCount }} nodes • {{ workflow.timestamp }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div v-if="isGenerating" class="p-4 bg-indigo-50 rounded-lg border-2 border-indigo-200">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                                <span class="text-xs font-semibold text-indigo-600">Generating workflow...</span>
+                            </div>
+                            <div class="text-[10px] text-slate-500">{{ generationStatus }}</div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 border-t bg-slate-50 space-y-2">
+                        <textarea v-model="chatInput"
+                                  @keydown.enter.exact.prevent="sendChatMessage"
+                                  placeholder="Chat with the workflow (available even if unsaved)..."
+                                  class="w-full h-20 px-3 py-2 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+                        <div class="flex items-center justify-between">
+                            <div class="text-[10px] text-slate-400">
+                                Chat is available even for drafts; unsaved context will be sent.
+                            </div>
+                            <button @click="sendChatMessage"
+                                    :disabled="isSendingMessage || !chatInput.trim()"
+                                    class="px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded shadow-sm hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed">
+                                <span v-if="!isSendingMessage">Send</span>
+                                <span v-else>Sending...</span>
+                            </button>
                         </div>
                     </div>
                     
@@ -427,31 +521,60 @@
                 <!-- Agents Tab -->
                 <div v-if="leftPaneTab === 'agents'" class="flex-1 overflow-y-auto p-4">
                     <div class="mb-4">
-                        <input type="text" v-model="agentSearchQuery" placeholder="Search agents..." 
+                        <input type="text" v-model="agentSearchQuery" placeholder="Search agents..."
                                class="w-full px-3 py-2 text-xs border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
-                    
-                    <div class="space-y-3">
-                        <div v-for="agent in filteredAgentTemplates" :key="agent.name"
-                             @click="addAgentFromTemplate(agent)"
-                             class="p-3 border-2 border-l-4 rounded-lg cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all bg-gradient-to-br from-orange-50 to-white"
-                             :style="{borderLeftColor: '#f59e0b'}">
-                            <div class="flex items-start gap-3 mb-2">
-                                <span class="text-xl">{{ agent.icon }}</span>
-                                <div class="flex-1 min-w-0">
-                                    <div class="text-xs font-bold text-slate-800">{{ agent.name }}</div>
-                                    <div class="text-[9px] text-slate-500 mt-0.5">{{ agent.description }}</div>
+
+                    <!-- My Agents (from Backend) -->
+                    <div v-if="backendAgents.length > 0" class="mb-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide">🤖 My Agents</h3>
+                            <button @click="loadBackendAgents" class="text-[10px] text-indigo-600 hover:text-indigo-700 font-medium">
+                                ↻ Refresh
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <div v-for="agent in backendAgents" :key="agent.agent_id"
+                                 @click="addBackendAgent(agent)"
+                                 class="p-3 border-2 border-l-4 rounded-lg cursor-pointer hover:border-green-500 hover:bg-green-50 transition-all bg-gradient-to-br from-green-50 to-white"
+                                 :style="{borderLeftColor: '#10b981'}">
+                                <div class="flex items-start gap-3">
+                                    <span class="text-lg">{{ agent.icon || '🤖' }}</span>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-xs font-bold text-slate-800">{{ agent.name }}</div>
+                                        <div class="text-[9px] text-slate-500 mt-0.5">{{ agent.role }}</div>
+                                        <div class="text-[8px] text-slate-400 mt-1 truncate">{{ agent.description }}</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex flex-wrap gap-1 mt-2">
-                                <span v-for="tool in agent.tools.slice(0, 3)" :key="tool"
-                                      class="text-[8px] px-2 py-0.5 bg-white rounded-full text-slate-600 font-semibold">
-                                    {{ tool }}
-                                </span>
-                                <span v-if="agent.tools.length > 3"
-                                      class="text-[8px] px-2 py-0.5 bg-slate-100 rounded-full text-slate-500 font-semibold">
-                                    +{{ agent.tools.length - 3 }}
-                                </span>
+                        </div>
+                    </div>
+
+                    <!-- Agent Templates -->
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-3">📚 Agent Templates</h3>
+                        <div class="space-y-3">
+                            <div v-for="agent in filteredAgentTemplates" :key="agent.name"
+                                 @click="addAgentFromTemplate(agent)"
+                                 class="p-3 border-2 border-l-4 rounded-lg cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all bg-gradient-to-br from-orange-50 to-white"
+                                 :style="{borderLeftColor: '#f59e0b'}">
+                                <div class="flex items-start gap-3 mb-2">
+                                    <span class="text-xl">{{ agent.icon }}</span>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="text-xs font-bold text-slate-800">{{ agent.name }}</div>
+                                        <div class="text-[9px] text-slate-500 mt-0.5">{{ agent.description }}</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-1 mt-2">
+                                    <span v-for="tool in agent.tools.slice(0, 3)" :key="tool"
+                                          class="text-[8px] px-2 py-0.5 bg-white rounded-full text-slate-600 font-semibold">
+                                        {{ tool }}
+                                    </span>
+                                    <span v-if="agent.tools.length > 3"
+                                          class="text-[8px] px-2 py-0.5 bg-slate-100 rounded-full text-slate-500 font-semibold">
+                                        +{{ agent.tools.length - 3 }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1490,11 +1613,275 @@
                 </div>
             </div>
         </div>
+        <!-- </div> -->
+
+        <!-- Workflow Generation Confirmation Modal -->
+        <div v-if="showWorkflowDialog" class="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50" @click.self="closeWorkflowDialog">
+            <div class="bg-white rounded-lg shadow-xl w-[580px] max-w-[90vw] overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-3 border-b bg-gradient-to-r from-indigo-50 to-purple-50">
+                    <h3 class="text-sm font-bold text-slate-800">⚠️ Existing Workflow Detected</h3>
+                    <button @click="closeWorkflowDialog" class="text-xs text-slate-500 hover:text-slate-700">✖</button>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm text-slate-700 mb-6">You have an existing workflow on the canvas. What would you like to do?</p>
+                    <div class="space-y-3">
+                        <button @click="handleWorkflowChoice('save')"
+                                class="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium flex items-center justify-between transition-colors">
+                            <span>💾 Save & Clear</span>
+                            <span class="text-xs opacity-80">Save current workflow and start fresh</span>
+                        </button>
+                        <button @click="handleWorkflowChoice('discard')"
+                                class="w-full px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium flex items-center justify-between transition-colors">
+                            <span>🗑️ Discard & Clear</span>
+                            <span class="text-xs opacity-80">Delete current workflow and start fresh</span>
+                        </button>
+                        <button @click="handleWorkflowChoice('modify')"
+                                class="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium flex items-center justify-between transition-colors">
+                            <span>✏️ Modify Existing</span>
+                            <span class="text-xs opacity-80">Edit current workflow before generating</span>
+                        </button>
+                        <button @click="handleWorkflowChoice('append')"
+                                class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center justify-between transition-colors">
+                            <span>➕ Append to Canvas</span>
+                            <span class="text-xs opacity-80">Add new workflow to existing one</span>
+                        </button>
+                        <button @click="closeWorkflowDialog"
+                                class="w-full px-4 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-sm font-medium transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workflow Input Modal -->
+        <div v-if="showInputModal" class="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50" @click.self="closeInputModal">
+            <div class="bg-white rounded-lg shadow-xl w-[600px] max-w-[90vw] overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-3 border-b bg-gradient-to-r from-indigo-50 to-blue-50">
+                    <h3 class="text-sm font-bold text-slate-800">🎯 Workflow Input</h3>
+                    <button @click="closeInputModal" class="text-xs text-slate-500 hover:text-slate-700">✖</button>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm text-slate-700 mb-4">Provide input data for the workflow execution (JSON format):</p>
+                    <textarea v-model="workflowInput"
+                              placeholder='{\n  "query": "your input here",\n  "param1": "value1"\n}'
+                              class="w-full h-48 px-3 py-2 text-sm font-mono border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                    ></textarea>
+                    <div class="mt-4 flex items-center justify-end gap-3">
+                        <button @click="closeInputModal"
+                                class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg text-sm font-medium transition-colors">
+                            Cancel
+                        </button>
+                        <button @click="executeWithInput"
+                                class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
+                            ▶ Execute
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workflow Execution Modal -->
+        <div v-if="showExecutionModal" class="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50" @click.self="closeExecutionModal">
+            <div class="bg-white rounded-lg shadow-xl w-[720px] max-w-[90vw] max-h-[80vh] overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-3 border-b">
+                    <h3 class="text-sm font-bold text-slate-800">Workflow Execution Result</h3>
+                    <button @click="closeExecutionModal" class="text-xs text-slate-500 hover:text-slate-700">✖</button>
+                </div>
+                <div class="p-4 overflow-auto" style="max-height: 60vh;">
+                    <pre class="text-xs text-slate-800 whitespace-pre-wrap">{{ executionResult ? JSON.stringify(executionResult, null, 2) : 'No result yet.' }}</pre>
+                </div>
+                <div class="px-4 py-3 border-t bg-slate-50 text-[11px] text-slate-500">
+                    Close this dialog to continue editing. Runs use the /workflows/execute endpoint.
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        const { createApp, ref, computed } = Vue;
-        
+        const { createApp, ref, computed, onMounted } = Vue;
+
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:8000';
+
+        // Backend API Functions
+        const workflowAPI = {
+            // Design workflow from natural language prompt
+            async designFromPrompt(prompt, defaultLlm = null) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/workflows/design/prompt?prompt=${encodeURIComponent(prompt)}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ default_llm: defaultLlm })
+                    });
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to design workflow');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Workflow design API error:', error);
+                    throw error;
+                }
+            },
+
+            // Save workflow to backend (canvas format)
+            async saveCanvas(canvasNodes, connections, workflowName = null, saveAs = 'draft', executionModel = 'sequential') {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/workflows/canvas/save`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            canvas_nodes: canvasNodes,
+                            connections: connections,
+                            workflow_name: workflowName,
+                            save_as: saveAs,
+                            execution_model: executionModel
+                        })
+                    });
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to save workflow');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Workflow save API error:', error);
+                    throw error;
+                }
+            },
+
+            // Convert canvas to backend format
+            async canvasToBackend(canvasNodes, connections, workflowName = null) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/workflows/canvas/to-backend`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            canvas_nodes: canvasNodes,
+                            connections: connections,
+                            workflow_name: workflowName
+                        })
+                    });
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to convert workflow');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Workflow convert API error:', error);
+                    throw error;
+                }
+            },
+
+            // Load workflow by ID (expects backend to return workflow + agents)
+            async loadWorkflow(workflowId) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/workflows/${workflowId}`);
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to load workflow');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Workflow load API error:', error);
+                    throw error;
+                }
+            },
+
+            // Convert backend workflow to canvas format
+            async backendToCanvas(workflow, agents) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/workflows/backend/to-canvas`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            workflow,
+                            agents
+                        })
+                    });
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to convert backend workflow');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Workflow backend-to-canvas API error:', error);
+                    throw error;
+                }
+            },
+
+            // Execute workflow run
+            async execute(workflowId, mode = 'test', version = null, inputPayload = {}) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/workflows/execute`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            workflow_id: workflowId,
+                            mode,
+                            version,
+                            input_payload: inputPayload
+                        })
+                    });
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to execute workflow');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Workflow execute API error:', error);
+                    throw error;
+                }
+            }
+        };
+
+        const agentAPI = {
+            // Get all agents from registry (master list)
+            async getMasterList() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/agents/registry/master-list`);
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to fetch agents');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Agent registry API error:', error);
+                    throw error;
+                }
+            },
+
+            // Get all agent templates (static + created)
+            async getAllTemplates() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/agents/templates/all`);
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to fetch templates');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Agent templates API error:', error);
+                    throw error;
+                }
+            },
+
+            // Get agent by ID
+            async getAgent(agentId) {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/agents/${agentId}`);
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to fetch agent');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Agent fetch API error:', error);
+                    throw error;
+                }
+            }
+        };
+
         createApp({
             setup() {
                 const selected = ref(null);
@@ -1520,6 +1907,43 @@
                 const isGenerating = ref(false);
                 const generationStatus = ref('');
                 const generatedWorkflows = ref([]);
+                const backendAgents = ref([]);
+                const workflowName = ref('');
+                const workflowExecutionModel = ref('sequential');
+                const saveStatus = ref('');
+                const workflowSaved = ref(false);
+                const currentWorkflowId = ref(null);
+                const workflowModified = ref(false);
+                const currentThreadId = ref(null);
+                const chatMessages = ref([]);
+                const chatInput = ref('');
+                const chatSessionId = ref(null);
+                const isSendingMessage = ref(false);
+                const isExecuting = ref(false);
+                const executionResult = ref(null);
+                const showExecutionModal = ref(false);
+                const showInputModal = ref(false);
+                const workflowInput = ref('{}');
+                const showWorkflowDialog = ref(false);
+                const pendingWorkflowGeneration = ref(false);
+                const workflowState = ref('empty');
+
+                const markWorkflowModified = () => {
+                    workflowModified.value = true;
+                    workflowSaved.value = false;
+                    workflowState.value = activeNodes.value.length === 0 ? 'empty' : 'unsaved';
+                };
+
+                const resetCanvasState = () => {
+                    activeNodes.value = [];
+                    connections.value = [];
+                    selected.value = null;
+                    currentWorkflowId.value = null;
+                    currentThreadId.value = null;
+                    workflowModified.value = false;
+                    workflowSaved.value = false;
+                    workflowState.value = 'empty';
+                };
                 const offset = { x: 0, y: 0 };
 
                 // Agent Templates Library
@@ -1973,6 +2397,7 @@
                     };
                     activeNodes.value.push(newNode);
                     selected.value = newNode;
+                    markWorkflowModified();
                 };
 
                 const addAgentFromTemplate = (template) => {
@@ -1993,7 +2418,7 @@
                                 modelName: 'claude-sonnet-4-5-20250514',
                                 displayName: 'Claude Sonnet 4.5'
                             },
-                            tools: template.tools.map((toolName, idx) => ({
+                            tools: Array.isArray(template.tools) ? template.tools.map((toolName, idx) => ({
                                 id: Date.now() + idx,
                                 name: toolName,
                                 type: 'tools',
@@ -2004,7 +2429,7 @@
                                     credentials: '',
                                     description: ''
                                 }
-                            })),
+                            })) : [],
                             maxIterations: 5,
                             variables: JSON.parse(JSON.stringify(template.variables)),
                             routing: {
@@ -2024,6 +2449,7 @@
                     
                     activeNodes.value.push(agentNode);
                     selected.value = agentNode;
+                    markWorkflowModified();
                 };
 
                 const startDrag = (node, e) => {
@@ -2074,11 +2500,13 @@
                             c => c.from !== selected.value.id && c.to !== selected.value.id
                         );
                         selected.value = null;
+                        markWorkflowModified();
                     }
                 };
 
                 const deleteConnection = (connectionId) => {
                     connections.value = connections.value.filter(c => c.id !== connectionId);
+                    markWorkflowModified();
                 };
 
                 const updateModelDisplay = () => {
@@ -2145,6 +2573,8 @@
                 const exportWorkflow = () => {
                     const workflow = {
                         version: '1.0',
+                        name: workflowName.value || 'Untitled Workflow',
+                        execution_model: workflowExecutionModel.value,
                         nodes: activeNodes.value,
                         connections: connections.value,
                         metadata: {
@@ -2172,14 +2602,21 @@
                 const handleFileImport = (e) => {
                     const file = e.target.files[0];
                     if (!file) return;
-                    
+
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         try {
                             const workflow = JSON.parse(event.target.result);
                             activeNodes.value = workflow.nodes || [];
                             connections.value = workflow.connections || [];
+                            workflowName.value = workflow.name || 'Imported Workflow';
+                            workflowExecutionModel.value = workflow.execution_model || 'sequential';
                             selected.value = null;
+                            markWorkflowModified();
+                            workflowSaved.value = false;
+                            workflowState.value = 'unsaved';
+                            currentWorkflowId.value = null;
+                            currentThreadId.value = null;
                         } catch (error) {
                             alert('Error importing workflow: Invalid JSON file');
                         }
@@ -2195,6 +2632,11 @@
                         activeNodes.value = [];
                         connections.value = [];
                         selected.value = null;
+                        markWorkflowModified();
+                        workflowState.value = 'empty';
+                        currentWorkflowId.value = null;
+                        currentThreadId.value = null;
+                        workflowSaved.value = false;
                     }
                 };
 
@@ -2378,27 +2820,196 @@
                     document.removeEventListener('mouseup', stopResize);
                 };
 
-                // Workflow Generation (Simulated)
+                // Workflow Generation - Call Backend API with fallback
                 const generateWorkflow = async () => {
                     if (!workflowPrompt.value.trim() || isGenerating.value) return;
-                    
+
+                    if (activeNodes.value.length > 0) {
+                        // Show modal dialog for user choice
+                        showWorkflowDialog.value = true;
+                        pendingWorkflowGeneration.value = true;
+                        return; // Wait for user choice in modal
+                    }
+
+                    // Proceed with generation
+                    await proceedWithGeneration(false); // false = don't append
+                };
+
+                const proceedWithGeneration = async (appendMode = false) => {
                     isGenerating.value = true;
-                    generationStatus.value = 'Analyzing prompt...';
-                    
-                    // Simulate AI processing
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    generationStatus.value = 'Creating nodes...';
-                    
-                    await new Promise(resolve => setTimeout(resolve, 1500));
-                    generationStatus.value = 'Connecting workflow...';
-                    
-                    // Simple keyword-based node creation
+                    generationStatus.value = 'Analyzing prompt with AI...';
+
+                    try {
+                        // Try backend API first
+                        const result = await workflowAPI.designFromPrompt(workflowPrompt.value.trim());
+                        generationStatus.value = 'Creating workflow from AI design...';
+
+                        const workflow = result.workflow;
+                        const agents = result.agents;
+
+                        // Convert backend response to canvas format
+                        const createdNodes = [];
+                        const newConnections = [];
+                        let x = 100;
+                        let y = 100;
+                        const spacing = 280;
+
+                        // Add Start node
+                        const startNode = {
+                            ...JSON.parse(JSON.stringify(nodeLibrary['Entry/Exit'][0])),
+                            id: Date.now(),
+                            x: x,
+                            y: y,
+                            name: 'Workflow Start',
+                            status: 'idle'
+                        };
+                        createdNodes.push(startNode);
+                        x += spacing;
+
+                        // Add agent nodes from backend response
+                        const agentIds = workflow.agents || [];
+                        let nodeIdMap = {};
+
+                        for (let i = 0; i < agentIds.length; i++) {
+                            const agentId = agentIds[i];
+                            const agentData = agents[agentId] || {};
+
+                            const agentNode = {
+                                type: 'Agent',
+                                label: agentData.name || 'Agent',
+                                icon: agentData.icon || '🔶',
+                                color: '#f59e0b',
+                                id: Date.now() + i + 1,
+                                x: x,
+                                y: y,
+                                name: agentData.name || `Agent ${i + 1}`,
+                                status: 'idle',
+                                agentId: agentId,
+                                config: {
+                                    prompt: agentData.description || '',
+                                    model: {
+                                        provider: 'openrouter',
+                                        modelName: 'mistralai/devstral-2512:free',
+                                        displayName: 'Devstral (OpenRouter)'
+                                    },
+                                    // tools: agentData.tools || [],
+                                    tools: Array.isArray(agentData.tools) ? agentData.tools : [],
+                                    maxIterations: agentData.constraints?.max_steps || 5,
+                                    variables: agentData.variables || [],
+                                    routing: { strategy: 'llm-driven', routes: [] },
+                                    temperature: agentData.llm?.temperature || 0.7,
+                                    topP: 0.9,
+                                    maxTokens: 4000,
+                                    memory: { enabled: true, type: 'short-term' },
+                                    adornments: []
+                                }
+                            };
+
+                            createdNodes.push(agentNode);
+                            nodeIdMap[agentId] = agentNode.id;
+                            x += spacing;
+                        }
+
+                        // Add End node
+                        const endNode = {
+                            ...JSON.parse(JSON.stringify(nodeLibrary['Entry/Exit'][1])),
+                            id: Date.now() + 100,
+                            x: x,
+                            y: y,
+                            name: 'Workflow End',
+                            status: 'idle'
+                        };
+                        createdNodes.push(endNode);
+
+                        // Create connections based on workflow.connections or sequential order
+                        const workflowConnections = workflow.connections || [];
+
+                        if (workflowConnections.length > 0) {
+                            // Use defined connections
+                            for (let conn of workflowConnections) {
+                                const fromId = nodeIdMap[conn.from];
+                                const toId = nodeIdMap[conn.to];
+                                if (fromId && toId) {
+                                    newConnections.push({
+                                        id: Date.now() + 1000 + newConnections.length,
+                                        from: fromId,
+                                        to: toId
+                                    });
+                                }
+                            }
+                            // Connect start to first agent
+                            if (createdNodes.length > 2) {
+                                newConnections.unshift({
+                                    id: Date.now() + 2000,
+                                    from: startNode.id,
+                                    to: createdNodes[1].id
+                                });
+                            }
+                            // Connect last agent to end
+                            if (createdNodes.length > 2) {
+                                newConnections.push({
+                                    id: Date.now() + 3000,
+                                    from: createdNodes[createdNodes.length - 2].id,
+                                    to: endNode.id
+                                });
+                            }
+                        } else {
+                            // Sequential connections (fallback)
+                            for (let i = 0; i < createdNodes.length - 1; i++) {
+                                newConnections.push({
+                                    id: Date.now() + 1000 + i,
+                                    from: createdNodes[i].id,
+                                    to: createdNodes[i + 1].id
+                                });
+                            }
+                        }
+
+                        // Set workflow name
+                        workflowName.value = workflow.name || 'AI Generated Workflow';
+
+                        // Add to canvas
+                        activeNodes.value.push(...createdNodes);
+                        connections.value.push(...newConnections);
+                        workflowSaved.value = false;
+                        workflowModified.value = true;
+                        workflowState.value = 'unsaved';
+                        currentWorkflowId.value = null;
+                        currentThreadId.value = null;
+
+                        // Add to history
+                        generatedWorkflows.value.unshift({
+                            title: workflow.name || workflowPrompt.value.substring(0, 50) + '...',
+                            nodeCount: createdNodes.length,
+                            agentCount: agentIds.length,
+                            executionModel: workflow.execution_model || 'sequential',
+                            timestamp: new Date().toLocaleTimeString()
+                        });
+
+                        generationStatus.value = 'Workflow created successfully!';
+
+                    } catch (apiError) {
+                        console.warn('Backend API unavailable, using local generation:', apiError.message);
+                        generationStatus.value = 'Using local generation (backend unavailable)...';
+
+                        // Fallback to local keyword-based generation
+                        await generateWorkflowLocal();
+                    }
+
+                    setTimeout(() => {
+                        isGenerating.value = false;
+                        generationStatus.value = '';
+                        workflowPrompt.value = '';
+                    }, 1500);
+                };
+
+                // Local fallback workflow generation
+                const generateWorkflowLocal = async () => {
                     const prompt = workflowPrompt.value.toLowerCase();
                     let x = 100;
                     let y = 100;
                     const spacing = 250;
                     const createdNodes = [];
-                    
+
                     // Start node
                     const startNode = {
                         ...JSON.parse(JSON.stringify(nodeLibrary['Entry/Exit'][0])),
@@ -2410,11 +3021,11 @@
                     };
                     createdNodes.push(startNode);
                     x += spacing;
-                    
+
                     // Detect and add relevant nodes based on keywords
                     if (prompt.includes('slack') || prompt.includes('message')) {
                         const node = {
-                            ...JSON.parse(JSON.stringify(nodeLibrary['Integrations'][0])),
+                            ...JSON.parse(JSON.stringify(nodeLibrary['Integration'][0])),
                             id: Date.now() + 1,
                             x: x,
                             y: y,
@@ -2424,7 +3035,7 @@
                         createdNodes.push(node);
                         x += spacing;
                     }
-                    
+
                     if (prompt.includes('ai') || prompt.includes('analyze') || prompt.includes('sentiment')) {
                         const node = {
                             ...JSON.parse(JSON.stringify(nodeLibrary['Agents'][0])),
@@ -2437,7 +3048,7 @@
                         createdNodes.push(node);
                         x += spacing;
                     }
-                    
+
                     if (prompt.includes('human') || prompt.includes('escalate') || prompt.includes('approval')) {
                         const node = {
                             ...JSON.parse(JSON.stringify(nodeLibrary['Quality'][1])),
@@ -2450,10 +3061,10 @@
                         createdNodes.push(node);
                         x += spacing;
                     }
-                    
+
                     if (prompt.includes('database') || prompt.includes('log') || prompt.includes('store')) {
                         const node = {
-                            ...JSON.parse(JSON.stringify(nodeLibrary['Integrations'][0])),
+                            ...JSON.parse(JSON.stringify(nodeLibrary['Integration'][0])),
                             id: Date.now() + 4,
                             x: x,
                             y: y,
@@ -2463,7 +3074,7 @@
                         createdNodes.push(node);
                         x += spacing;
                     }
-                    
+
                     // End node
                     const endNode = {
                         ...JSON.parse(JSON.stringify(nodeLibrary['Entry/Exit'][1])),
@@ -2474,7 +3085,7 @@
                         status: 'idle'
                     };
                     createdNodes.push(endNode);
-                    
+
                     // Create connections
                     const newConnections = [];
                     for (let i = 0; i < createdNodes.length - 1; i++) {
@@ -2484,24 +3095,343 @@
                             to: createdNodes[i + 1].id
                         });
                     }
-                    
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                    
+
                     // Add to canvas
                     activeNodes.value.push(...createdNodes);
                     connections.value.push(...newConnections);
-                    
+
                     // Add to history
                     generatedWorkflows.value.unshift({
                         title: workflowPrompt.value.substring(0, 50) + '...',
                         nodeCount: createdNodes.length,
                         timestamp: new Date().toLocaleTimeString()
                     });
-                    
-                    isGenerating.value = false;
-                    generationStatus.value = '';
-                    workflowPrompt.value = '';
+                    workflowSaved.value = false;
+                    workflowModified.value = true;
+                    workflowState.value = 'unsaved';
+                    currentWorkflowId.value = null;
+                    currentThreadId.value = null;
                 };
+
+                // Save workflow to backend
+                const saveWorkflow = async (saveAs = 'draft') => {
+                    if (activeNodes.value.length === 0) {
+                        alert('No workflow to save. Please add nodes first.');
+                        return;
+                    }
+
+                    saveStatus.value = 'Saving...';
+
+                    try {
+                        const result = await workflowAPI.saveCanvas(
+                            activeNodes.value,
+                            connections.value,
+                            workflowName.value || 'Untitled Workflow',
+                            saveAs,
+                            workflowExecutionModel.value
+                        );
+
+                        if (result.success) {
+                            saveStatus.value = `Saved! ID: ${result.workflow_id}`;
+                            alert(`Workflow saved successfully!\nID: ${result.workflow_id}\nName: ${result.workflow_name}`);
+                            workflowSaved.value = true;
+                            workflowModified.value = false;
+                            workflowState.value = 'saved';
+                            currentWorkflowId.value = result.workflow_id || currentWorkflowId.value;
+                            workflowName.value = result.workflow_name || workflowName.value;
+                        } else {
+                            saveStatus.value = 'Save failed';
+                            workflowSaved.value = false;
+                            workflowState.value = 'unsaved';
+                            alert(`Save failed: ${result.errors?.join(', ') || 'Unknown error'}`);
+                        }
+                    } catch (error) {
+                        saveStatus.value = 'Save failed';
+                        workflowSaved.value = false;
+                        workflowState.value = 'unsaved';
+                        console.error('Save error:', error);
+                        alert(`Failed to save workflow: ${error.message}`);
+                    }
+
+                    setTimeout(() => {
+                        saveStatus.value = '';
+                    }, 3000);
+                };
+
+                const loadWorkflowDialog = async () => {
+                    const workflowId = prompt('Enter workflow ID to load');
+                    if (!workflowId) return;
+
+                    try {
+                        const result = await workflowAPI.loadWorkflow(workflowId);
+                        const workflow = result.workflow || result;
+                        const agents = result.agents || result.agent_map || {};
+                        const canvasResult = await workflowAPI.backendToCanvas(workflow, agents);
+                        const canvasNodes = canvasResult.canvas_nodes || canvasResult.nodes || [];
+                        const canvasConnections = canvasResult.connections || canvasResult.canvas_connections || [];
+
+                        activeNodes.value = canvasNodes;
+                        connections.value = canvasConnections;
+                        workflowName.value = workflow.name || workflowName.value;
+                        currentWorkflowId.value = workflowId;
+                        workflowSaved.value = true;
+                        workflowModified.value = false;
+                        workflowState.value = 'saved';
+                        currentThreadId.value = null;
+                    } catch (error) {
+                        console.error('Load workflow error:', error);
+                        alert(`Failed to load workflow: ${error.message}`);
+                    }
+                };
+
+                const runWorkflow = async () => {
+                    if (activeNodes.value.length === 0) {
+                        alert('No workflow to run. Please add nodes first.');
+                        return;
+                    }
+
+                    // Always save as 'temp' before running (executor expects temp state)
+                    if (!currentWorkflowId.value || !workflowSaved.value) {
+                        const shouldSave = confirm('Workflow must be saved before running. Save now?');
+                        if (shouldSave) {
+                            await saveWorkflow('temp');  // Save as temp for test execution
+                        } else {
+                            return;
+                        }
+                    } else {
+                        // Re-save as temp to ensure latest changes are captured
+                        await saveWorkflow('temp');
+                    }
+
+                    if (!currentWorkflowId.value) {
+                        alert('Missing workflow ID after save. Please try saving again.');
+                        return;
+                    }
+
+                    // Show input modal for user to provide payload
+                    workflowInput.value = '{}';
+                    showInputModal.value = true;
+                };
+
+                const closeInputModal = () => {
+                    showInputModal.value = false;
+                };
+
+                const executeWithInput = async () => {
+                    let inputPayload = {};
+
+                    // Validate JSON
+                    if (workflowInput.value && workflowInput.value.trim()) {
+                        try {
+                            inputPayload = JSON.parse(workflowInput.value);
+                        } catch (error) {
+                            alert('Invalid JSON payload. Please provide valid JSON.');
+                            return;
+                        }
+                    }
+
+                    // Close input modal and show execution modal
+                    showInputModal.value = false;
+                    isExecuting.value = true;
+                    showExecutionModal.value = true;
+                    executionResult.value = { status: 'running', started_at: new Date().toISOString() };
+
+                    try {
+                        const result = await workflowAPI.execute(
+                            currentWorkflowId.value,
+                            'test',
+                            null,
+                            inputPayload
+                        );
+                        executionResult.value = result;
+                    } catch (error) {
+                        executionResult.value = { success: false, error: error.message };
+                        console.error('Run workflow error:', error);
+                    } finally {
+                        isExecuting.value = false;
+                    }
+                };
+
+                const closeExecutionModal = () => {
+                    showExecutionModal.value = false;
+                };
+
+                const closeWorkflowDialog = () => {
+                    showWorkflowDialog.value = false;
+                    pendingWorkflowGeneration.value = false;
+                };
+
+                const handleWorkflowChoice = async (choice) => {
+                    showWorkflowDialog.value = false;
+
+                    if (choice === 'save') {
+                        // Save current workflow as draft and clear canvas
+                        await saveWorkflow('draft');
+                        resetCanvasState();
+                        await proceedWithGeneration(false);
+                    } else if (choice === 'discard') {
+                        // Discard current workflow and clear canvas
+                        resetCanvasState();
+                        await proceedWithGeneration(false);
+                    } else if (choice === 'modify') {
+                        // Keep the canvas as-is and let user modify
+                        alert('You can now modify the existing workflow on the canvas. When ready, either clear the canvas or use "Append" mode to add to it.');
+                        pendingWorkflowGeneration.value = false;
+                    } else if (choice === 'append') {
+                        // Append new workflow to existing canvas
+                        await proceedWithGeneration(true);
+                    }
+                };
+
+                const sendChatMessage = async () => {
+                    const message = chatInput.value.trim();
+                    if (!message || isSendingMessage.value) return;
+
+                    if (activeNodes.value.length === 0) {
+                        alert('No workflow on canvas. Please create a workflow first.');
+                        return;
+                    }
+
+                    if (!workflowSaved.value || !currentWorkflowId.value) {
+                        const shouldSave = confirm('Workflow must be saved before chatting. Save now?');
+                        if (shouldSave) {
+                            await saveWorkflow('temp');  // Save as temp for testing
+                            if (!currentWorkflowId.value) {
+                                alert('Failed to save workflow. Please try again.');
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                    } else {
+                        // Re-save as temp to capture latest changes
+                        await saveWorkflow('temp');
+                    }
+
+                    const userTimestamp = new Date().toLocaleTimeString();
+                    chatMessages.value.push({
+                        role: 'user',
+                        content: message,
+                        timestamp: userTimestamp
+                    });
+                    chatInput.value = '';
+
+                    isSendingMessage.value = true;
+                    try {
+                        // Start chat session if not already started
+                        if (!chatSessionId.value) {
+                            const startResponse = await fetch(`${API_BASE_URL}/workflows/chat/start`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    workflow_id: currentWorkflowId.value,
+                                    workflow_mode: 'temp',
+                                    context: {
+                                        workflow_name: workflowName.value || 'Untitled Workflow'
+                                    }
+                                })
+                            });
+
+                            if (!startResponse.ok) {
+                                throw new Error('Failed to start chat session');
+                            }
+
+                            const startData = await startResponse.json();
+                            chatSessionId.value = startData.session_id;
+                        }
+
+                        // Send message
+                        const response = await fetch(`${API_BASE_URL}/workflows/chat/send`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                session_id: chatSessionId.value,
+                                message: message,
+                                execute_workflow: true
+                            })
+                        });
+
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.detail || 'Chat request failed');
+                        }
+
+                        const data = await response.json();
+                        const botMessage = data.response || data.message || JSON.stringify(data);
+                        const assistantTimestamp = new Date().toLocaleTimeString();
+                        chatMessages.value.push({
+                            role: 'assistant',
+                            content: botMessage,
+                            timestamp: assistantTimestamp
+                        });
+
+                    } catch (error) {
+                        const assistantTimestamp = new Date().toLocaleTimeString();
+                        chatMessages.value.push({
+                            role: 'assistant',
+                            content: `Error: ${error.message}`,
+                            timestamp: assistantTimestamp,
+                            error: true
+                        });
+                        console.error('Chat error:', error);
+                    } finally {
+                        isSendingMessage.value = false;
+                    }
+                };
+
+                // Load agents from backend on mount
+                const loadBackendAgents = async () => {
+                    try {
+                        const result = await agentAPI.getMasterList();
+                        backendAgents.value = result.agents || [];
+                        console.log(`Loaded ${backendAgents.value.length} agents from backend`);
+                    } catch (error) {
+                        console.warn('Could not load agents from backend:', error.message);
+                        backendAgents.value = [];
+                    }
+                };
+
+                // Add agent from backend to canvas
+                const addBackendAgent = (agent) => {
+                    const agentNode = {
+                        type: 'Agent',
+                        label: agent.name,
+                        icon: agent.icon || '🤖',
+                        color: '#f59e0b',
+                        id: Date.now(),
+                        x: 300 + Math.random() * 100,
+                        y: 200 + Math.random() * 100,
+                        name: agent.name,
+                        status: 'idle',
+                        agentId: agent.agent_id,
+                        config: {
+                            prompt: agent.description || '',
+                            model: {
+                                provider: 'openrouter',
+                                modelName: 'mistralai/devstral-2512:free',
+                                displayName: 'Devstral (OpenRouter)'
+                            },
+                            tools: [],
+                            maxIterations: 5,
+                            variables: [],
+                            routing: { strategy: 'llm-driven', routes: [] },
+                            temperature: 0.7,
+                            topP: 0.9,
+                            maxTokens: 4000,
+                            memory: { enabled: true, type: 'short-term' },
+                            adornments: []
+                        }
+                    };
+
+                    activeNodes.value.push(agentNode);
+                    selected.value = agentNode;
+                    markWorkflowModified();
+                };
+
+                // Initialize on mount
+                onMounted(() => {
+                    loadBackendAgents();
+                });
 
                 return {
                     selected,
@@ -2521,12 +3451,31 @@
                     isGenerating,
                     generationStatus,
                     generatedWorkflows,
+                    backendAgents,
+                    workflowName,
+                    workflowExecutionModel,
+                    saveStatus,
+                    workflowSaved,
+                    workflowModified,
+                    workflowState,
+                    currentWorkflowId,
+                    currentThreadId,
+                    chatMessages,
+                    chatInput,
+                    isSendingMessage,
+                    isExecuting,
+                    executionResult,
+                    showExecutionModal,
+                    showInputModal,
+                    workflowInput,
+                    showWorkflowDialog,
                     nodeLibrary,
                     filteredLibrary,
                     agentTemplates,
                     filteredAgentTemplates,
                     addNode,
                     addAgentFromTemplate,
+                    addBackendAgent,
                     startDrag,
                     handleCanvasMouseMove,
                     handleCanvasMouseUp,
@@ -2543,6 +3492,9 @@
                     importWorkflow,
                     handleFileImport,
                     clearCanvas,
+                    saveWorkflow,
+                    loadWorkflowDialog,
+                    runWorkflow,
                     addInputVariable,
                     addOutputVariable,
                     addTool,
@@ -2560,7 +3512,14 @@
                     startResize,
                     handleResize,
                     stopResize,
-                    generateWorkflow
+                    generateWorkflow,
+                    sendChatMessage,
+                    closeExecutionModal,
+                    closeInputModal,
+                    executeWithInput,
+                    closeWorkflowDialog,
+                    handleWorkflowChoice,
+                    loadBackendAgents
                 };
             }
         }).mount('#app');
