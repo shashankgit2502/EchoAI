@@ -42,3 +42,20 @@ class ILogger(ABC):
     def error(self, msg: str, ctx: dict) -> None: ...
     @abstractmethod
     def trace(self, span: str, ctx: dict) -> None: ...
+
+class IAgentService(ABC):
+    @abstractmethod
+    def createFromPrompt(self, prompt: str, template: Optional["AgentTemplate"] = None) -> "Agent":
+        """Create an Agent from a freeform prompt and a template."""
+        ...
+    @abstractmethod
+    def createFromCanvasCard(self, cardJSON: dict, template: Optional["AgentTemplate"] = None) -> "Agent":
+        """Create an Agent from a canvas card JSON using an optional template."""
+        ...
+    def validateA2A(self, agent: "Agent") -> "ValidationResult":
+        """Validate agent-to-agent (A2A) configuration."""
+        ...
+    @abstractmethod
+    def listAgents(self) -> List["Agent"]:
+        """Return all registered agents."""
+    
