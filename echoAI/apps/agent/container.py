@@ -1,7 +1,6 @@
-
 from echolib.di import container
 from echolib.adapters import OTelLogger, KeyVaultClient
-from echolib.services import TemplateRepository, LangGraphBuilder, AgentService
+from echolib.services import TemplateRepository, LangGraphBuilder, AgentService, ToolService
 
 # Import new orchestrator services
 from .registry.registry import AgentRegistry
@@ -11,6 +10,7 @@ from .designer.agent_designer import AgentDesigner
 
 # Existing services (keep for backward compatibility)
 _tpl = TemplateRepository()
+_tool = ToolService()
 _graph = LangGraphBuilder()
 _agentsvc = AgentService(_tpl, _graph)
 
@@ -22,6 +22,7 @@ _designer = AgentDesigner()
 
 # Register existing services
 container.register('agent.service', lambda: _agentsvc)
+container.register('tool.service', lambda: _tool)
 container.register('cred.store', lambda: KeyVaultClient())
 container.register('logger', lambda: OTelLogger())
 
