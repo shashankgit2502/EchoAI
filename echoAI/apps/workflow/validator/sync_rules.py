@@ -51,12 +51,19 @@ def validate_tools(
     result: ValidationResult
 ) -> None:
     """Validate all agent tools exist in tool registry."""
+    # Builtin tool types that don't require registry lookup
+    BUILTIN_TOOL_PREFIXES = ("builtin_code", "builtin_subworkflow", "builtin_mcp_server")
+
     for agent_id in workflow.get("agents", []):
         if agent_id not in agent_registry:
             continue
 
         agent = agent_registry[agent_id]
         for tool_id in agent.get("tools", []):
+            # Skip builtin tools (code, subworkflow, mcp_server)
+            if tool_id.startswith(BUILTIN_TOOL_PREFIXES):
+                continue
+
             if tool_id not in tool_registry:
                 result.add_error(
                     f"Tool '{tool_id}' not found for agent '{agent_id}'"

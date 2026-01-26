@@ -4,7 +4,7 @@
   "role": "Autonomous AI agent",
   "description": "Agent node",
   "llm": {
-    "model": "mistralai/devstral-2512:free",
+    "model": "tngtech/tng-r1t-chimera:free",
     "temperature": 0.7,
     "max_tokens": 4000
   },

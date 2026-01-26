@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_feca5916d8a7469f9fe45481d75116fd",
+  "name": "TestingAgent",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 216,
+      "y": 248,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-24T19:28:32.416586",
+    "registered_at": "2026-01-24T19:28:32.522211"
+  }
+}

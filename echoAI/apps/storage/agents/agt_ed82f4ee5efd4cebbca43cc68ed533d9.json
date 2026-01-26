@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_ed82f4ee5efd4cebbca43cc68ed533d9",
+  "name": "Analyzer2",
+  "role": "Performance Testing",
+  "goal": "To identify bottlenecks",
+  "description": "Tests system under load",
+  "llm": {
+    "default_llm": {}
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T05:48:29.624845",
+    "registered_at": "2026-01-24T05:48:29.652675"
+  }
+}

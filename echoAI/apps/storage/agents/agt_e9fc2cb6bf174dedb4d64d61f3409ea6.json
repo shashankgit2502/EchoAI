@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_e9fc2cb6bf174dedb4d64d61f3409ea6",
+  "name": "Tester",
+  "role": "Tests functionality and edge cases",
+  "goal": "Verifies code works as intended",
+  "description": "Simulates user interaction",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T18:31:40.842913",
+    "registered_at": "2026-01-23T18:31:40.867165"
+  }
+}

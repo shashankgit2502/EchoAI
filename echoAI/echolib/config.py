@@ -26,6 +26,9 @@ class LLMSettings(BaseModel):
     """LLM Provider Settings"""
 
     # Provider flags (only one should be true at a time)
+    # TO USE OLLAMA: Set USE_OLLAMA default to 'true' and USE_OPENROUTER default to 'false'
+    # use_ollama: bool = os.getenv('USE_OLLAMA', 'true').lower() == 'true'
+    # use_openrouter: bool = os.getenv('USE_OPENROUTER', 'false').lower() == 'true'
     use_ollama: bool = os.getenv('USE_OLLAMA', 'false').lower() == 'true'
     use_openrouter: bool = os.getenv('USE_OPENROUTER', 'true').lower() == 'true'
     use_azure: bool = os.getenv('USE_AZURE', 'false').lower() == 'true'
@@ -38,10 +41,10 @@ class LLMSettings(BaseModel):
     # OpenRouter settings (current default)
     openrouter_api_key: str = os.getenv(
         'OPENROUTER_API_KEY',
-        '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'
+        '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'
     )
     openrouter_base_url: str = os.getenv('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1')
-    openrouter_model: str = os.getenv('OPENROUTER_MODEL', 'mistralai/devstral-2512:free')
+    openrouter_model: str = os.getenv('OPENROUTER_MODEL', 'tngtech/tng-r1t-chimera:free')
 
     # Azure OpenAI settings
     azure_openai_api_key: Optional[str] = os.getenv('AZURE_OPENAI_API_KEY')
@@ -68,6 +71,7 @@ class LLMSettings(BaseModel):
         elif self.use_openai:
             return 'openai'
         else:
+            # TO USE OLLAMA AS FALLBACK: return 'ollama'
             return 'openrouter'  # Default fallback
 
 

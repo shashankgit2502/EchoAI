@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_2a1c1ec304a940ccafac33d34bb5ef73",
+  "name": "SecurityAnalyzer",
+  "role": "Security Vulnerability Checker",
+  "goal": "Identify security vulnerabilities",
+  "description": "Scans code for common security issues and returns a report.",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "code"
+  ],
+  "output_schema": [
+    "security_vulnerabilities"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-25T15:07:18.799119",
+    "registered_at": "2026-01-25T15:07:18.835260"
+  }
+}

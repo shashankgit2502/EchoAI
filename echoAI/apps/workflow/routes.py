@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query, Body, Request
 from echolib.di import container
 from echolib.security import user_context
 from echolib.types import *
@@ -39,20 +39,54 @@ async def validate(workflow: Workflow):
 
 # Workflow Design
 @router.post('/design/prompt')
-async def design_from_prompt(prompt: str, default_llm: dict = None):
+async def design_from_prompt(
+    request: Request,
+    prompt: str = Query(None, description="Natural language prompt for workflow design")
+):
     """
     Design workflow from natural language prompt.
     Returns draft workflow + agent definitions.
+
+    Accepts TWO formats:
+    1. Query parameters: POST /workflows/design/prompt?prompt=...
+    2. Request body: POST /workflows/design/prompt with {"prompt": "...", "default_llm": {...}}
+
+    Query parameters take precedence over body if both are provided.
     """
     try:
+        # Determine prompt and default_llm from either query params or body
+        final_prompt = prompt  # from query param
+        final_llm = None
+
+        # If no query param, try to parse body
+        if not final_prompt:
+            try:
+                body = await request.json()
+                if isinstance(body, dict):
+                    final_prompt = body.get("prompt")
+                    final_llm = body.get("default_llm")
+            except Exception:
+                # No valid JSON body, that's okay if we have query params
+                pass
+
+        if not final_prompt:
+            raise HTTPException(
+                status_code=400,
+                detail="Prompt is required. Provide via query parameter (?prompt=...) or request body ({\"prompt\": \"...\"})"
+            )
+
         designer = container.resolve('workflow.designer')
-        workflow, agents = designer.design_from_prompt(prompt, default_llm)
+        workflow, agents = designer.design_from_prompt(final_prompt, final_llm)
         return {
             "workflow": workflow,
             "agents": agents
         }
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        import traceback
+        error_detail = f"{str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+        raise HTTPException(status_code=400, detail=error_detail)
 
 @router.post('/build')
 async def build_workflow_manual(request: dict):
@@ -233,6 +267,39 @@ async def clone_final(req: CloneWorkflowRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+# Load workflow by ID (tries draft → temp → final)
+@router.get('/{workflow_id}')
+async def load_workflow(workflow_id: str):
+    """Load a workflow by ID, searching across draft/temp/final states."""
+    try:
+        storage = container.resolve('workflow.storage')
+        agent_registry = container.resolve('agent.registry')
+
+        workflow = None
+        for state in ["draft", "temp", "final"]:
+            try:
+                workflow = storage.load_workflow(workflow_id=workflow_id, state=state)
+                if workflow:
+                    break
+            except (FileNotFoundError, Exception):
+                continue
+
+        if not workflow:
+            raise HTTPException(status_code=404, detail="Workflow not found")
+
+        # Load associated agents
+        agent_ids = workflow.get("agents", [])
+        agents = agent_registry.get_agents_for_workflow(agent_ids)
+
+        return {
+            "workflow": workflow,
+            "agents": agents
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 # Execution
 @router.post('/execute')
 async def execute_workflow(req: ExecuteWorkflowRequest):
@@ -363,7 +430,8 @@ async def save_canvas_workflow(request: dict):
         workflow, agents = node_mapper.map_frontend_to_backend(
             canvas_nodes=request.get("canvas_nodes", []),
             connections=request.get("connections", []),
-            workflow_name=request.get("workflow_name")
+            workflow_name=request.get("workflow_name"),
+            execution_model=request.get("execution_model")
         )
 
         # Validate
@@ -409,9 +477,9 @@ async def start_chat_session(request: dict):
     Request:
     {
       "workflow_id": "wf_xxx",
-      "mode": "test",
+      "mode": "test",  // or "workflow_mode" for backward compatibility
       "version": null,
-      "initial_context": {}
+      "initial_context": {}  // or "context" for backward compatibility
     }
     """
     try:
@@ -420,9 +488,11 @@ async def start_chat_session(request: dict):
         session_manager = ChatSessionManager()
 
         workflow_id = request.get("workflow_id")
-        mode = request.get("mode", "test")
+        # Accept both 'mode' and 'workflow_mode' for backward compatibility
+        mode = request.get("mode") or request.get("workflow_mode", "test")
         version = request.get("version")
-        initial_context = request.get("initial_context", {})
+        # Accept both 'initial_context' and 'context' for backward compatibility
+        initial_context = request.get("initial_context") or request.get("context", {})
 
         if not workflow_id:
             raise HTTPException(status_code=400, detail="workflow_id required")

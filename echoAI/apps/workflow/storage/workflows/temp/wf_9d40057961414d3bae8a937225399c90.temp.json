@@ -1,0 +1,46 @@
+{
+  "workflow_id": "wf_9d40057961414d3bae8a937225399c90",
+  "name": "Sequential Task Execution",
+  "description": "Created from canvas on 2026-01-24",
+  "status": "testing",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_132daff801504e079a5ab2e7354b8a39",
+    "agt_bda9787eaf264168b45fb3890897d55c",
+    "agt_43e4f1f4af8a40b09d666af5b14056f6",
+    "agt_a55b092d536f4e6d94639603391b7ab1",
+    "agt_e19e529984fe4189a115b254ff860072"
+  ],
+  "connections": [
+    {
+      "from": "agt_bda9787eaf264168b45fb3890897d55c",
+      "to": "agt_43e4f1f4af8a40b09d666af5b14056f6"
+    },
+    {
+      "from": "agt_43e4f1f4af8a40b09d666af5b14056f6",
+      "to": "agt_a55b092d536f4e6d94639603391b7ab1"
+    },
+    {
+      "from": "agt_132daff801504e079a5ab2e7354b8a39",
+      "to": "agt_e19e529984fe4189a115b254ff860072"
+    },
+    {
+      "from": "agt_e19e529984fe4189a115b254ff860072",
+      "to": "agt_bda9787eaf264168b45fb3890897d55c"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-24T05:49:54.921863",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    },
+    "is_temp": true
+  }
+}

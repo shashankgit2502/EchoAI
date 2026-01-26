@@ -1,0 +1,45 @@
+{
+  "workflow_id": "wf_87deca5a181d464c90caddd7caa75cb0",
+  "name": "API Review Workflow",
+  "description": "Created from canvas on 2026-01-23",
+  "status": "draft",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_8a9784b7db3841ff808dd2e20e6f5c47",
+    "agt_2923e54971684dfcbcd02094d81099c7",
+    "agt_a30212d9780448a9b21debad0c1f2f7e",
+    "agt_89f73a3b5aa24ee2bf21358d9ea30cf2",
+    "agt_6e3f920a01474502b1ebf7d584c22fb7"
+  ],
+  "connections": [
+    {
+      "from": "agt_8a9784b7db3841ff808dd2e20e6f5c47",
+      "to": "agt_2923e54971684dfcbcd02094d81099c7"
+    },
+    {
+      "from": "agt_2923e54971684dfcbcd02094d81099c7",
+      "to": "agt_a30212d9780448a9b21debad0c1f2f7e"
+    },
+    {
+      "from": "agt_a30212d9780448a9b21debad0c1f2f7e",
+      "to": "agt_89f73a3b5aa24ee2bf21358d9ea30cf2"
+    },
+    {
+      "from": "agt_89f73a3b5aa24ee2bf21358d9ea30cf2",
+      "to": "agt_6e3f920a01474502b1ebf7d584c22fb7"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-23T21:44:33.594602",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    }
+  }
+}

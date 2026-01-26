@@ -52,9 +52,10 @@ class AgentRegistry:
             mode="w",
             dir=path.parent,
             delete=False,
-            suffix=".tmp"
+            suffix=".tmp",
+            encoding="utf-8"
         ) as tmp:
-            json.dump(data, tmp, indent=2)
+            json.dump(data, tmp, indent=2, ensure_ascii=False)
             tmp.flush()
             os.fsync(tmp.fileno())
             tmp_path = tmp.name
@@ -69,7 +70,7 @@ class AgentRegistry:
                 continue
 
             try:
-                with open(file) as f:
+                with open(file, encoding='utf-8') as f:
                     agent = json.load(f)
                     agent_id = agent.get("agent_id") or agent.get("id")
                     if agent_id:
@@ -82,7 +83,7 @@ class AgentRegistry:
         """Load master agent list."""
         if self.master_list_file.exists():
             try:
-                with open(self.master_list_file) as f:
+                with open(self.master_list_file, encoding='utf-8') as f:
                     return json.load(f)
             except Exception:
                 return {"agents": []}

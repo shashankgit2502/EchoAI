@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_730a506a32e847a6833eb738e4ad7a9c",
+  "name": "Market Research Analyst",
+  "role": "Evaluates market demand",
+  "goal": "Assess market demand for the product",
+  "description": "Analyzes market data and trends",
+  "llm": {
+    "default_llm": {}
+  },
+  "tools": [],
+  "input_schema": [
+    "market_data",
+    "demand_metrics"
+  ],
+  "output_schema": [
+    "demand_analysis"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T06:24:59.425451",
+    "registered_at": "2026-01-24T06:24:59.425451"
+  }
+}

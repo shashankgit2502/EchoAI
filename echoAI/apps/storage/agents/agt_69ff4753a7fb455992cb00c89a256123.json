@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_69ff4753a7fb455992cb00c89a256123",
+  "name": "Frontend",
+  "role": "Developer",
+  "goal": "To handle frontend implementation",
+  "description": "Focuses on frontend development tasks",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "task_type"
+  ],
+  "output_schema": [
+    "task_id"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T21:07:09.137228",
+    "registered_at": "2026-01-23T21:07:09.176980"
+  }
+}

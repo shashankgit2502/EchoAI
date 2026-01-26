@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_1fae12b9e44248b7acdc453af7f9abf0",
+  "name": "Coordinator",
+  "role": "Manages workflow",
+  "goal": "Coordinate tasks",
+  "description": "Coordinates parallel and sequential steps",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T19:32:24.795641",
+    "registered_at": "2026-01-24T19:32:24.883086"
+  }
+}

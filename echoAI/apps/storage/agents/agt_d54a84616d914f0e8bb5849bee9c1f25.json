@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_d54a84616d914f0e8bb5849bee9c1f25",
+  "name": "ParsingAgent",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 359,
+      "y": 101,
+      "icon": "\ud83d\udd36",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-24T06:02:04.727384",
+    "registered_at": "2026-01-24T06:02:04.779234"
+  }
+}

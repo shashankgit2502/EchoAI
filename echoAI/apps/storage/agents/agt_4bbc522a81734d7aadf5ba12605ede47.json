@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_4bbc522a81734d7aadf5ba12605ede47",
+  "name": "API Analyst",
+  "role": "Functional Reviewer",
+  "goal": "To evaluate the API's compliance with specifications",
+  "description": "Conducts detailed analysis of endpoints and responses",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T21:34:58.403811",
+    "registered_at": "2026-01-23T21:34:58.403811"
+  }
+}

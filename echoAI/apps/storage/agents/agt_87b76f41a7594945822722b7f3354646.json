@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_87b76f41a7594945822722b7f3354646",
+  "name": "CodeQualityAssessor",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.3,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 1215.000000000001,
+      "y": 210.0000000000001,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-25T15:08:48.259479",
+    "registered_at": "2026-01-25T15:08:48.371318"
+  }
+}

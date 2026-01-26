@@ -9,16 +9,21 @@ from .factory.factory import AgentFactory
 from .permissions.permissions import AgentPermissions
 from .designer.agent_designer import AgentDesigner
 
-# Existing services (keep for backward compatibility)
-_tpl = TemplateRepository()
-_graph = LangGraphBuilder()
-_agentsvc = AgentService(_tpl, _graph)
-
-# New orchestrator services
+# New orchestrator services (initialized first so AgentService can use them)
 _registry = AgentRegistry()
 _factory = AgentFactory(tool_registry={})  # TODO: Add real tool registry
 _permissions = AgentPermissions()
 _designer = AgentDesigner()
+
+# Existing services enhanced with registry and designer injection
+_tpl = TemplateRepository()
+_graph = LangGraphBuilder()
+_agentsvc = AgentService(
+    tpl_repo=_tpl,
+    graph_builder=_graph,
+    registry=_registry,
+    designer=_designer
+)
 
 # Register existing services
 container.register('agent.service', lambda: _agentsvc)

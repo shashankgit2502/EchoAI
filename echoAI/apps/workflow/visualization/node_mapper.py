@@ -68,7 +68,8 @@ class NodeMapper:
         canvas_nodes: List[Dict[str, Any]],
         connections: List[Dict[str, Any]],
         workflow_name: Optional[str] = None,
-        auto_generate_name: bool = True
+        auto_generate_name: bool = True,
+        execution_model: Optional[str] = None
     ) -> Tuple[Dict[str, Any], Dict[str, Dict[str, Any]]]:
         """
         Convert frontend canvas to backend workflow JSON.
@@ -122,8 +123,9 @@ class NodeMapper:
                 connection["condition"] = conn.get("condition")
             backend_connections.append(connection)
 
-        # Infer execution model
-        execution_model = self._infer_execution_model(canvas_nodes, connections)
+        # Use explicit execution model if provided, otherwise infer from structure
+        if not execution_model:
+            execution_model = self._infer_execution_model(canvas_nodes, connections)
 
         # Extract state schema from Start/End nodes
         state_schema = self._extract_state_schema(canvas_nodes)
@@ -362,15 +364,27 @@ class NodeMapper:
         tool_ids = []
 
         for tool in frontend_tools:
-            tool_name = tool.get("name", "")
+            # Priority 1: Use tool_id if already provided (from registered tools)
+            if tool.get("tool_id"):
+                tool_ids.append(tool["tool_id"])
+                continue
 
-            # If tool registry available, resolve name → ID
+            # Priority 2: Resolve by name using tool registry
+            tool_name = tool.get("name", "")
             if self.tool_registry:
                 tool_id = self.tool_registry.get_tool_id_by_name(tool_name)
                 if tool_id:
                     tool_ids.append(tool_id)
-            else:
-                # Fallback: use name as placeholder
+                    continue
+
+            # Priority 3: For builtin types (code, subworkflow, mcp_server), use type as marker
+            tool_type = tool.get("type", "")
+            if tool_type in ["code", "subworkflow", "subworkflow_deployment", "mcp_server"]:
+                tool_ids.append(f"builtin_{tool_type}")
+                continue
+
+            # Fallback: use name as placeholder
+            if tool_name:
                 tool_ids.append(tool_name.lower().replace(" ", "_"))
 
         return tool_ids

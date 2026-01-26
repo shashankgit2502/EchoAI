@@ -1,0 +1,30 @@
+{
+  "agent_id": "agt_47bc84afc5ae4898a0630651dccb1e16",
+  "name": "Extractor",
+  "role": "Extractor",
+  "goal": "Extract data from sources",
+  "description": "Extracts data from 3 sources",
+  "llm": {
+    "default_llm": {}
+  },
+  "tools": [],
+  "input_schema": [
+    "source1",
+    "source2"
+  ],
+  "output_schema": [
+    "data1",
+    "data2"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T05:48:46.027444",
+    "registered_at": "2026-01-24T05:48:46.027444"
+  }
+}

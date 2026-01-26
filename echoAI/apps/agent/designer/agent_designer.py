@@ -25,6 +25,205 @@ class AgentDesigner:
     Uses LLM to generate agent definitions from natural language prompts.
     """
 
+    # Available tools for auto-selection (must match actual backend tool IDs)
+    AVAILABLE_TOOLS = ["tool_web_search", "tool_file_reader", "tool_code_generator", "tool_code_reviewer", "tool_calculator"]
+
+    # Tool selection rules: keyword patterns -> tool IDs
+    # IMPORTANT: Keys must match actual backend tool IDs in apps/storage/tools/
+    TOOL_SELECTION_RULES = {
+        "tool_web_search": [
+            # Research & Information
+            "research", "analyze", "analysis", "search", "web", "explore", "investigate",
+            "find", "lookup", "browse", "internet", "online", "query", "discover",
+            "information", "info", "data", "facts", "knowledge", "learn", "learning",
+            # News & Updates
+            "news", "trends", "trending", "latest", "current", "today", "recent", "update", "updates",
+            # Finance & Business
+            "financial", "finance", "stock", "stocks", "market", "markets", "trading", "invest", "investment",
+            "report", "reports", "analyst", "advisor", "business", "company", "companies", "startup",
+            "crypto", "bitcoin", "cryptocurrency", "forex", "currency", "exchange",
+            # Travel & Booking
+            "travel", "trip", "trips", "vacation", "holiday", "booking", "book", "reserve",
+            "flight", "flights", "airline", "airlines", "airport",
+            "hotel", "hotels", "accommodation", "stay", "airbnb", "hostel",
+            "reservation", "reservations", "destination", "destinations",
+            "tour", "tours", "tourism", "tourist", "sightseeing",
+            "itinerary", "ticket", "tickets", "pass", "visa",
+            "train", "trains", "railway", "bus", "buses", "car", "cars", "rental", "rentals",
+            "transport", "transportation", "commute", "route", "routes", "directions",
+            # Shopping & Products
+            "shop", "shopping", "buy", "purchase", "price", "prices", "cost", "compare", "comparison",
+            "product", "products", "item", "items", "store", "stores", "amazon", "ebay", "deal", "deals",
+            "review", "reviews", "rating", "ratings", "recommendation", "recommendations",
+            # Food & Dining
+            "restaurant", "restaurants", "food", "foods", "menu", "dining", "eat", "eating",
+            "recipe", "recipes", "cook", "cooking", "cuisine", "delivery", "takeout",
+            # Entertainment
+            "movie", "movies", "film", "films", "show", "shows", "tv", "television", "netflix", "stream",
+            "music", "song", "songs", "artist", "artists", "album", "concert", "concerts",
+            "event", "events", "sports", "game", "games", "match", "score", "scores",
+            "video", "videos", "youtube", "watch",
+            # Location & Maps
+            "location", "locations", "address", "map", "maps", "place", "places", "nearby", "local",
+            "weather", "forecast", "temperature", "climate",
+            # Health & Medical
+            "health", "medical", "doctor", "doctors", "hospital", "hospitals", "clinic",
+            "medicine", "medication", "symptom", "symptoms", "treatment", "pharmacy",
+            # Education
+            "education", "school", "schools", "university", "college", "course", "courses",
+            "tutorial", "tutorials", "guide", "guides", "how to", "howto", "learn",
+            # Jobs & Career
+            "job", "jobs", "career", "careers", "employment", "hire", "hiring", "salary", "salaries",
+            "resume", "interview", "work", "remote", "freelance",
+            # Real Estate
+            "real estate", "property", "properties", "house", "houses", "apartment", "apartments",
+            "rent", "renting", "lease", "mortgage", "realtor",
+            # Social & Communication
+            "social media", "twitter", "facebook", "instagram", "linkedin", "tiktok",
+            "people", "person", "contact", "email", "phone",
+            # Reference & Knowledge
+            "wikipedia", "definition", "meaning", "translate", "translation", "language",
+            "book", "books", "author", "article", "articles", "blog", "publication"
+        ],
+        "tool_file_reader": [
+            # Document Types
+            "file", "files", "document", "documents", "doc", "docs",
+            "pdf", "pdfs", "word", "docx", "txt", "text",
+            "markdown", "md", "html", "htm", "rtf",
+            # Data Files
+            "csv", "excel", "xlsx", "xls", "spreadsheet", "spreadsheets",
+            "json", "xml", "yaml", "yml", "ini", "config", "configuration",
+            # Actions
+            "read", "reading", "parse", "parsing", "extract", "extraction",
+            "load", "loading", "import", "importing", "open", "opening",
+            "analyze", "scan", "scanning",
+            # Content Types
+            "content", "contents", "data", "table", "tables", "sheet", "sheets",
+            "report", "reports", "invoice", "invoices", "receipt", "receipts",
+            "contract", "contracts", "agreement", "agreements",
+            "resume", "cv", "letter", "letters", "form", "forms",
+            # File Operations
+            "attachment", "attachments", "upload", "uploaded", "download",
+            "log", "logs", "readme", "license", "changelog",
+            # Media (text extraction)
+            "image", "images", "photo", "photos", "screenshot", "screenshots",
+            "scanned", "ocr", "transcript", "transcription"
+        ],
+        "tool_code_generator": [
+            # Languages
+            "code", "coding", "program", "programming", "script", "scripting",
+            "python", "javascript", "typescript", "java", "csharp", "c#",
+            "cpp", "c++", "golang", "go", "rust", "ruby", "php", "swift", "kotlin",
+            "scala", "perl", "bash", "shell", "powershell", "sql",
+            "html", "css", "react", "angular", "vue", "node", "nodejs",
+            # Actions
+            "develop", "developer", "development", "build", "building",
+            "create", "creating", "generate", "generating", "write", "writing",
+            "implement", "implementation", "execute", "execution", "run", "running",
+            "compile", "compiling", "debug", "debugging", "fix", "fixing",
+            "refactor", "refactoring", "optimize", "optimization",
+            # Concepts
+            "software", "application", "app", "apps", "api", "apis",
+            "backend", "frontend", "fullstack", "full-stack",
+            "function", "functions", "method", "methods", "class", "classes",
+            "algorithm", "algorithms", "logic", "module", "modules",
+            "library", "libraries", "framework", "frameworks", "sdk",
+            "package", "packages", "dependency", "dependencies",
+            # Testing
+            "test", "tests", "testing", "unittest", "unit test", "pytest", "jest",
+            "selenium", "automation", "automate", "automated",
+            # Web & API
+            "rest", "restful", "graphql", "websocket", "http", "https",
+            "endpoint", "endpoints", "route", "routes", "request", "response",
+            "authentication", "authorization", "oauth", "jwt", "token",
+            # Database
+            "database", "databases", "db", "query", "queries",
+            "mysql", "postgresql", "postgres", "mongodb", "redis", "sqlite",
+            # DevOps & Cloud
+            "docker", "kubernetes", "k8s", "container", "containers",
+            "aws", "azure", "gcp", "cloud", "serverless", "lambda",
+            "deploy", "deployment", "ci", "cd", "pipeline", "jenkins", "github actions",
+            "git", "github", "gitlab", "bitbucket", "version control",
+            # Data & AI
+            "scrape", "scraping", "crawler", "crawling", "bot", "bots",
+            "parse", "parser", "parsing", "regex", "regular expression",
+            "machine learning", "ml", "ai", "artificial intelligence",
+            "data science", "pandas", "numpy", "tensorflow", "pytorch"
+        ],
+        "tool_code_reviewer": [
+            # Core Review
+            "review", "reviewer", "reviewing", "code review", "peer review",
+            "check", "checking", "inspect", "inspection", "examine", "audit", "auditing",
+            # Quality
+            "quality", "code quality", "clean code", "best practices", "standards",
+            "maintainability", "readability", "documentation", "comments",
+            "style", "convention", "conventions", "formatting", "lint", "linting", "linter",
+            # Analysis
+            "static analysis", "analyze", "analysis", "complexity", "metrics",
+            "coverage", "test coverage", "code coverage",
+            # Issues
+            "bug", "bugs", "issue", "issues", "error", "errors", "problem", "problems",
+            "smell", "code smell", "anti-pattern", "antipattern",
+            "vulnerability", "vulnerabilities", "flaw", "flaws",
+            # Security
+            "security", "secure", "insecure", "vulnerability", "exploit",
+            "injection", "sql injection", "xss", "csrf", "sanitization", "validation",
+            "encryption", "authentication", "authorization",
+            # Improvement
+            "improve", "improvement", "optimize", "optimization", "refactor", "refactoring",
+            "suggestion", "suggestions", "feedback", "recommend", "recommendation",
+            # Principles
+            "solid", "dry", "kiss", "yagni", "separation of concerns",
+            "design pattern", "design patterns", "architecture",
+            "technical debt", "legacy", "deprecated", "upgrade", "modernize"
+        ],
+        "tool_calculator": [
+            # Basic Math
+            "calculate", "calculation", "calculations", "calculator",
+            "math", "mathematics", "mathematical", "compute", "computation",
+            "add", "addition", "subtract", "subtraction", "multiply", "multiplication",
+            "divide", "division", "sum", "total", "difference", "product", "quotient",
+            # Statistics
+            "average", "mean", "median", "mode", "statistics", "statistical",
+            "percentage", "percent", "ratio", "proportion", "fraction", "decimal",
+            "probability", "random", "distribution", "variance", "deviation",
+            "min", "minimum", "max", "maximum", "range", "count",
+            # Financial
+            "financial", "finance", "money", "budget", "budgeting",
+            "accounting", "accountant", "bookkeeping",
+            "interest", "compound interest", "simple interest", "apr", "apy",
+            "loan", "loans", "mortgage", "payment", "payments", "amortization",
+            "tax", "taxes", "taxation", "income", "expense", "expenses",
+            "profit", "loss", "margin", "markup", "discount",
+            "roi", "return", "investment", "yield", "dividend",
+            "depreciation", "inflation", "gdp", "growth rate",
+            "salary", "wage", "hourly", "annual", "monthly",
+            "tip", "gratuity", "split", "bill",
+            # Conversions
+            "convert", "conversion", "unit", "units", "measurement",
+            "distance", "length", "weight", "mass", "volume", "area",
+            "temperature", "celsius", "fahrenheit", "kelvin",
+            "speed", "velocity", "time", "duration", "age",
+            "currency", "exchange rate", "forex",
+            # Advanced Math
+            "equation", "equations", "formula", "formulas", "solve", "solution",
+            "algebra", "geometry", "trigonometry", "calculus",
+            "derivative", "integral", "limit",
+            "exponent", "power", "logarithm", "log", "root", "square root", "sqrt",
+            "factorial", "permutation", "combination",
+            "matrix", "vector", "linear algebra",
+            "graph", "plot", "chart", "function",
+            # Numbers
+            "number", "numbers", "numeric", "numerical", "digit", "digits",
+            "integer", "float", "round", "rounding", "floor", "ceil", "ceiling",
+            "absolute", "abs", "positive", "negative", "sign",
+            "prime", "even", "odd", "factor", "factors", "multiple", "gcd", "lcm",
+            # Body/Health Calculations
+            "bmi", "body mass", "calories", "calorie", "nutrition",
+            "heart rate", "pace", "distance", "steps"
+        ]
+    }
+
     def __init__(self, api_key: Optional[str] = None):
         """
         Initialize designer.
@@ -49,143 +248,90 @@ class AgentDesigner:
 
     def _get_llm_client(self, model_id: str = None):
         """
-        Get LLM client based on environment configuration.
+        Get LLM client using centralized LLM Manager.
 
-        Provider Priority (based on .env settings):
-        1. USE_AZURE=true -> Azure OpenAI
-        2. USE_OPENROUTER=true -> OpenRouter (current default)
-        3. USE_OLLAMA=true -> Ollama (on-premise)
-        4. USE_OPENAI=true -> OpenAI Direct
+        All LLM configuration is now in llm_manager.py
+        To change provider/model, edit llm_manager.py
+
+        Args:
+            model_id: Optional model ID (ignored, kept for backward compatibility)
+
+        Returns:
+            LLM client instance
         """
-        from langchain_openai import ChatOpenAI
-        # For Azure deployment - uncomment the line below
-        # from langchain_openai import AzureChatOpenAI
+        from llm_manager import LLMManager
 
-        # =================================================================
-        # OPTION 1: AZURE OPENAI (For Azure Deployment)
-        # =================================================================
-        # Uncomment this block when deploying to Azure
-        # -----------------------------------------------------------------
-        # if os.getenv("USE_AZURE", "false").lower() == "true":
-        #     return AzureChatOpenAI(
-        #         azure_deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
-        #         api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview"),
-        #         azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-        #         api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-        #         temperature=0.3,
-        #         max_tokens=4000
-        #     )
-
-        # =================================================================
-        # OPTION 2: OPENROUTER (Current - For Development)
-        # =================================================================
-        # Using OpenRouter with free tier model - CURRENTLY ACTIVE
-        # -----------------------------------------------------------------
-        if os.getenv("USE_OPENROUTER", "true").lower() == "true":
-            openrouter_key = os.getenv(
-                "OPENROUTER_API_KEY",
-                "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"
-            )
-            openrouter_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-            openrouter_model = os.getenv("OPENROUTER_MODEL", "mistralai/devstral-2512:free")
-            return ChatOpenAI(
-                base_url=openrouter_url,
-                api_key=openrouter_key,
-                model=openrouter_model,
+        # Get LLM from centralized manager
+        # Uses default configuration from llm_manager.py
+        try:
+            return LLMManager.get_llm(
                 temperature=0.3,
                 max_tokens=4000
             )
+        except Exception as e:
+            raise RuntimeError(f"Failed to get LLM from LLMManager: {e}")
 
-        # =================================================================
-        # OPTION 3: OLLAMA (On-Premise/Local)
-        # =================================================================
-        # Uncomment this block for local Ollama deployment
-        # -----------------------------------------------------------------
-        # if os.getenv("USE_OLLAMA", "false").lower() == "true":
-        #     ollama_url = os.getenv("OLLAMA_BASE_URL", "http://10.188.100.131:8004/v1")
-        #     ollama_model = os.getenv("OLLAMA_MODEL", "mistral-nemo:12b-instruct-2407-fp16")
-        #     return ChatOpenAI(
-        #         base_url=ollama_url,
-        #         api_key="ollama",
-        #         model=ollama_model,
-        #         temperature=0.3,
-        #         max_tokens=4000
-        #     )
+    def _select_tools_for_agent(self, user_prompt: str, intent: Dict[str, Any] = None) -> list:
+        """
+        Auto-select appropriate tools based on agent purpose and intent keywords.
 
-        # =================================================================
-        # OPTION 4: OPENAI DIRECT
-        # =================================================================
-        # Uncomment this block for direct OpenAI API
-        # -----------------------------------------------------------------
-        # if os.getenv("USE_OPENAI", "false").lower() == "true":
-        #     openai_key = os.getenv("OPENAI_API_KEY")
-        #     openai_model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-        #     return ChatOpenAI(
-        #         api_key=openai_key,
-        #         model=openai_model,
-        #         temperature=0.3,
-        #         max_tokens=4000
-        #     )
+        Uses keyword matching to determine which tools are relevant for the agent.
+        Maximum of 2 tools will be selected to avoid over-tooling.
 
-        # =================================================================
-        # FALLBACK: Use model from llm_provider.json
-        # =================================================================
-        if not model_id:
-            # Find default model
-            for mid, config in self._llm_providers.items():
-                if config.get("is_default", False):
-                    model_id = mid
-                    break
-            if not model_id and self._llm_providers:
-                model_id = list(self._llm_providers.keys())[0]
+        Args:
+            user_prompt: The user's natural language prompt
+            intent: Optional pre-analyzed intent dict with keywords
 
-        if model_id and model_id in self._llm_providers:
-            model_config = self._llm_providers[model_id]
-            provider = model_config.get("provider", "openrouter")
+        Returns:
+            List of tool IDs (max 2), empty list if no clear match
+        """
+        # Build keyword set from prompt and intent
+        prompt_lower = user_prompt.lower()
 
-            if provider == "openrouter":
-                api_key = os.getenv(
-                    model_config.get("api_key_env", "OPENROUTER_API_KEY"),
-                    "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"
-                )
-                return ChatOpenAI(
-                    base_url=model_config.get("base_url", "https://openrouter.ai/api/v1"),
-                    api_key=api_key,
-                    model=model_config.get("model_name"),
-                    temperature=0.3,
-                    max_tokens=4000
-                )
-            elif provider == "ollama":
-                return ChatOpenAI(
-                    base_url=model_config.get("base_url", "http://localhost:11434/v1"),
-                    api_key="ollama",
-                    model=model_config.get("model_name"),
-                    temperature=0.3,
-                    max_tokens=4000
-                )
-            elif provider == "openai":
-                api_key = os.getenv(model_config.get("api_key_env", "OPENAI_API_KEY"), self.api_key)
-                return ChatOpenAI(
-                    api_key=api_key,
-                    model=model_config.get("model_name", "gpt-4o-mini"),
-                    temperature=0.3,
-                    max_tokens=4000
-                )
+        keywords = set()
+        # Add words from prompt
+        words = [w.strip(".,!?;:()[]{}\"'") for w in prompt_lower.split()]
+        keywords.update(w for w in words if len(w) > 2)
 
-        # Ultimate fallback: OpenRouter
-        return ChatOpenAI(
-            base_url="https://openrouter.ai/api/v1",
-            api_key="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",
-            model="mistralai/devstral-2512:free",
-            temperature=0.3,
-            max_tokens=4000
-        )
+        # Add keywords from intent if available
+        if intent:
+            keywords.update(kw.lower() for kw in intent.get("keywords", []))
+            domain = intent.get("domain", "")
+            if domain:
+                keywords.add(domain.lower())
+
+        if not keywords:
+            return []
+
+        # Score each tool based on keyword matches
+        tool_scores = {}
+
+        for tool_id, tool_keywords in self.TOOL_SELECTION_RULES.items():
+            score = 0
+            for keyword in tool_keywords:
+                # Check if keyword appears in prompt or intent keywords
+                if keyword in prompt_lower:
+                    score += 2  # Higher score for direct prompt match
+                elif keyword in keywords:
+                    score += 1
+
+            if score > 0:
+                tool_scores[tool_id] = score
+
+        if not tool_scores:
+            return []
+
+        # Sort by score and take top 2
+        sorted_tools = sorted(tool_scores.items(), key=lambda x: x[1], reverse=True)
+        selected_tools = [tool_id for tool_id, score in sorted_tools[:2]]
+
+        return selected_tools
 
     def design_from_prompt(
         self,
         user_prompt: str,
         default_model: str = "openrouter-devstral",
-        icon: str = "🤖",
+        icon: str = "",
         tools: list = None,
         variables: list = None
     ) -> Dict[str, Any]:
@@ -196,16 +342,18 @@ class AgentDesigner:
             user_prompt: Natural language description of agent
             default_model: Model ID to use for agent
             icon: Emoji icon for agent
-            tools: List of tool names
+            tools: List of tool names (if None or empty, auto-selects based on purpose)
             variables: List of variable definitions
 
         Returns:
             Agent definition dict
         """
-        if tools is None:
-            tools = []
         if variables is None:
             variables = []
+
+        # Auto-select tools if not provided or empty
+        if tools is None or len(tools) == 0:
+            tools = self._select_tools_for_agent(user_prompt)
 
         # Use LLM to analyze prompt
         try:
@@ -342,3 +490,215 @@ IMPORTANT RULES:
             "input_schema": [],
             "output_schema": []
         }
+
+    def update_from_prompt(
+        self,
+        existing_agent: Dict[str, Any],
+        user_prompt: str
+    ) -> Dict[str, Any]:
+        """
+        Update an existing agent based on user prompt while preserving identity.
+
+        This method detects what fields the user wants to update and only
+        modifies those fields, preserving the agent's name, ID, and other
+        unchanged attributes.
+
+        Args:
+            existing_agent: The current agent definition dict
+            user_prompt: User's natural language update request
+
+        Returns:
+            Updated agent definition dict with preserved identity
+        """
+        # Detect what the user wants to update
+        update_intent = self._detect_update_fields(user_prompt)
+
+        # Use LLM to generate updates for specified fields only
+        try:
+            updates = self._generate_field_updates(
+                existing_agent, user_prompt, update_intent
+            )
+        except Exception as e:
+            print(f"LLM update failed, applying basic updates: {e}")
+            updates = self._apply_basic_updates(existing_agent, user_prompt, update_intent)
+
+        # Merge updates into existing agent, preserving identity
+        updated_agent = existing_agent.copy()
+
+        # CRITICAL: Always preserve agent_id and name unless explicitly requested
+        preserved_fields = ["agent_id", "name"]
+        if "name" not in update_intent.get("fields_to_update", []):
+            # Name should not change unless explicitly requested
+            updates.pop("name", None)
+
+        # Apply updates
+        for key, value in updates.items():
+            if key not in preserved_fields or key in update_intent.get("fields_to_update", []):
+                updated_agent[key] = value
+
+        # Update metadata
+        if "metadata" not in updated_agent:
+            updated_agent["metadata"] = {}
+        updated_agent["metadata"]["updated_at"] = datetime.utcnow().isoformat()
+        updated_agent["metadata"]["update_prompt"] = user_prompt
+
+        return updated_agent
+
+    def _detect_update_fields(self, user_prompt: str) -> Dict[str, Any]:
+        """
+        Detect which fields the user wants to update based on prompt keywords.
+
+        Args:
+            user_prompt: User's update request
+
+        Returns:
+            Dict with fields_to_update list and detected intent
+        """
+        prompt_lower = user_prompt.lower()
+
+        fields_to_update = []
+
+        # Tool-related keywords
+        tool_keywords = ["tool", "tools", "add tool", "remove tool", "change tool",
+                         "web search", "file reader", "code executor"]
+        if any(kw in prompt_lower for kw in tool_keywords):
+            fields_to_update.append("tools")
+
+        # Description/purpose keywords
+        desc_keywords = ["description", "purpose", "what it does", "goal", "objective"]
+        if any(kw in prompt_lower for kw in desc_keywords):
+            fields_to_update.append("description")
+
+        # Role keywords
+        role_keywords = ["role", "position", "job", "title"]
+        if any(kw in prompt_lower for kw in role_keywords):
+            fields_to_update.append("role")
+
+        # Prompt/behavior keywords
+        behavior_keywords = ["prompt", "behavior", "instruction", "system prompt",
+                            "how it works", "act", "behave"]
+        if any(kw in prompt_lower for kw in behavior_keywords):
+            fields_to_update.append("prompt")
+
+        # Settings keywords
+        settings_keywords = ["temperature", "max_token", "setting", "configure",
+                            "parameter", "iteration"]
+        if any(kw in prompt_lower for kw in settings_keywords):
+            fields_to_update.append("settings")
+
+        # Name keywords (only if explicitly mentioned)
+        name_keywords = ["rename", "change name", "new name", "call it", "named"]
+        if any(kw in prompt_lower for kw in name_keywords):
+            fields_to_update.append("name")
+
+        # If no specific fields detected, assume description and prompt update
+        if not fields_to_update:
+            fields_to_update = ["description", "prompt"]
+
+        return {
+            "fields_to_update": fields_to_update,
+            "original_prompt": user_prompt
+        }
+
+    def _generate_field_updates(
+        self,
+        existing_agent: Dict[str, Any],
+        user_prompt: str,
+        update_intent: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Use LLM to generate updates for specified fields.
+
+        Args:
+            existing_agent: Current agent definition
+            user_prompt: User's update request
+            update_intent: Dict with fields_to_update
+
+        Returns:
+            Dict with updated field values
+        """
+        fields_to_update = update_intent.get("fields_to_update", [])
+
+        system_prompt = f"""You are an AI agent updater. The user wants to modify an existing agent.
+
+EXISTING AGENT:
+- Name: {existing_agent.get('name', 'Unknown')}
+- Role: {existing_agent.get('role', 'Processing')}
+- Description: {existing_agent.get('description', '')}
+- Current Tools: {existing_agent.get('tools', [])}
+- System Prompt: {existing_agent.get('prompt', '')[:500]}
+
+FIELDS TO UPDATE: {fields_to_update}
+
+Based on the user's request, provide updates ONLY for the specified fields.
+Return a JSON object with ONLY the fields that need updating.
+
+IMPORTANT RULES:
+1. NEVER change the agent's name unless "name" is in the fields to update
+2. Only return the fields listed in FIELDS TO UPDATE
+3. Preserve the agent's core identity and purpose
+4. For tools: return the complete new tools list (not just additions/removals)
+
+Example response format:
+{{"description": "Updated description", "tools": ["tool1", "tool2"]}}
+"""
+
+        llm = self._get_llm_client()
+        full_prompt = f"{system_prompt}\n\nUser Request: {user_prompt}\n\nProvide your response as a valid JSON object with only the updated fields."
+
+        response = llm.invoke(full_prompt)
+
+        # Parse response
+        try:
+            content = response.content if hasattr(response, 'content') else str(response)
+
+            # Extract JSON from markdown if present
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+
+            updates = json.loads(content)
+
+            # Validate that only requested fields are updated
+            validated_updates = {}
+            for field in fields_to_update:
+                if field in updates:
+                    validated_updates[field] = updates[field]
+
+            return validated_updates
+
+        except json.JSONDecodeError:
+            return self._apply_basic_updates(existing_agent, user_prompt, update_intent)
+
+    def _apply_basic_updates(
+        self,
+        existing_agent: Dict[str, Any],
+        user_prompt: str,
+        update_intent: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Apply basic updates without LLM (fallback).
+
+        Args:
+            existing_agent: Current agent definition
+            user_prompt: User's update request
+            update_intent: Dict with fields_to_update
+
+        Returns:
+            Dict with basic updated values
+        """
+        fields_to_update = update_intent.get("fields_to_update", [])
+        updates = {}
+
+        if "description" in fields_to_update:
+            # Append update context to description
+            current_desc = existing_agent.get("description", "")
+            updates["description"] = f"{current_desc} (Updated: {user_prompt[:100]})"
+
+        if "prompt" in fields_to_update:
+            # Append to system prompt
+            current_prompt = existing_agent.get("prompt", "")
+            updates["prompt"] = f"{current_prompt}\n\nAdditional instructions: {user_prompt}"
+
+        return updates

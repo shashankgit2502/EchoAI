@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_e46069f3a04e4e69b803be1572cee9ba",
+  "name": "Testing Engineer",
+  "role": "Testing Engineer",
+  "goal": "To validate the implementation and identify issues",
+  "description": "To ensure quality and functionality of the API",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "test_case"
+  ],
+  "output_schema": [
+    "test_result"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T21:43:19.517595",
+    "registered_at": "2026-01-23T21:43:19.573201"
+  }
+}

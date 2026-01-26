@@ -1,0 +1,27 @@
+{
+  "agent_id": "agt_test_math",
+  "name": "Math Expert",
+  "role": "Mathematics Specialist",
+  "description": "Expert in mathematical calculations",
+  "prompt": "You are a math expert",
+  "model": "gpt-4o-mini",
+  "tools": [
+    "tool_calculator"
+  ],
+  "settings": {
+    "temperature": 0.5
+  },
+  "input_schema": [
+    "math_problem"
+  ],
+  "output_schema": [
+    "solution"
+  ],
+  "constraints": {},
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "registered_at": "2026-01-26T07:12:14.779950"
+  }
+}

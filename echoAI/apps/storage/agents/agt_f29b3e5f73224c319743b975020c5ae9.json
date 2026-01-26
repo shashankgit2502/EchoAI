@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_f29b3e5f73224c319743b975020c5ae9",
+  "name": "Syntax Validator",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.3,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 660,
+      "y": 100,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-25T14:52:49.742501",
+    "registered_at": "2026-01-25T14:52:49.808893"
+  }
+}

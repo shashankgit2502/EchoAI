@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_984151c4558f4f408a3c445ce0d23c56",
+  "name": "Technical Feasibility Analyst",
+  "role": "Assesses technical requirements",
+  "goal": "Evaluate implementation feasibility",
+  "description": "Evaluates technical constraints and compatibility",
+  "llm": {
+    "default_llm": {}
+  },
+  "tools": [],
+  "input_schema": [
+    "technical_specs",
+    "compatibility_checks"
+  ],
+  "output_schema": [
+    "technical_report"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T06:24:59.425451",
+    "registered_at": "2026-01-24T06:24:59.480755"
+  }
+}

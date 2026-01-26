@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_e97bd7686ba44726a93f7fa5b578150a",
+  "name": "Testing Agent",
+  "role": "Automated Testing",
+  "goal": "Execute unit tests and performance checks",
+  "description": "Verifies code reliability under various conditions",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T21:08:12.678787",
+    "registered_at": "2026-01-23T21:08:12.722645"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_5277c9c72a614384a8243ad9d4183ab5",
+  "name": "CodeAnalyst",
+  "role": "Analyzes code for syntax and best practices",
+  "goal": "Ensure code quality",
+  "description": "",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "input_code"
+  ],
+  "output_schema": [
+    "output_code"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T18:36:06.601289",
+    "registered_at": "2026-01-23T18:36:06.601289"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_f8db106bc83a453dbc426cc092d1faa3",
+  "name": "Financial Analyst",
+  "role": "Estimates costs and revenue",
+  "goal": "Provide financial projections",
+  "description": "Analyzes financial aspects and budgeting",
+  "llm": {
+    "default_llm": {}
+  },
+  "tools": [],
+  "input_schema": [
+    "financial_metrics",
+    "budget_data"
+  ],
+  "output_schema": [
+    "financial_summary"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T06:24:59.425451",
+    "registered_at": "2026-01-24T06:24:59.528129"
+  }
+}

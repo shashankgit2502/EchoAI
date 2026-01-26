@@ -640,7 +640,7 @@ Done! Here's a summary of all LLM configuration locations for easy switching:
   # Currently active: OpenRouter
   USE_OPENROUTER=true
   OPENROUTER_API_KEY=sk-or-v1-...
-  OPENROUTER_MODEL=mistralai/devstral-2512:free
+  OPENROUTER_MODEL=tngtech/tng-r1t-chimera:free
 
   # To switch to Ollama: Comment above, uncomment below
   # USE_OLLAMA=true

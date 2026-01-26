@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_0ce99d6abd62445e8b7638cbfbba8ea2",
+  "name": "Implementation Agent",
+  "role": "Translating requirements into code",
+  "goal": "To execute the design",
+  "description": "Converts specifications into functional code",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "design_specs"
+  ],
+  "output_schema": [
+    "source_code"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T19:18:28.004838",
+    "registered_at": "2026-01-23T19:18:28.026438"
+  }
+}

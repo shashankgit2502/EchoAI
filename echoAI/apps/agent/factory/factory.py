@@ -2,6 +2,7 @@
 Agent factory.
 Creates runtime agent instances from definitions.
 """
+import os
 from typing import Dict, Any, List, Optional
 
 
@@ -93,8 +94,11 @@ class AgentFactory:
 
         TODO: Implement actual LLM client creation
         """
-        provider = llm_config.get("provider", "openai")
-        model = llm_config.get("model", "gpt-4o-mini")
+        provider = llm_config.get("provider", os.getenv("LLM_PROVIDER", "openrouter"))
+        model = llm_config.get(
+            "model",
+            os.getenv("OPENROUTER_MODEL", "allenai/molmo-2-8b:free")
+        )
         temperature = llm_config.get("temperature", 0.2)
 
         # Cache clients

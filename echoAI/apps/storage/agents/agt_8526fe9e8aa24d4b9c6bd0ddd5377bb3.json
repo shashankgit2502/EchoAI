@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_8526fe9e8aa24d4b9c6bd0ddd5377bb3",
+  "name": "ParsingAgent",
+  "role": "Parses input requirements",
+  "goal": "Extracts task specifications",
+  "description": "Analyzes user input to define scope and constraints",
+  "llm": {
+    "default_llm": {}
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T05:57:04.823445",
+    "registered_at": "2026-01-24T05:57:04.823445"
+  }
+}

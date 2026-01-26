@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_22b069701e714f8f99d2dc39612566b8",
+  "name": "Code Generator",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 64,
+      "y": 247,
+      "icon": "\ud83d\udd36",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-23T22:56:23.076266",
+    "registered_at": "2026-01-23T22:56:23.136937"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_27d3f5521b7448c0bf5af50bef059c6d",
+  "name": "Design Architect",
+  "role": "Design Architect",
+  "goal": "To define the structure and requirements for the API review",
+  "description": "Responsible for outlining the scope and objectives of the review process",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T21:43:19.517595",
+    "registered_at": "2026-01-23T21:43:19.517595"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "workflow_id": "wf_306eccb24c8b4351b05140f7dbdf47fd",
+  "name": "API Endpoint Processing",
+  "description": "Created from canvas on 2026-01-23",
+  "status": "draft",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_b732ee67f6c945feb4464f6a2338ebcd",
+    "agt_70bb663ca65b4762984229891172e8af",
+    "agt_2ecbd8546d44479e9d0a4f98cb11d5ba",
+    "agt_b55248cba66645779b376ac891fdae33"
+  ],
+  "connections": [
+    {
+      "from": "agt_b732ee67f6c945feb4464f6a2338ebcd",
+      "to": "agt_70bb663ca65b4762984229891172e8af"
+    },
+    {
+      "from": "agt_70bb663ca65b4762984229891172e8af",
+      "to": "agt_2ecbd8546d44479e9d0a4f98cb11d5ba"
+    },
+    {
+      "from": "agt_2ecbd8546d44479e9d0a4f98cb11d5ba",
+      "to": "agt_b55248cba66645779b376ac891fdae33"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-23T21:08:37.005675",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    }
+  }
+}

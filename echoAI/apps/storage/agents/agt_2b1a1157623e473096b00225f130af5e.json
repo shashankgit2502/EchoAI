@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_2b1a1157623e473096b00225f130af5e",
+  "name": "Transformer",
+  "role": "Transformer",
+  "goal": "Process extracted data",
+  "description": "Processes data for transformation",
+  "llm": {
+    "default_llm": {}
+  },
+  "tools": [],
+  "input_schema": [
+    "input"
+  ],
+  "output_schema": [
+    "output"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T05:48:46.027444",
+    "registered_at": "2026-01-24T05:48:46.070929"
+  }
+}

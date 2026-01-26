@@ -743,6 +743,13 @@
       // API Base URL
       const API_BASE_URL = 'http://localhost:8000';
 
+      // Tool System State
+      const [registeredTools, setRegisteredTools] = useState([]);
+      const [toolsLoaded, setToolsLoaded] = useState(false);
+      const [toolsLoadError, setToolsLoadError] = useState(null);
+      const [isDiscoveringTools, setIsDiscoveringTools] = useState(false);
+      const [toolDiscoveryMessage, setToolDiscoveryMessage] = useState('');
+
       // UI state
       const [showToolConfigModal, setShowToolConfigModal] = useState(false);
       const [configuringTool, setConfiguringTool] = useState(null);
@@ -756,6 +763,11 @@
       const [currentInput, setCurrentInput] = useState('');
       const [conversationStep, setConversationStep] = useState('initial'); // initial, name, refine, done
       const [suggestedName, setSuggestedName] = useState('');
+
+      // Agent Exists Modal state (for AGENT_EXISTS action)
+      const [showAgentExistsModal, setShowAgentExistsModal] = useState(false);
+      const [existingAgentMatch, setExistingAgentMatch] = useState(null);
+      const [pendingPrompt, setPendingPrompt] = useState('');
 
       const agentTemplates = [
         {
@@ -784,10 +796,43 @@
         }
       ];
 
+      // Tool ID normalization: maps old/short IDs to actual backend tool IDs
+      // This ensures compatibility regardless of which ID format is used
+      const TOOL_ID_MAP = {
+        // Old format -> Backend format
+        'web_search': 'tool_web_search',
+        'file_reader': 'tool_file_reader',
+        'code_executor': 'tool_code_generator',
+        'code_reviewer': 'tool_code_reviewer',
+        'calculator': 'tool_calculator',
+        // Backend format -> Backend format (pass-through)
+        'tool_web_search': 'tool_web_search',
+        'tool_file_reader': 'tool_file_reader',
+        'tool_code_generator': 'tool_code_generator',
+        'tool_code_reviewer': 'tool_code_reviewer',
+        'tool_calculator': 'tool_calculator',
+        // Tools without backend equivalents (keep as-is)
+        'email': 'email',
+        'database': 'database'
+      };
+
+      // Normalize a tool ID to the canonical backend format
+      const normalizeToolId = (toolId) => {
+        if (!toolId) return toolId;
+        const normalized = TOOL_ID_MAP[toolId];
+        return normalized || toolId; // Return original if not in map
+      };
+
+      // Normalize an array of tool IDs
+      const normalizeToolIds = (toolIds) => {
+        if (!Array.isArray(toolIds)) return [];
+        return toolIds.map(id => normalizeToolId(id));
+      };
+
       const availableTools = [
-        { 
-          id: 'web_search', 
-          name: 'Web Search', 
+        {
+          id: 'tool_web_search',
+          name: 'Web Search',
           description: 'Search the internet for information',
           requiresConfig: true,
           configFields: [
@@ -795,30 +840,30 @@
             { name: 'search_engine', label: 'Search Engine', type: 'select', options: ['Google', 'Bing', 'DuckDuckGo'], required: true }
           ]
         },
-        { 
-          id: 'calculator', 
-          name: 'Calculator', 
+        {
+          id: 'tool_calculator',
+          name: 'Calculator',
           description: 'Perform mathematical calculations',
           requiresConfig: false
         },
-        { 
-          id: 'file_reader', 
-          name: 'File Reader', 
+        {
+          id: 'tool_file_reader',
+          name: 'File Reader',
           description: 'Read and parse files',
           requiresConfig: false
         },
-        { 
-          id: 'code_executor', 
-          name: 'Code Executor', 
+        {
+          id: 'tool_code_generator',
+          name: 'Code Executor',
           description: 'Execute Python code',
           requiresConfig: true,
           configFields: [
             { name: 'timeout', label: 'Timeout (seconds)', type: 'number', required: true }
           ]
         },
-        { 
-          id: 'email', 
-          name: 'Email Tool', 
+        {
+          id: 'email',
+          name: 'Email Tool',
           description: 'Send emails',
           requiresConfig: true,
           configFields: [
@@ -828,16 +873,115 @@
             { name: 'password', label: 'Password', type: 'password', required: true }
           ]
         },
-        { 
-          id: 'database', 
-          name: 'Database Query', 
+        {
+          id: 'database',
+          name: 'Database Query',
           description: 'Query databases',
           requiresConfig: true,
           configFields: [
             { name: 'connection_string', label: 'Connection String', type: 'text', required: true }
           ]
+        },
+        {
+          id: 'tool_code_reviewer',
+          name: 'Code Reviewer',
+          description: 'Review code for quality, security, and best practices',
+          requiresConfig: false
         }
       ];
+
+      // Load registered tools from backend
+      const loadRegisteredTools = async () => {
+        try {
+          console.log('🔧 Fetching tools from backend...');
+          setToolsLoadError(null);
+
+          const response = await fetch(`${API_BASE_URL}/tools/list`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch tools from backend');
+          }
+
+          const backendTools = await response.json();
+          console.log(`✅ Loaded ${backendTools.length} tools from backend`);
+
+          // Transform backend tools to UI format
+          const transformedTools = backendTools.map(tool => ({
+            id: tool.tool_id,  // Use tool_id as id
+            name: tool.name,
+            description: tool.description || 'No description available',
+            requiresConfig: false,  // Backend tools don't have config UI yet
+            tool_type: tool.tool_type,
+            status: tool.status,
+            version: tool.version,
+            tags: tool.tags || []
+          }));
+
+          setRegisteredTools(transformedTools);
+          setToolsLoaded(true);
+
+          // Log individual tools
+          transformedTools.forEach(tool => {
+            console.log(`  - ${tool.name} (${tool.id}): ${tool.tool_type}`);
+          });
+
+        } catch (error) {
+          console.warn('⚠️ Failed to load tools from backend:', error.message);
+          console.log('📝 Using fallback mode with hardcoded tools');
+          setToolsLoadError(error.message);
+          setToolsLoaded(false);
+          setRegisteredTools([]);
+        }
+      };
+
+      // Trigger tool discovery from AgentTools directory
+      const discoverTools = async () => {
+        try {
+          console.log('🔍 Discovering tools from AgentTools...');
+          setIsDiscoveringTools(true);
+          setToolDiscoveryMessage('Discovering tools...');
+
+          const response = await fetch(`${API_BASE_URL}/tools/discover`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+          });
+
+          if (!response.ok) {
+            throw new Error('Tool discovery failed');
+          }
+
+          const result = await response.json();
+          const count = result.discovered_count || 0;
+
+          console.log(`✅ Discovered ${count} tools`);
+          setToolDiscoveryMessage(`Discovered ${count} tools!`);
+
+          // Reload tools after discovery
+          await loadRegisteredTools();
+
+          setTimeout(() => {
+            setToolDiscoveryMessage('');
+            setIsDiscoveringTools(false);
+          }, 3000);
+
+        } catch (error) {
+          console.error('❌ Tool discovery failed:', error.message);
+          setToolDiscoveryMessage(`Discovery failed: ${error.message}`);
+          setIsDiscoveringTools(false);
+
+          setTimeout(() => {
+            setToolDiscoveryMessage('');
+          }, 5000);
+        }
+      };
+
+      // Get available tools (backend tools + fallback tools)
+      const getAvailableTools = () => {
+        if (toolsLoaded && registeredTools.length > 0) {
+          return registeredTools;
+        }
+        // Fallback to hardcoded tools if backend is unavailable
+        return availableTools;
+      };
 
       // Load agents from localStorage on mount (shared with orchestrator)
       useEffect(() => {
@@ -929,24 +1073,37 @@
         }
       }, [agents]);
 
+      // Load tools from backend on mount
+      useEffect(() => {
+        loadRegisteredTools();
+      }, []);
+
       const showNotification = (message, type = 'success') => {
         setNotification({ message, type });
         setTimeout(() => setNotification(null), 3000);
       };
 
       // Call backend API to design agent from prompt
-      const designAgentFromPrompt = async (prompt, tools = [], vars = []) => {
+      // Accepts optional agent_id for update mode
+      const designAgentFromPrompt = async (prompt, tools = [], vars = [], agentId = null) => {
         try {
+          const requestBody = {
+            prompt: prompt,
+            model: model,
+            icon: '🤖',
+            tools: tools,
+            variables: vars
+          };
+
+          // Include agent_id for update mode
+          if (agentId) {
+            requestBody.agent_id = agentId;
+          }
+
           const response = await fetch(`${API_BASE_URL}/agents/design/prompt`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              prompt: prompt,
-              model: model,
-              icon: '🤖',
-              tools: tools,
-              variables: vars
-            })
+            body: JSON.stringify(requestBody)
           });
 
           if (!response.ok) {
@@ -1000,43 +1157,85 @@
             // First message - call backend API to design agent
             try {
               const result = await designAgentFromPrompt(messageToSend, selectedTools, variables);
-              const agent = result.agent;
 
-              // Set agent fields from API response
-              setAgentName(agent.name || 'New Agent');
-              setAgentRole(agent.role || 'AI Assistant');
-              setAgentGoal(agent.prompt || agent.description || messageToSend.trim());
-              setAgentBackstory(agent.description || 'An AI agent designed to help with specific tasks.');
-              setSuggestedName(agent.name || 'New Agent');
+              // Handle new action-based response format
+              const action = result.action || 'CREATE_AGENT';
 
-              // Set AI settings from LLM recommendations
-              if (agent.settings) {
-                if (agent.settings.temperature !== undefined) {
-                  setTemperature(agent.settings.temperature);
-                }
-                if (agent.settings.max_token !== undefined) {
-                  setMaxTokens(agent.settings.max_token);
-                }
-                if (agent.settings.top_p !== undefined) {
-                  setTopP(agent.settings.top_p);
-                }
-                if (agent.settings.max_iteration !== undefined) {
-                  setMaxIterations(agent.settings.max_iteration);
-                }
+              if (action === 'AGENT_EXISTS') {
+                // Similar agent found - show confirmation modal
+                const existingAgent = result.agent || {};
+                setExistingAgentMatch({
+                  agent_id: result.agent_id,
+                  agent_name: result.agent_name,
+                  similarity_score: result.similarity_score,
+                  message: result.message,
+                  agent: existingAgent
+                });
+                setPendingPrompt(messageToSend);
+                setShowAgentExistsModal(true);
+
+                assistantResponse = `I found a similar agent that already exists: "${result.agent_name}".\n\nSimilarity: ${Math.round((result.similarity_score || 0) * 100)}%\n\nWould you like to use this existing agent, or create a new one?`;
+                // Don't advance conversation step - wait for modal response
+                setIsGenerating(false);
+                const botMessage = { role: 'assistant', content: assistantResponse };
+                setChatMessages([...updatedMessages, botMessage]);
+                return; // Exit early, modal will handle next steps
               }
 
-              // Set variables if returned
-              if (agent.variables && Array.isArray(agent.variables)) {
-                setVariables(agent.variables);
-              }
+              // Handle UPDATE_AGENT action
+              if (action === 'UPDATE_AGENT') {
+                const agent = result.agent || {};
+                assistantResponse = `Agent "${result.agent_name}" has been updated!\n\nThe following changes were made based on your request.`;
+                // Load the updated agent
+                setAgentName(agent.name || result.agent_name);
+                setAgentRole(agent.role || 'AI Assistant');
+                setAgentGoal(agent.prompt || agent.description || '');
+                setAgentBackstory(agent.description || '');
+                if (agent.tools && Array.isArray(agent.tools)) {
+                  setSelectedTools(normalizeToolIds(agent.tools));
+                }
+                setConversationStep('done');
+              } else {
+                // CREATE_AGENT - default behavior
+                const agent = result.agent;
 
-              // Set tools if returned
-              if (agent.tools && Array.isArray(agent.tools)) {
-                setSelectedTools(agent.tools);
-              }
+                // Set agent fields from API response
+                setAgentName(agent.name || 'New Agent');
+                setAgentRole(agent.role || 'AI Assistant');
+                setAgentGoal(agent.prompt || agent.description || messageToSend.trim());
+                setAgentBackstory(agent.description || 'An AI agent designed to help with specific tasks.');
+                setSuggestedName(agent.name || 'New Agent');
 
-              assistantResponse = `Your agent "${agent.name}" has been designed!\n\nRole: ${agent.role}\nDescription: ${agent.description || 'AI agent designed for your specific needs.'}\n\nNext, let's confirm the name. I suggest: ${agent.name}.\n\nWould you like to use this name, or do you have another name in mind?`;
-              setConversationStep('name');
+                // Set AI settings from LLM recommendations
+                if (agent.settings) {
+                  if (agent.settings.temperature !== undefined) {
+                    setTemperature(agent.settings.temperature);
+                  }
+                  if (agent.settings.max_token !== undefined) {
+                    setMaxTokens(agent.settings.max_token);
+                  }
+                  if (agent.settings.top_p !== undefined) {
+                    setTopP(agent.settings.top_p);
+                  }
+                  if (agent.settings.max_iteration !== undefined) {
+                    setMaxIterations(agent.settings.max_iteration);
+                  }
+                }
+
+                // Set variables if returned
+                if (agent.variables && Array.isArray(agent.variables)) {
+                  setVariables(agent.variables);
+                }
+
+                // Set tools if returned (including auto-selected tools)
+                // Normalize tool IDs to ensure they match backend format
+                if (agent.tools && Array.isArray(agent.tools)) {
+                  setSelectedTools(normalizeToolIds(agent.tools));
+                }
+
+                assistantResponse = `Your agent "${agent.name}" has been designed!\n\nRole: ${agent.role}\nDescription: ${agent.description || 'AI agent designed for your specific needs.'}\n\nNext, let's confirm the name. I suggest: ${agent.name}.\n\nWould you like to use this name, or do you have another name in mind?`;
+                setConversationStep('name');
+              }
             } catch (apiError) {
               // Fallback to local generation if API fails
               console.warn('Backend API unavailable, using local generation:', apiError.message);
@@ -1079,54 +1278,169 @@
               setConversationStep('name');
             }
           } else if (conversationStep === 'name') {
-            // Handle name confirmation
-            const input = messageToSend.toLowerCase().trim();
+            // Handle name confirmation using BACKEND LLM INTENT CLASSIFICATION
+            // No frontend pattern matching - backend understands natural language
+            const originalInput = messageToSend.trim();
 
-            // Check if user is confirming the suggested name
-            const confirmationPhrases = [
-              'yes', 'sure', 'ok', 'okay', 'confirm', 'fine', 'good', 'great', 'perfect',
-              'looks good', 'sounds good', 'that works', 'thats fine', "that's fine",
-              'this is fine', 'this name is fine', 'keep it', 'use it', 'use this',
-              'go ahead', 'proceed', 'correct', 'right', 'yep', 'yeah', 'yup',
-              'agreed', 'accept', 'approved', 'love it', 'like it', 'nice'
-            ];
+            try {
+              // Call backend to classify user intent using LLM
+              const intentResponse = await fetch(`${API_BASE_URL}/agents/classify-intent`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  context: 'name_confirmation',
+                  suggested_value: suggestedName,
+                  user_message: originalInput
+                })
+              });
 
-            const isConfirmation = confirmationPhrases.some(phrase =>
-              input === phrase || input.includes(phrase)
-            );
+              if (intentResponse.ok) {
+                const intentResult = await intentResponse.json();
+                console.log('Intent classification result:', intentResult);
 
-            if (isConfirmation) {
-              assistantResponse = `The agent's name is set to "${suggestedName}".\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
-              setConversationStep('refine');
-            } else {
-              // User provided a new name
-              setAgentName(messageToSend.trim());
-              assistantResponse = `The agent's name is now set to "${messageToSend.trim()}".\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
+                if (intentResult.intent === 'CONFIRMATION') {
+                  // User confirmed the suggested name
+                  setAgentName(suggestedName);
+                  assistantResponse = `The agent's name is set to "${suggestedName}".\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
+                  setConversationStep('refine');
+                } else if (intentResult.intent === 'MODIFICATION') {
+                  // User wants to change the name
+                  const newName = intentResult.extracted_value || originalInput;
+                  setAgentName(newName);
+                  assistantResponse = `The agent's name is now set to "${newName}".\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
+                  setConversationStep('refine');
+                } else if (intentResult.intent === 'REJECTION') {
+                  // User rejected - ask for a new name
+                  assistantResponse = `No problem! What would you like to name this agent?`;
+                  // Stay in 'name' step
+                } else if (intentResult.intent === 'CLARIFICATION') {
+                  // User asked a question
+                  assistantResponse = `The suggested name is "${suggestedName}". You can keep this name by saying "yes" or "keep it", or provide a different name by just typing it. What would you like to do?`;
+                  // Stay in 'name' step
+                } else {
+                  // Unknown intent - default to confirmation
+                  setAgentName(suggestedName);
+                  assistantResponse = `The agent's name is set to "${suggestedName}".\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
+                  setConversationStep('refine');
+                }
+              } else {
+                // API call failed - use simple fallback (treat as new name if looks like a name)
+                console.warn('Intent classification API failed, using fallback');
+                setAgentName(originalInput);
+                assistantResponse = `The agent's name is now set to "${originalInput}".\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
+                setConversationStep('refine');
+              }
+            } catch (intentError) {
+              // Network error - use simple fallback
+              console.warn('Intent classification failed:', intentError);
+              setAgentName(originalInput);
+              assistantResponse = `The agent's name is now set to "${originalInput}".\n\nLet's move forward and refine what the agent will do. Could you specify any particular requirements or preferences for how the agent should work?`;
               setConversationStep('refine');
             }
           } else if (conversationStep === 'refine') {
-            // Handle refinements
+            // Handle refinements using BACKEND LLM INTENT CLASSIFICATION
             const refinement = messageToSend.toLowerCase().trim();
+            const originalInput = messageToSend.trim();
 
-            // Check if user is saying they don't want any changes
-            const noChangePhrases = [
-              'no', 'nope', 'none', 'nothing', 'looks good', 'done', 'finish', 'finalize',
-              'that\'s it', 'thats it', 'good to go', 'ready', 'complete', 'skip',
-              'no changes', 'no more', 'all good', 'perfect', 'fine', 'ok', 'okay',
-              'no thanks', 'no thank you', 'not now', 'later', 'move on', 'proceed'
-            ];
+            try {
+              // Call backend to classify user intent using LLM
+              const intentResponse = await fetch(`${API_BASE_URL}/agents/classify-intent`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  context: 'refinement',
+                  suggested_value: 'finalize agent',
+                  user_message: originalInput
+                })
+              });
 
-            const isNoChange = noChangePhrases.some(phrase =>
-              refinement === phrase || refinement.startsWith(phrase + ' ') || refinement.startsWith(phrase + ',')
-            );
+              let intentResult = { intent: 'MODIFICATION' }; // Default
+              if (intentResponse.ok) {
+                intentResult = await intentResponse.json();
+                console.log('Refine intent classification:', intentResult);
+              }
 
-            if (isNoChange) {
-              assistantResponse = `Great! Your agent is ready. You can now:\n\n• Click "Configure" tab to add tools, variables, and fine-tune settings\n• Or click "💾 Save Agent" to save as-is and start using it`;
-              setConversationStep('done');
-            } else {
+              // CONFIRMATION = user wants to finalize (no changes)
+              if (intentResult.intent === 'CONFIRMATION') {
+                assistantResponse = `Great! Your agent is ready. You can now:\n\n• Click "Configure" tab to add tools, variables, and fine-tune settings\n• Or click "💾 Save Agent" to save as-is and start using it`;
+                setConversationStep('done');
+              } else {
+                // MODIFICATION or other = user wants to make changes
+                // Check if user is asking to add/remove tools
+                const toolKeywords = ['tool', 'tools', 'add tool', 'remove tool', 'web search', 'file reader', 'code executor', 'code reviewer', 'calculator', 'email', 'database'];
+                const isToolRequest = toolKeywords.some(kw => refinement.includes(kw));
+
+                if (isToolRequest) {
+                  // Parse which tools the user wants to add
+                  // Use correct backend tool IDs (tool_web_search, tool_file_reader, etc.)
+                  const toolMappings = {
+                    'web search': 'tool_web_search',
+                    'web_search': 'tool_web_search',
+                    'tool_web_search': 'tool_web_search',
+                    'file reader': 'tool_file_reader',
+                    'file_reader': 'tool_file_reader',
+                    'tool_file_reader': 'tool_file_reader',
+                    'code executor': 'tool_code_generator',
+                    'code_executor': 'tool_code_generator',
+                    'tool_code_generator': 'tool_code_generator',
+                    'code reviewer': 'tool_code_reviewer',
+                    'code_reviewer': 'tool_code_reviewer',
+                    'tool_code_reviewer': 'tool_code_reviewer',
+                    'calculator': 'tool_calculator',
+                    'tool_calculator': 'tool_calculator',
+                    'email': 'email',
+                    'database': 'database'
+                  };
+
+                  const toolsToAdd = [];
+                  const toolsToRemove = [];
+                  const isRemoveRequest = refinement.includes('remove');
+
+                  // Find mentioned tools
+                  Object.keys(toolMappings).forEach(toolName => {
+                    if (refinement.includes(toolName)) {
+                      const toolId = toolMappings[toolName];
+                      if (isRemoveRequest) {
+                        toolsToRemove.push(toolId);
+                      } else {
+                        toolsToAdd.push(toolId);
+                      }
+                    }
+                  });
+
+                  // Remove duplicates
+                  const uniqueToolsToAdd = [...new Set(toolsToAdd)];
+                  const uniqueToolsToRemove = [...new Set(toolsToRemove)];
+
+                  if (uniqueToolsToRemove.length > 0) {
+                    // Remove tools
+                    const newTools = selectedTools.filter(t => !uniqueToolsToRemove.includes(t));
+                    setSelectedTools(newTools);
+                    const removedNames = uniqueToolsToRemove.map(t => t.replace(/_/g, ' ')).join(', ');
+                    assistantResponse = `I've removed the following tools: ${removedNames}\n\nCurrent tools: ${newTools.length > 0 ? newTools.map(t => t.replace(/_/g, ' ')).join(', ') : 'None'}\n\nWould you like to make any other changes?`;
+                  } else if (uniqueToolsToAdd.length > 0) {
+                    // Add tools (avoid duplicates)
+                    const newTools = [...new Set([...selectedTools, ...uniqueToolsToAdd])];
+                    setSelectedTools(newTools);
+                    const addedNames = uniqueToolsToAdd.map(t => t.replace(/_/g, ' ')).join(', ');
+                    assistantResponse = `I've added the following tools: ${addedNames}\n\nCurrent tools: ${newTools.map(t => t.replace(/_/g, ' ')).join(', ')}\n\nWould you like to make any other changes, or are we ready to finalize?`;
+                  } else {
+                    // Couldn't parse specific tools
+                    assistantResponse = `I understand you want to modify tools. Please specify which tools to add or remove:\n\n• web search\n• file reader\n• code executor\n• code reviewer\n• calculator\n• email\n• database\n\nExample: "add code executor and code reviewer"`;
+                  }
+                } else {
+                  // Regular refinement - update goal
+                  const currentGoal = agentGoal;
+                  setAgentGoal(`${currentGoal}. ${originalInput}`);
+                  assistantResponse = `I've updated the agent's instructions to include: "${originalInput}"\n\nWould you like to add any other requirements, or are we ready to finalize?`;
+                }
+              }
+            } catch (intentError) {
+              // Fallback if intent classification fails
+              console.warn('Refine intent classification failed:', intentError);
               const currentGoal = agentGoal;
-              setAgentGoal(`${currentGoal}. ${messageToSend.trim()}`);
-              assistantResponse = `I've updated the agent's instructions to include: "${messageToSend.trim()}"\n\nWould you like to add any other requirements, or are we ready to finalize?`;
+              setAgentGoal(`${currentGoal}. ${originalInput}`);
+              assistantResponse = `I've updated the agent's instructions to include: "${originalInput}"\n\nWould you like to add any other requirements, or are we ready to finalize?`;
             }
           } else {
             assistantResponse = `Your agent is ready! Switch to the "Configure" tab to add tools and customize further, or save the agent to start using it.`;
@@ -1150,6 +1464,119 @@
         setCreationMode('form');
         setIsEditing(true);
         showNotification(`Template applied: ${template.name}`, 'success');
+      };
+
+      // Handle user choosing to use existing agent from AGENT_EXISTS modal
+      const handleUseExistingAgent = () => {
+        if (!existingAgentMatch) return;
+
+        const agent = existingAgentMatch.agent || {};
+
+        // Load the existing agent into the form
+        setAgentName(agent.name || existingAgentMatch.agent_name);
+        setAgentRole(agent.role || 'AI Assistant');
+        setAgentGoal(agent.prompt || agent.description || '');
+        setAgentBackstory(agent.description || '');
+        setSuggestedName(agent.name || existingAgentMatch.agent_name);
+
+        // Set tools if available - normalize IDs to backend format
+        if (agent.tools && Array.isArray(agent.tools)) {
+          setSelectedTools(normalizeToolIds(agent.tools));
+        }
+
+        // Set settings if available
+        if (agent.settings) {
+          if (agent.settings.temperature !== undefined) setTemperature(agent.settings.temperature);
+          if (agent.settings.max_token !== undefined) setMaxTokens(agent.settings.max_token);
+          if (agent.settings.top_p !== undefined) setTopP(agent.settings.top_p);
+          if (agent.settings.max_iteration !== undefined) setMaxIterations(agent.settings.max_iteration);
+        }
+
+        // Close modal and advance to configure step
+        setShowAgentExistsModal(false);
+        setExistingAgentMatch(null);
+        setPendingPrompt('');
+        setCreationMode('form');
+        setConversationStep('done');
+
+        // Add message to chat
+        const botMessage = {
+          role: 'assistant',
+          content: `Great! I've loaded the existing agent "${agent.name || existingAgentMatch.agent_name}" for you.\n\nYou can now configure and modify it as needed using the "Configure" tab, then save when ready.`
+        };
+        setChatMessages(prev => [...prev, botMessage]);
+
+        showNotification(`Loaded existing agent: ${agent.name || existingAgentMatch.agent_name}`, 'success');
+      };
+
+      // Handle user choosing to create new agent anyway despite similar existing
+      const handleCreateNewAnyway = async () => {
+        setShowAgentExistsModal(false);
+        setIsGenerating(true);
+
+        try {
+          // Call API again with force_create flag (or just proceed with local fallback)
+          const prompt = pendingPrompt;
+
+          // Use local generation since user wants a new agent
+          const promptLower = prompt.toLowerCase();
+          let generatedName = 'New Agent';
+          let generatedRole = 'AI Assistant';
+          let generatedGoal = prompt.trim();
+          let generatedBackstory = 'An AI agent designed to help with specific tasks.';
+
+          if (promptLower.includes('research') || promptLower.includes('find') || promptLower.includes('stock') || promptLower.includes('analyze')) {
+            generatedName = 'Stock Research Advisor';
+            generatedRole = 'Stock Market Research Analyst';
+            generatedBackstory = 'Expert at researching stocks, performing technical and fundamental analysis.';
+          } else if (promptLower.includes('write') || promptLower.includes('content')) {
+            generatedName = 'Content Writer';
+            generatedRole = 'Content Creation Specialist';
+            generatedBackstory = 'Skilled writer with expertise in creating engaging content.';
+          } else if (promptLower.includes('data')) {
+            generatedName = 'Data Analyst';
+            generatedRole = 'Data Analysis Expert';
+            generatedBackstory = 'Specialist in analyzing data and extracting actionable insights.';
+          } else if (promptLower.includes('code') || promptLower.includes('develop')) {
+            generatedName = 'Code Assistant';
+            generatedRole = 'Software Development Expert';
+            generatedBackstory = 'Experienced programmer skilled in various programming languages.';
+          } else if (promptLower.includes('customer') || promptLower.includes('support')) {
+            generatedName = 'Customer Support Agent';
+            generatedRole = 'Customer Service Specialist';
+            generatedBackstory = 'Dedicated to providing excellent customer support.';
+          }
+
+          setAgentName(generatedName);
+          setAgentRole(generatedRole);
+          setAgentGoal(generatedGoal);
+          setAgentBackstory(generatedBackstory);
+          setSuggestedName(generatedName);
+
+          const botMessage = {
+            role: 'assistant',
+            content: `Creating a new agent as requested.\n\nI suggest the name: ${generatedName}.\n\nWould you like to use this name, or do you have another name in mind?`
+          };
+          setChatMessages(prev => [...prev, botMessage]);
+          setConversationStep('name');
+        } finally {
+          setIsGenerating(false);
+          setExistingAgentMatch(null);
+          setPendingPrompt('');
+        }
+      };
+
+      // Handle canceling the agent exists modal
+      const handleCancelAgentExists = () => {
+        setShowAgentExistsModal(false);
+        setExistingAgentMatch(null);
+        setPendingPrompt('');
+
+        const botMessage = {
+          role: 'assistant',
+          content: `No problem! Feel free to describe a different agent, or try a different description.`
+        };
+        setChatMessages(prev => [...prev, botMessage]);
       };
 
       const resetForm = () => {
@@ -1197,7 +1624,7 @@
         setTopP(agent.topP);
         setAllowDelegation(agent.allowDelegation);
         setMaxIterations(agent.maxIterations);
-        setSelectedTools(agent.tools || []);
+        setSelectedTools(normalizeToolIds(agent.tools || []));
         setToolConfigs(agent.toolConfigs || {});
         setVariables(convertVariablesToArray(agent.variables));
         setIsEditing(true);
@@ -2071,7 +2498,7 @@
                     <div className="tool-selector">
                       <select id="tool-selector">
                         <option value="">-- Select a tool to add --</option>
-                        {availableTools
+                        {getAvailableTools()
                           .filter(tool => !selectedTools.includes(tool.id))
                           .map(tool => (
                             <option key={tool.id} value={tool.id}>
@@ -2082,10 +2509,67 @@
                       <button onClick={addToolToAgent}>+ Add Tool</button>
                     </div>
 
+                    {/* Tool System Status */}
+                    <div style={{marginTop: '12px', marginBottom: '12px'}}>
+                      {toolDiscoveryMessage && (
+                        <div style={{
+                          padding: '8px 12px',
+                          background: 'rgba(59, 130, 246, 0.1)',
+                          border: '1px solid rgba(59, 130, 246, 0.3)',
+                          borderRadius: '6px',
+                          fontSize: '12px',
+                          color: '#1e40af',
+                          marginBottom: '8px'
+                        }}>
+                          {toolDiscoveryMessage}
+                        </div>
+                      )}
+                      {toolsLoadError && (
+                        <div style={{
+                          padding: '8px 12px',
+                          background: 'rgba(234, 179, 8, 0.1)',
+                          border: '1px solid rgba(234, 179, 8, 0.3)',
+                          borderRadius: '6px',
+                          fontSize: '12px',
+                          color: '#92400e',
+                          marginBottom: '8px'
+                        }}>
+                          ⚠️ Tools unavailable: {toolsLoadError}
+                        </div>
+                      )}
+                      <div style={{display: 'flex', gap: '8px', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <div style={{fontSize: '12px', color: 'var(--text-secondary)'}}>
+                          {toolsLoaded ? (
+                            <span>✓ {registeredTools.length} tools loaded from backend</span>
+                          ) : (
+                            <span>Using {availableTools.length} fallback tools</span>
+                          )}
+                        </div>
+                        <button
+                          onClick={discoverTools}
+                          disabled={isDiscoveringTools}
+                          style={{
+                            padding: '6px 12px',
+                            fontSize: '12px',
+                            background: 'var(--accent-green)',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '6px',
+                            cursor: isDiscoveringTools ? 'not-allowed' : 'pointer',
+                            opacity: isDiscoveringTools ? 0.5 : 1,
+                            fontWeight: 600
+                          }}
+                          title="Discover tools from AgentTools directory"
+                        >
+                          {isDiscoveringTools ? '🔍 Discovering...' : '🔍 Discover Tools'}
+                        </button>
+                      </div>
+                    </div>
+
                     {selectedTools.length > 0 ? (
                       <div className="selected-tools-list">
                         {selectedTools.map(toolId => {
-                          const tool = availableTools.find(t => t.id === toolId);
+                          const tool = getAvailableTools().find(t => t.id === toolId);
                           if (!tool) return null;
                           return (
                             <div key={toolId} className="selected-tool-item">
@@ -2371,6 +2855,100 @@
                   </button>
                   <button className="btn btn-primary" onClick={saveToolConfig}>
                     Save Configuration
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Agent Exists Modal - shown when similar agent found */}
+          {showAgentExistsModal && existingAgentMatch && (
+            <div className="modal-overlay" onClick={handleCancelAgentExists}>
+              <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px' }}>
+                <div className="modal-header">
+                  <div className="modal-title" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '20px' }}>🔍</span>
+                    Similar Agent Found
+                  </div>
+                  <button className="modal-close" onClick={handleCancelAgentExists}>
+                    ×
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <div style={{
+                    background: 'rgba(35, 131, 226, 0.1)',
+                    border: '1px solid rgba(35, 131, 226, 0.3)',
+                    borderRadius: '8px',
+                    padding: '16px',
+                    marginBottom: '16px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                      <div style={{
+                        width: '48px',
+                        height: '48px',
+                        background: 'var(--accent-blue)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '24px'
+                      }}>
+                        🤖
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: '600', fontSize: '16px', color: 'var(--text-primary)' }}>
+                          {existingAgentMatch.agent_name}
+                        </div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                          {existingAgentMatch.agent?.role || 'AI Agent'}
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                      {existingAgentMatch.agent?.description || 'An existing agent in your library.'}
+                    </div>
+                    <div style={{
+                      display: 'inline-block',
+                      padding: '4px 8px',
+                      background: 'var(--accent-blue)',
+                      color: 'white',
+                      borderRadius: '4px',
+                      fontSize: '11px',
+                      fontWeight: '600'
+                    }}>
+                      {Math.round((existingAgentMatch.similarity_score || 0) * 100)}% Match
+                    </div>
+                  </div>
+
+                  <p style={{ fontSize: '14px', color: 'var(--text-primary)', marginBottom: '16px', lineHeight: '1.5' }}>
+                    {existingAgentMatch.message || 'A similar agent already exists. You can configure or modify it.'}
+                  </p>
+
+                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '0' }}>
+                    What would you like to do?
+                  </p>
+                </div>
+                <div className="modal-footer" style={{ flexDirection: 'column', gap: '8px' }}>
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleUseExistingAgent}
+                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                  >
+                    <span>✓</span> Use Existing Agent
+                  </button>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={handleCreateNewAnyway}
+                    style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                  >
+                    <span>+</span> Create New Anyway
+                  </button>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={handleCancelAgentExists}
+                    style={{ width: '100%', background: 'transparent', border: 'none', color: 'var(--text-muted)' }}
+                  >
+                    Cancel
                   </button>
                 </div>
               </div>

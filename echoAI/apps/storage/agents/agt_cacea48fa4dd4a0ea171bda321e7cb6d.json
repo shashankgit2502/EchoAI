@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_cacea48fa4dd4a0ea171bda321e7cb6d",
+  "name": "APIDesigner",
+  "role": "Design API structure",
+  "goal": "Create API specifications",
+  "description": "Defines endpoints and requirements",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T18:42:05.151005",
+    "registered_at": "2026-01-23T18:42:05.151005"
+  }
+}

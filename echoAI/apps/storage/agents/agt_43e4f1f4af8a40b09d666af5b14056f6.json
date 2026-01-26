@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_43e4f1f4af8a40b09d666af5b14056f6",
+  "name": "Deployment Team",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 680,
+      "y": 94.28571428571428,
+      "icon": "\ud83d\udd36",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-24T05:49:54.921863",
+    "registered_at": "2026-01-24T05:49:55.023315"
+  }
+}

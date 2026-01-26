@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_891b9a3ef9984206beab1d856d1b7aa2",
+  "name": "Quality Assurance",
+  "role": "Quality Assurer",
+  "goal": "Ensure adherence to standards",
+  "description": "Performs automated checks and final validation",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "approval_status"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T20:03:49.468775",
+    "registered_at": "2026-01-24T20:03:49.529844"
+  }
+}

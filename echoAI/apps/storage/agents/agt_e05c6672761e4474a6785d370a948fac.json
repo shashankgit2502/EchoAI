@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_e05c6672761e4474a6785d370a948fac",
+  "name": "Design Agent",
+  "role": "Defines API structure",
+  "goal": "To outline the required endpoints and specifications",
+  "description": "Establishes the blueprint for the code generation workflow",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T18:52:59.674867",
+    "registered_at": "2026-01-23T18:52:59.674867"
+  }
+}

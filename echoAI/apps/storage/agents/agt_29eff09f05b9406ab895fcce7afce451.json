@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_29eff09f05b9406ab895fcce7afce451",
+  "name": "Code Optimizer",
+  "role": "Performance Enhancer",
+  "goal": "Optimize the code for better performance and efficiency",
+  "description": "Modifies the code based on the review report to improve its performance and readability.",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "generated_code",
+    "review_report"
+  ],
+  "output_schema": [
+    "optimized_code"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-26T20:30:42.014149",
+    "registered_at": "2026-01-26T20:30:42.082157"
+  }
+}

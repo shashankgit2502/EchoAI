@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_7fb3ba29de9b408d9215a7757452f004",
+  "name": "Code Generator",
+  "role": "Generate code based on specifications",
+  "goal": "Produce high-quality code that meets the given requirements",
+  "description": "The agent takes user specifications or requirements and generates corresponding code",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "requirements"
+  ],
+  "output_schema": [
+    "generated_code"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-26T13:45:52.537384",
+    "registered_at": "2026-01-26T13:45:52.537384"
+  }
+}

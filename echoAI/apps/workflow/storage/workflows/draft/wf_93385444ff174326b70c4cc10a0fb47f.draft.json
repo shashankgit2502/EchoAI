@@ -1,0 +1,45 @@
+{
+  "workflow_id": "wf_93385444ff174326b70c4cc10a0fb47f",
+  "name": "PythonCodeGeneratorWorkflow",
+  "description": "Created from canvas on 2026-01-23",
+  "status": "draft",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_b7bceea62b4f46f08f721ef78a8523d2",
+    "agt_6194927d6afc44d0b655a58163d37641",
+    "agt_b14e5b77737d4022a9de695d4f0efd48",
+    "agt_e148a48d9e6a414184f9a850cf452e78",
+    "agt_4434f114d9c14120b86f67ca3059e204"
+  ],
+  "connections": [
+    {
+      "from": "agt_b7bceea62b4f46f08f721ef78a8523d2",
+      "to": "agt_6194927d6afc44d0b655a58163d37641"
+    },
+    {
+      "from": "agt_6194927d6afc44d0b655a58163d37641",
+      "to": "agt_b14e5b77737d4022a9de695d4f0efd48"
+    },
+    {
+      "from": "agt_b14e5b77737d4022a9de695d4f0efd48",
+      "to": "agt_e148a48d9e6a414184f9a850cf452e78"
+    },
+    {
+      "from": "agt_e148a48d9e6a414184f9a850cf452e78",
+      "to": "agt_4434f114d9c14120b86f67ca3059e204"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-23T18:42:10.478560",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    }
+  }
+}

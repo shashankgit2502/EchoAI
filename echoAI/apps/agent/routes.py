@@ -14,9 +14,83 @@ def svc() -> AgentService:
 # ==================== EXISTING ROUTES (UNCHANGED) ====================
 
 @router.post('/create/prompt')
-async def create_prompt(prompt: str, template: AgentTemplate):
-    """Simple agent creation from prompt (existing API)."""
-    return svc().createFromPrompt(prompt, template).model_dump()
+async def create_prompt(request: dict):
+    """
+    Create or update agent from prompt with template matching.
+
+    Accepts a JSON body with:
+    - prompt (str, required): Natural language description of the desired agent.
+    - agent_id (str, optional): If provided, treats this as an UPDATE request.
+    - name (str, optional): Override agent name.
+    - icon (str, optional): Override icon.
+    - role (str, optional): Override role.
+    - description (str, optional): Override description.
+    - tools (list, optional): Override tools list.
+    - variables (list, optional): Override variables.
+    - settings (dict, optional): Override settings.
+
+    Response includes "action" field indicating what happened:
+    - "CREATE_AGENT": New agent was created
+    - "UPDATE_AGENT": Existing agent was updated (when agent_id provided)
+    - "AGENT_EXISTS": Similar agent already exists (can be configured/modified)
+
+    The service will:
+    1. If agent_id provided: Update existing agent, preserving name/ID
+    2. Analyze intent from the prompt.
+    3. Check for existing similar agents (returns AGENT_EXISTS if found).
+    4. Match against predefined templates.
+    5. Build from template if matched, else use LLM generation.
+    6. Register the agent in the registry.
+    7. Return the full agent definition with action type.
+    """
+    try:
+        prompt = request.get("prompt", "")
+        if not prompt:
+            raise HTTPException(status_code=400, detail="Prompt cannot be empty")
+
+        agent_id = request.get("agent_id")
+        service = svc()
+
+        # UPDATE MODE: If agent_id is provided, treat as update request
+        if agent_id:
+            try:
+                result = service.updateFromPrompt(agent_id, prompt)
+                return result
+            except ValueError as e:
+                raise HTTPException(status_code=404, detail=str(e))
+
+        # CREATE MODE: Check for existing similar agents first
+        # Analyze intent to check for similar agents
+        intent = service._analyze_intent(prompt)
+        existing_match = service._check_existing_agents(intent, prompt)
+
+        if existing_match:
+            # Return existing agent info without creating new one
+            return existing_match
+
+        # Build AgentTemplate from request overrides
+        template = AgentTemplate(
+            name=request.get("name", ""),
+            icon=request.get("icon"),
+            role=request.get("role"),
+            description=request.get("description"),
+            prompt=request.get("system_prompt"),
+            tools=request.get("tools"),
+            variables=request.get("variables"),
+            settings=request.get("settings"),
+        )
+
+        agent = service.createFromPrompt(prompt, template)
+
+        # Return with action field
+        response = agent.model_dump()
+        response["action"] = "CREATE_AGENT"
+        return response
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.post('/create/card')
 async def create_card(cardJSON: dict, template: AgentTemplate):
@@ -38,7 +112,22 @@ async def list_agents():
 # Agent Design
 @router.post('/design/prompt')
 async def design_agent_from_prompt(request: dict):
-    """Design agent from natural language prompt."""
+    """
+    Design agent from natural language prompt.
+
+    Accepts a JSON body with:
+    - prompt (str, required): Natural language description
+    - agent_id (str, optional): If provided, updates existing agent
+    - model (str, optional): LLM model to use
+    - icon (str, optional): Agent icon
+    - tools (list, optional): Tools list
+    - variables (list, optional): Variables list
+
+    Response includes "action" field:
+    - "CREATE_AGENT": New agent was designed
+    - "UPDATE_AGENT": Existing agent was updated
+    - "AGENT_EXISTS": Similar agent/template already exists (can be configured/modified)
+    """
     try:
         designer = container.resolve('agent.designer')
         registry = container.resolve('agent.registry')
@@ -48,8 +137,42 @@ async def design_agent_from_prompt(request: dict):
         if not user_prompt:
             raise HTTPException(status_code=400, detail="Prompt cannot be empty")
 
+        agent_id = request.get("agent_id")
+
+        # UPDATE MODE: If agent_id provided, update existing agent
+        if agent_id:
+            existing_agent = registry.get_agent(agent_id)
+            if not existing_agent:
+                raise HTTPException(status_code=404, detail=f"Agent '{agent_id}' not found")
+
+            # Use update method that preserves name/ID
+            updated_agent = designer.update_from_prompt(
+                existing_agent=existing_agent,
+                user_prompt=user_prompt
+            )
+
+            # Save updates to registry
+            registry.update_agent(agent_id, updated_agent)
+
+            return {
+                "action": "UPDATE_AGENT",
+                "agent_id": agent_id,
+                "agent_name": updated_agent.get("name"),
+                "agent": updated_agent
+            }
+
+        # CREATE MODE: Check for existing similar agents/templates first
+        service = container.resolve('agent.service')
+        intent = service._analyze_intent(user_prompt)
+        existing_match = service._check_existing_agents(intent, user_prompt)
+
+        if existing_match:
+            # Return existing agent/template info without creating new one
+            return existing_match
+
+        # No existing match found - proceed to design new agent
         default_model = request.get("model", "mistral-nemo-12b")
-        icon = request.get("icon", "🤖")
+        icon = request.get("icon", "")
         tools = request.get("tools", [])
         variables = request.get("variables", [])
 
@@ -65,8 +188,13 @@ async def design_agent_from_prompt(request: dict):
         # Register agent automatically
         registry.register_agent(agent)
 
-        return {"agent": agent}
+        return {
+            "action": "CREATE_AGENT",
+            "agent": agent
+        }
 
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -280,7 +408,7 @@ async def get_all_agent_templates():
         static_templates = []
 
         if templates_path.exists():
-            with open(templates_path) as f:
+            with open(templates_path, encoding='utf-8') as f:
                 data = json.load(f)
                 static_templates = data.get("templates", [])
 
@@ -323,7 +451,7 @@ async def get_static_templates():
         if not templates_path.exists():
             return {"templates": [], "count": 0}
 
-        with open(templates_path) as f:
+        with open(templates_path, encoding='utf-8') as f:
             data = json.load(f)
             templates = data.get("templates", [])
 
@@ -331,5 +459,57 @@ async def get_static_templates():
             "templates": templates,
             "count": len(templates)
         }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== INTENT CLASSIFICATION (LLM-based) ====================
+
+@router.post('/classify-intent')
+async def classify_user_intent(request: dict):
+    """
+    Classify user intent using LLM reasoning.
+
+    This endpoint enables natural language understanding for conversational flows.
+    Instead of pattern matching, it uses LLM to understand user intent.
+
+    Request body:
+    {
+        "context": "name_confirmation" | "refinement" | "tool_selection" | "general",
+        "suggested_value": "FinGenius Pro",  // The value being confirmed/modified
+        "user_message": "oh yes this name is great",
+        "conversation_history": [...]  // Optional: previous messages for context
+    }
+
+    Response:
+    {
+        "intent": "CONFIRMATION" | "MODIFICATION" | "REJECTION" | "CLARIFICATION",
+        "confidence": 0.95,
+        "reasoning": "User expressed approval...",
+        "extracted_value": null | "new value if modification"
+    }
+    """
+    try:
+        service = container.resolve('agent.service')
+
+        context = request.get("context", "general")
+        suggested_value = request.get("suggested_value", "")
+        user_message = request.get("user_message", "")
+        conversation_history = request.get("conversation_history", [])
+
+        if not user_message:
+            raise HTTPException(status_code=400, detail="user_message is required")
+
+        result = service.classify_user_intent(
+            context=context,
+            suggested_value=suggested_value,
+            user_message=user_message,
+            conversation_history=conversation_history
+        )
+
+        return result
+
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -58,3 +58,5 @@ pytest-asyncio>=0.23.5
 
 langgraph-checkpoint-sqlite
 langchain >= 1.0.0
+
+litellm[proxy]

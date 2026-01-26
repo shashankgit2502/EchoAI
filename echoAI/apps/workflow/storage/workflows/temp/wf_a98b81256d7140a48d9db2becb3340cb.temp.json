@@ -1,0 +1,56 @@
+{
+  "workflow_id": "wf_a98b81256d7140a48d9db2becb3340cb",
+  "name": "Code Review Workflow",
+  "description": "Created from canvas on 2026-01-25",
+  "status": "testing",
+  "version": "0.1",
+  "execution_model": "hybrid",
+  "agents": [
+    "agt_892efb6a521142b990502a2024e17ff8",
+    "agt_c0d21099ba3e4e1db8e06a56307529e0",
+    "agt_976f17b445454d3ea594780f3ac1ffed",
+    "agt_7c28e8a04c544292bc654345996d1af8",
+    "agt_11a4ad0bdb074495afb5560314dc07de",
+    "agt_72ba7b135cf841d391f86ec937694d56",
+    "agt_4a983c2800ed4212b7addb4a2dd426fe"
+  ],
+  "connections": [
+    {
+      "from": "agt_892efb6a521142b990502a2024e17ff8",
+      "to": "agt_c0d21099ba3e4e1db8e06a56307529e0"
+    },
+    {
+      "from": "agt_c0d21099ba3e4e1db8e06a56307529e0",
+      "to": "agt_976f17b445454d3ea594780f3ac1ffed"
+    },
+    {
+      "from": "agt_976f17b445454d3ea594780f3ac1ffed",
+      "to": "agt_7c28e8a04c544292bc654345996d1af8"
+    },
+    {
+      "from": "agt_7c28e8a04c544292bc654345996d1af8",
+      "to": "agt_11a4ad0bdb074495afb5560314dc07de"
+    },
+    {
+      "from": "agt_11a4ad0bdb074495afb5560314dc07de",
+      "to": "agt_72ba7b135cf841d391f86ec937694d56"
+    },
+    {
+      "from": "agt_72ba7b135cf841d391f86ec937694d56",
+      "to": "agt_4a983c2800ed4212b7addb4a2dd426fe"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-25T14:52:52.927690",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    },
+    "is_temp": true
+  }
+}

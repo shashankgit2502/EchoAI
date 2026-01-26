@@ -1,0 +1,46 @@
+{
+  "workflow_id": "wf_f04a5a9ed4d8446babab4e7e24237adf",
+  "name": "Python Coding Review and Optimization",
+  "description": "Created from canvas on 2026-01-26",
+  "status": "testing",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_acb9840c3c944c84bc798680145f046d",
+    "agt_14995f05df9c4b4697cf96bdcdcdd492",
+    "agt_a37c06557452409cabce01acb4fd9b6e",
+    "agt_9747e6290a4a445e89b6e2299ff630c1",
+    "agt_5e390970270e49c5a0b29cd4439278ab"
+  ],
+  "connections": [
+    {
+      "from": "agt_acb9840c3c944c84bc798680145f046d",
+      "to": "agt_14995f05df9c4b4697cf96bdcdcdd492"
+    },
+    {
+      "from": "agt_14995f05df9c4b4697cf96bdcdcdd492",
+      "to": "agt_a37c06557452409cabce01acb4fd9b6e"
+    },
+    {
+      "from": "agt_a37c06557452409cabce01acb4fd9b6e",
+      "to": "agt_9747e6290a4a445e89b6e2299ff630c1"
+    },
+    {
+      "from": "agt_9747e6290a4a445e89b6e2299ff630c1",
+      "to": "agt_5e390970270e49c5a0b29cd4439278ab"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-26T20:32:02.149843",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    },
+    "is_temp": true
+  }
+}

@@ -2,7 +2,7 @@
 Main workflow validator.
 Orchestrates sync and async validation rules.
 """
-from typing import Dict, Any
+from typing import Dict, Any, Callable, Optional
 from .errors import ValidationResult
 from .sync_rules import (
     validate_workflow_schema,
@@ -24,14 +24,30 @@ class WorkflowValidator:
     Performs sync and async validation checks.
     """
 
-    def __init__(self, tool_registry: Dict[str, Dict[str, Any]] = None):
+    def __init__(
+        self,
+        tool_registry: Dict[str, Dict[str, Any]] = None,
+        tool_registry_provider: Optional[Callable[[], Dict[str, Dict[str, Any]]]] = None
+    ):
         """
         Initialize validator.
 
         Args:
-            tool_registry: Optional tool registry for validation
+            tool_registry: Static tool registry for validation
+            tool_registry_provider: Callable that returns fresh tool registry (preferred)
         """
-        self.tool_registry = tool_registry or {}
+        self._tool_registry = tool_registry or {}
+        self._tool_registry_provider = tool_registry_provider
+
+    @property
+    def tool_registry(self) -> Dict[str, Dict[str, Any]]:
+        """Get current tool registry (dynamic if provider is set)."""
+        if self._tool_registry_provider:
+            try:
+                return self._tool_registry_provider()
+            except Exception:
+                return self._tool_registry
+        return self._tool_registry
 
     async def validate_workflow(
         self,

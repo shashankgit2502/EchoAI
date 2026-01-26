@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_5ed9e2cece2c45569441b3d063d221ef",
+  "name": "Agent 3",
+  "role": "Hybrid Integrator",
+  "goal": "Merge results from parallel stages",
+  "description": "Combines outputs into final results",
+  "llm": {
+    "default_llm": {}
+  },
+  "tools": [],
+  "input_schema": [
+    "parallel_outputs"
+  ],
+  "output_schema": [
+    "final_output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T23:03:20.245760",
+    "registered_at": "2026-01-23T23:03:20.314294"
+  }
+}

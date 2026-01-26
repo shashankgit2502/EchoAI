@@ -1,0 +1,27 @@
+{
+  "agent_id": "agt_7b144784181a4264a3d0d9840218beb9",
+  "name": "Synthesizer",
+  "role": "Result Synthesis",
+  "description": "Synthesizes analysis into final output",
+  "llm": {
+    "default_llm": {}
+  },
+  "tools": [],
+  "input_schema": [
+    "analysis_result"
+  ],
+  "output_schema": [
+    "final_output"
+  ],
+  "constraints": {
+    "max_steps": 3,
+    "timeout_seconds": 20
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T06:23:16.121764",
+    "registered_at": "2026-01-24T06:23:16.183198"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_44f62dd989084b0295db6ff4de236a2a",
+  "name": "TestAutomation",
+  "role": "Validate",
+  "goal": "Ensure correctness",
+  "description": "Check for bugs and compliance",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "test_cases"
+  ],
+  "output_schema": [
+    "test_results"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T18:42:05.151005",
+    "registered_at": "2026-01-23T18:42:05.179100"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "workflow_id": "wf_4fc8a6c3425340e7976baa7c92a56bc0",
+  "name": "Code Generation Workflow",
+  "description": "Created from canvas on 2026-01-24",
+  "status": "testing",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_b93a4bf5d63b4d879e2b9be3d215994f",
+    "agt_e2f0bb2c01894216a61aca7882f8006d",
+    "agt_21abb5a26d314d29819effa5e9574706",
+    "agt_b376d46e48f04bd19dc0bb2b3d1654e4",
+    "agt_d5dbbedddf1f410094fd29259923f239"
+  ],
+  "connections": [
+    {
+      "from": "agt_b93a4bf5d63b4d879e2b9be3d215994f",
+      "to": "agt_e2f0bb2c01894216a61aca7882f8006d"
+    },
+    {
+      "from": "agt_e2f0bb2c01894216a61aca7882f8006d",
+      "to": "agt_21abb5a26d314d29819effa5e9574706"
+    },
+    {
+      "from": "agt_21abb5a26d314d29819effa5e9574706",
+      "to": "agt_b376d46e48f04bd19dc0bb2b3d1654e4"
+    },
+    {
+      "from": "agt_b376d46e48f04bd19dc0bb2b3d1654e4",
+      "to": "agt_d5dbbedddf1f410094fd29259923f239"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-24T06:14:25.351560",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    },
+    "is_temp": true
+  }
+}

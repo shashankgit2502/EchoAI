@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_1285fb8d490d4c08817ce5daeaeabde6",
+  "name": "Code Reviewer",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "mistralai/devstral-2512:free",
+    "temperature": 0.3,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 660,
+      "y": 100,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-24T19:32:37.686487",
+    "registered_at": "2026-01-24T19:32:37.802852"
+  }
+}

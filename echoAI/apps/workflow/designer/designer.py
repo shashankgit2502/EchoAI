@@ -41,105 +41,26 @@ class WorkflowDesigner:
 
     def _get_openai_client(self):
         """
-        Get LLM client based on environment configuration.
+        Get LLM client using centralized LLM Manager.
 
-        Provider Priority (based on .env settings):
-        1. USE_AZURE=true -> Azure OpenAI
-        2. USE_OPENROUTER=true -> OpenRouter (current default)
-        3. USE_OLLAMA=true -> Ollama (on-premise)
-        4. USE_OPENAI=true -> OpenAI Direct
+        All LLM configuration is now in llm_manager.py
+        To change provider/model, edit llm_manager.py
         """
         if self._openai_client is None:
             try:
-                from langchain_openai import ChatOpenAI
-                # For Azure deployment - uncomment the line below
-                # from langchain_openai import AzureChatOpenAI
+                from llm_manager import LLMManager
 
-                # =================================================================
-                # OPTION 1: AZURE OPENAI (For Azure Deployment)
-                # =================================================================
-                # Uncomment this block when deploying to Azure
-                # -----------------------------------------------------------------
-                # if os.getenv("USE_AZURE", "false").lower() == "true":
-                #     self._openai_client = AzureChatOpenAI(
-                #         azure_deployment=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
-                #         api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview"),
-                #         azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-                #         api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-                #         temperature=0.3,
-                #         max_tokens=4000
-                #     )
-                #     return self._openai_client
-
-                # =================================================================
-                # OPTION 2: OPENROUTER (Current - For Development)
-                # =================================================================
-                # Using OpenRouter with free tier model - CURRENTLY ACTIVE
-                # -----------------------------------------------------------------
-                if os.getenv("USE_OPENROUTER", "true").lower() == "true":
-                    openrouter_key = os.getenv(
-                        "OPENROUTER_API_KEY",
-                        "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"
-                    )
-                    openrouter_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-                    openrouter_model = os.getenv("OPENROUTER_MODEL", "mistralai/devstral-2512:free")
-                    self._openai_client = ChatOpenAI(
-                        base_url=openrouter_url,
-                        api_key=openrouter_key,
-                        model=openrouter_model,
-                        temperature=0.3,
-                        max_tokens=4000
-                    )
-                    return self._openai_client
-
-                # =================================================================
-                # OPTION 3: OLLAMA (On-Premise/Local)
-                # =================================================================
-                # Uncomment this block for local Ollama deployment
-                # -----------------------------------------------------------------
-                # if os.getenv("USE_OLLAMA", "false").lower() == "true":
-                #     ollama_url = os.getenv("OLLAMA_BASE_URL", "http://10.188.100.131:8004/v1")
-                #     ollama_model = os.getenv("OLLAMA_MODEL", "mistral-nemo:12b-instruct-2407-fp16")
-                #     self._openai_client = ChatOpenAI(
-                #         base_url=ollama_url,
-                #         api_key="ollama",
-                #         model=ollama_model,
-                #         temperature=0.3,
-                #         max_tokens=4000
-                #     )
-                #     return self._openai_client
-
-                # =================================================================
-                # OPTION 4: OPENAI DIRECT
-                # =================================================================
-                # Uncomment this block for direct OpenAI API
-                # -----------------------------------------------------------------
-                # if os.getenv("USE_OPENAI", "false").lower() == "true":
-                #     self._openai_client = ChatOpenAI(
-                #         api_key=os.getenv("OPENAI_API_KEY", self.api_key),
-                #         model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
-                #         temperature=0.3,
-                #         max_tokens=4000
-                #     )
-                #     return self._openai_client
-
-                # =================================================================
-                # FALLBACK: OpenRouter (always available)
-                # =================================================================
-                self._openai_client = ChatOpenAI(
-                    base_url="https://openrouter.ai/api/v1",
-                    api_key="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",
-                    model="mistralai/devstral-2512:free",
+                # Get LLM from centralized manager
+                # Uses default configuration from llm_manager.py
+                # Temperature and max_tokens can be overridden if needed
+                self._openai_client = LLMManager.get_llm(
                     temperature=0.3,
                     max_tokens=4000
                 )
 
-            except ImportError:
-                raise ImportError(
-                    "langchain-openai not installed. Run: pip install langchain-openai"
-                )
             except Exception as e:
-                raise RuntimeError(f"Failed to initialize LLM client: {e}")
+                raise RuntimeError(f"Failed to get LLM from LLMManager: {e}")
+
         return self._openai_client
 
     def design_from_prompt(
@@ -158,10 +79,12 @@ class WorkflowDesigner:
             Tuple of (workflow_definition, agent_definitions)
         """
         if default_llm is None:
+            # DEFAULT LLM for agents - delegates to LLMManager
+            # Agents will use defaults from llm_manager.py unless overridden
             default_llm = {
-                "provider": "openrouter",
-                "model": "mistralai/devstral-2512:free",
-                "temperature": 0.2
+                # Leave empty to use LLMManager defaults
+                # Or specify: "provider": "openai", "model": "gpt-4", etc.
+                "temperature": 0.3
             }
 
         # Always try LLM first (OpenRouter is available)
@@ -178,35 +101,117 @@ class WorkflowDesigner:
     ) -> Tuple[Dict[str, Any], Dict[str, Dict[str, Any]]]:
         """Design workflow using real LLM analysis."""
 
-        # Create system prompt for workflow design
-        system_prompt = """You are a workflow design assistant. Analyze the user's request and design a multi-agent workflow.
+        # Enhanced system prompt with better pattern detection
+        system_prompt = """You are an expert workflow architect. Analyze the user's request and design an optimal multi-agent workflow.
 
-Return a JSON response with this exact structure:
+## WORKFLOW TYPES AND WHEN TO USE THEM
+
+1. **Sequential**: Linear chain where tasks must happen in specific order
+   - Example: "Generate code, then review it, then deploy"
+   - Pattern: Output of A feeds into B feeds into C
+   - Use when: Dependencies exist between stages
+
+2. **Parallel**: Independent tasks that can run simultaneously
+   - Example: "Analyze code for bugs, security issues, and performance problems"
+   - Pattern: Multiple agents process same/different inputs concurrently
+   - Use when: Tasks are independent and can benefit from concurrency
+
+3. **Hierarchical**: Manager coordinates specialist workers
+   - Example: "Project manager assigns tasks to frontend, backend, and DevOps teams"
+   - Pattern: One manager delegates to multiple workers
+   - Use when: Central coordination and delegation is needed
+
+4. **Hybrid**: Mixed patterns combining parallel and sequential
+   - Example: "Three agents analyze different aspects in parallel, then synthesizer combines results, then reviewer validates"
+   - Pattern: Parallel stages → merge → sequential stages
+   - Use when: Some stages benefit from parallelism, others need sequential processing
+
+## DECISION TREE
+
+Ask yourself these questions in order:
+1. Is there ONE agent coordinating/managing others? → **Hierarchical**
+2. Are there distinct stages where some run in parallel, then merge into sequential? → **Hybrid**
+3. Can ALL tasks run simultaneously with no dependencies? → **Parallel**
+4. Must tasks happen in a specific order? → **Sequential**
+
+## RESPONSE FORMAT
+
+Return JSON with this structure:
+
+For Sequential/Parallel/Hierarchical:
 {
-  "execution_model": "sequential|parallel|hierarchical|hybrid",
-  "workflow_name": "Brief workflow name",
+  "execution_model": "sequential|parallel|hierarchical",
+  "workflow_name": "Brief name",
+  "reasoning": "1-2 sentences why you chose this model",
   "agents": [
     {
       "name": "Agent name",
-      "role": "Agent role/responsibility",
+      "role": "Clear role",
+      "goal": "What this agent aims to achieve",
       "description": "What this agent does",
-      "input_schema": ["list", "of", "input", "keys"],
-      "output_schema": ["list", "of", "output", "keys"]
+      "input_schema": ["input_keys"],
+      "output_schema": ["output_keys"]
     }
   ]
 }
 
-Rules:
-1. execution_model:
-   - "sequential": Tasks done one after another
-   - "parallel": Tasks done simultaneously
-   - "hierarchical": One master agent coordinates sub-agents
-   - "hybrid": Mix of above
+For Hybrid workflows, ALSO include topology:
+{
+  "execution_model": "hybrid",
+  "workflow_name": "Brief name",
+  "reasoning": "Why hybrid is needed",
+  "agents": [...],
+  "topology": {
+    "parallel_groups": [
+      {
+        "agents": [0, 1, 2],  // indices into agents array
+        "merge_strategy": "combine"  // "combine", "vote", or "prioritize"
+      }
+    ],
+    "sequential_chains": [
+      {
+        "agents": [3, 4]  // indices into agents array (after merge)
+      }
+    ]
+  }
+}
 
-2. Design 2-5 agents based on complexity
-3. Each agent should have clear role and I/O schema
-4. Ensure output of one agent matches input of next (for sequential)
-5. Be concise and practical"""
+For Hierarchical workflows, ALSO include hierarchy:
+{
+  "execution_model": "hierarchical",
+  "hierarchy": {
+    "master_agent_index": 0,  // index in agents array
+    "sub_agent_indices": [1, 2, 3],  // worker indices
+    "delegation_strategy": "dynamic"  // "dynamic", "all", or "sequential"
+  }
+}
+
+## EXAMPLES
+
+User: "Generate Python code for an API endpoint"
+→ Sequential (design → implement → test)
+
+User: "Check code for security, performance, and maintainability issues"
+→ Parallel (3 independent analyses)
+
+User: "A tech lead coordinates frontend, backend, and DevOps work"
+→ Hierarchical (1 manager + 3 specialists)
+
+User: "Extract data from 3 sources in parallel, then transform, then load to database"
+→ Hybrid (3 parallel extractors → transformer → loader)
+
+## RULES
+
+1. Design 2-5 agents (more complex tasks may need more)
+2. Each agent needs clear role, goal, and I/O schema
+3. For sequential: ensure output keys match next agent's input keys
+4. For parallel: agents should have similar input but different focus areas
+5. For hierarchical: manager's goal should mention coordination/delegation
+6. For hybrid: be explicit about which agents run in parallel vs sequential
+7. Always include "reasoning" to explain your choice
+8. Be practical and concise
+
+Now analyze the user's request:"""
 
         llm = self._get_openai_client()
 
@@ -254,6 +259,7 @@ Rules:
                 "agent_id": agent_id,
                 "name": agent_spec.get("name", "Agent"),
                 "role": agent_spec.get("role", "Processing"),
+                "goal": agent_spec.get("goal") or f"Complete task: {agent_spec.get('name', 'processing')}",
                 "description": agent_spec.get("description", ""),
                 "llm": default_llm.copy(),
                 "tools": [],
@@ -264,23 +270,56 @@ Rules:
                     "timeout_seconds": 60
                 },
                 "permissions": {
-                    "can_call_agents": execution_model == "hierarchical" and agents == []
+                    "can_call_agents": execution_model == "hierarchical" and len(agents) == 0
                 },
                 "metadata": {
                     "created_at": timestamp
                 }
             })
 
-        # Generate connections
+        # Generate connections (for non-hybrid workflows)
         connections = self._generate_connections(agents, execution_model)
 
-        # Build hierarchy if needed
-        hierarchy = None
-        if execution_model == "hierarchical" and len(agents) > 0:
-            hierarchy = {
-                "master_agent": agents[0]["agent_id"],
-                "delegation_order": [a["agent_id"] for a in agents[1:]]
+        # Build topology for hybrid workflows
+        topology = None
+        if execution_model == "hybrid":
+            llm_topology = llm_output.get("topology", {})
+            parallel_groups_indices = llm_topology.get("parallel_groups", [])
+            sequential_chains_indices = llm_topology.get("sequential_chains", [])
+
+            # Convert agent indices to agent IDs
+            topology = {
+                "parallel_groups": [],
+                "sequential_chains": []
             }
+
+            for group in parallel_groups_indices:
+                agent_indices = group.get("agents", [])
+                topology["parallel_groups"].append({
+                    "agents": [agents[i]["agent_id"] for i in agent_indices if i < len(agents)],
+                    "merge_strategy": group.get("merge_strategy", "combine")
+                })
+
+            for chain in sequential_chains_indices:
+                agent_indices = chain.get("agents", [])
+                topology["sequential_chains"].append({
+                    "agents": [agents[i]["agent_id"] for i in agent_indices if i < len(agents)]
+                })
+
+        # Build hierarchy for hierarchical workflows
+        hierarchy = None
+        if execution_model == "hierarchical":
+            llm_hierarchy = llm_output.get("hierarchy", {})
+            master_index = llm_hierarchy.get("master_agent_index", 0)
+            sub_indices = llm_hierarchy.get("sub_agent_indices", list(range(1, len(agents))))
+            delegation_strategy = llm_hierarchy.get("delegation_strategy", "dynamic")
+
+            if len(agents) > 0:
+                hierarchy = {
+                    "master_agent": agents[master_index]["agent_id"] if master_index < len(agents) else agents[0]["agent_id"],
+                    "delegation_order": [agents[i]["agent_id"] for i in sub_indices if i < len(agents)],
+                    "delegation_strategy": delegation_strategy
+                }
 
         # Build workflow
         workflow = {
@@ -293,6 +332,7 @@ Rules:
             "agents": [agent["agent_id"] for agent in agents],
             "connections": connections,
             "hierarchy": hierarchy,
+            "topology": topology,  # For hybrid workflows
             "state_schema": {},
             "human_in_loop": {
                 "enabled": False,
@@ -301,6 +341,7 @@ Rules:
             "metadata": {
                 "created_by": "designer_llm",
                 "created_at": timestamp,
+                "reasoning": llm_output.get("reasoning", ""),  # LLM's reasoning for workflow type
                 "tags": ["auto-generated", "llm-designed"]
             }
         }

@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_1a193285e9834933aaedc0e2fcad9d40",
+  "name": "Code Quality Analyzer",
+  "role": "Evaluates code quality",
+  "goal": "Assess readability, maintainability, and adherence to best practices",
+  "description": "Analyzes the code for readability, maintainability, and adherence to best practices, providing suggestions for improvement",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "clean_code"
+  ],
+  "output_schema": [
+    "quality_issues",
+    "quality_score"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-25T14:51:38.799021",
+    "registered_at": "2026-01-25T14:51:38.862329"
+  }
+}

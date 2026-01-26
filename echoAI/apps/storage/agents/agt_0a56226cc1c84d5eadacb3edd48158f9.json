@@ -1,0 +1,31 @@
+{
+  "agent_id": "agt_0a56226cc1c84d5eadacb3edd48158f9",
+  "name": "CodeSubmitter",
+  "role": "Code Submission Agent",
+  "goal": "Receive and validate code submissions",
+  "description": "Accepts code submissions and ensures they meet basic requirements before passing to the next agent",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "code",
+    "author"
+  ],
+  "output_schema": [
+    "code",
+    "author",
+    "submission_id"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-25T14:24:08.519732",
+    "registered_at": "2026-01-25T14:24:08.519732"
+  }
+}

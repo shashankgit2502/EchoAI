@@ -27,15 +27,31 @@ _wfsvc = WorkflowService(_agentsvc, _bus)
 
 # New orchestrator services
 _storage = WorkflowStorage()
-_validator = WorkflowValidator(tool_registry={})  # TODO: Add real tool registry
 _agent_registry = AgentRegistry()
+
+
+def _get_tool_registry():
+    """Lazily get tool registry from DI container to avoid circular imports."""
+    return container.resolve('tool.registry')
+
+
+def _get_tool_registry_dict():
+    """Get tool registry as dict for validator (tool_id -> tool_def)."""
+    try:
+        registry = _get_tool_registry()
+        return {t.tool_id: t.model_dump() for t in registry.list_all()}
+    except Exception:
+        return {}
+
+
+_validator = WorkflowValidator(tool_registry_provider=_get_tool_registry_dict)
 _designer = WorkflowDesigner(agent_registry=_agent_registry)
 _compiler = WorkflowCompiler()
 _guards = RuntimeGuards()
 _hitl = HITLManager()
 _graph_mapper = GraphMapper(storage=_storage)
 _graph_editor = GraphEditor()
-_node_mapper = NodeMapper(tool_registry=None)  # TODO: Add tool registry when ready
+_node_mapper = NodeMapper(tool_registry=_get_tool_registry())
 _executor = WorkflowExecutor(
     storage=_storage,
     compiler=_compiler,

@@ -1,0 +1,29 @@
+{
+  "agent_id": "agt_5ae56d55124949f0a7dfac4351b5dbd9",
+  "name": "Syntax Validator",
+  "role": "Validates code syntax",
+  "goal": "Check for syntax errors and formatting issues",
+  "description": "Analyzes the code for syntax errors and ensures it follows the required formatting standards",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "clean_code"
+  ],
+  "output_schema": [
+    "syntax_errors",
+    "code_quality_score"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-25T14:51:38.799021",
+    "registered_at": "2026-01-25T14:51:38.814819"
+  }
+}

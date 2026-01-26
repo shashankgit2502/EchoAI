@@ -1,0 +1,40 @@
+{
+  "workflow_id": "wf_de306a83055f47aba6e13fb4fc1fd07d",
+  "name": "Code Analysis Pipeline",
+  "description": "Created from canvas on 2026-01-23",
+  "status": "draft",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_d0dbc6e152c048aebe667be7dcf66fc9",
+    "agt_ba96db01f46945138255fc181a939d3e",
+    "agt_43eb8942399849b4b8a118fb67588d9b",
+    "agt_20d1e2746a5849e58b45593719f4ca6f"
+  ],
+  "connections": [
+    {
+      "from": "agt_d0dbc6e152c048aebe667be7dcf66fc9",
+      "to": "agt_ba96db01f46945138255fc181a939d3e"
+    },
+    {
+      "from": "agt_ba96db01f46945138255fc181a939d3e",
+      "to": "agt_43eb8942399849b4b8a118fb67588d9b"
+    },
+    {
+      "from": "agt_43eb8942399849b4b8a118fb67588d9b",
+      "to": "agt_20d1e2746a5849e58b45593719f4ca6f"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-23T22:28:45.637037",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    }
+  }
+}

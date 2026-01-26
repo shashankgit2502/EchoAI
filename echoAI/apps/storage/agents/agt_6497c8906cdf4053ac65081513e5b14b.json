@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_6497c8906cdf4053ac65081513e5b14b",
+  "name": "Parallel Processor",
+  "role": "Parallel Task Handler",
+  "goal": "Process independent data streams concurrently",
+  "description": "Executes parallelizable operations independently",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T21:06:35.433492",
+    "registered_at": "2026-01-23T21:06:35.433492"
+  }
+}

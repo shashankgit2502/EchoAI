@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_16b4d42c363541a6b5c8c3bde822b824",
+  "name": "CodeQualityAssessor",
+  "role": "Code Quality Evaluator",
+  "goal": "Evaluate code quality",
+  "description": "Assesses code quality based on best practices and returns a report.",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "code"
+  ],
+  "output_schema": [
+    "code_quality_issues"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-25T15:07:18.799119",
+    "registered_at": "2026-01-25T15:07:18.855433"
+  }
+}

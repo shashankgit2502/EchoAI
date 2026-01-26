@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_e1d7df8711404efa83140e6928bccdd5",
+  "name": "Reviewer 2",
+  "role": "Peer Reviewer",
+  "goal": "Assess code quality and compliance",
+  "description": "Conducts a detailed review of the same or similar code",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "detailed_feedback"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T20:03:49.468775",
+    "registered_at": "2026-01-24T20:03:49.491462"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "workflow_id": "wf_ec351766360a4f019bda77c05240bf52",
+  "name": "Code Generation Workflow",
+  "description": "Created from canvas on 2026-01-23",
+  "status": "draft",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_a394e4747d88478c878c2d24acd3f8cb",
+    "agt_f08da74bac314d3ca17a6f6873679e63",
+    "agt_2f745b2c8cc3492e9619764dc3f955fc",
+    "agt_c17dca15bd034abf90f63c3ea8dfeab8"
+  ],
+  "connections": [
+    {
+      "from": "agt_a394e4747d88478c878c2d24acd3f8cb",
+      "to": "agt_f08da74bac314d3ca17a6f6873679e63"
+    },
+    {
+      "from": "agt_f08da74bac314d3ca17a6f6873679e63",
+      "to": "agt_2f745b2c8cc3492e9619764dc3f955fc"
+    },
+    {
+      "from": "agt_2f745b2c8cc3492e9619764dc3f955fc",
+      "to": "agt_c17dca15bd034abf90f63c3ea8dfeab8"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-23T23:09:14.233889",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    }
+  }
+}

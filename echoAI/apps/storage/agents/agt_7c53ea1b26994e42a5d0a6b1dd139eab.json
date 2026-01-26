@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_7c53ea1b26994e42a5d0a6b1dd139eab",
+  "name": "Implementation Agent",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 296,
+      "y": 290,
+      "icon": "\ud83d\udd36",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-23T19:20:38.980587",
+    "registered_at": "2026-01-23T19:20:39.084796"
+  }
+}

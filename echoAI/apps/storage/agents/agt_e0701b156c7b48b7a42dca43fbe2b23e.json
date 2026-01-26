@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_e0701b156c7b48b7a42dca43fbe2b23e",
+  "name": "Code Reviewer 1",
+  "role": "Code Reviewer",
+  "goal": "Validate code for functionality and security",
+  "description": "Performs initial checks on the submitted code",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_notes"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T20:03:49.468775",
+    "registered_at": "2026-01-24T20:03:49.468775"
+  }
+}

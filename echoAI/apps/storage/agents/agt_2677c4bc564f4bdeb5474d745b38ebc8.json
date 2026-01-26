@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_2677c4bc564f4bdeb5474d745b38ebc8",
+  "name": "Design Agent",
+  "role": "Designing the code structure",
+  "goal": "To outline the high-level requirements",
+  "description": "Defines the structure and specifications",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T19:18:28.004838",
+    "registered_at": "2026-01-23T19:18:28.004838"
+  }
+}

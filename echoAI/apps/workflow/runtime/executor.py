@@ -103,12 +103,45 @@ class WorkflowExecutor:
 
         try:
             # Prepare initial state with workflow and run IDs
-            # Ensure input_payload is a dict (not None)
             if input_payload is None:
                 input_payload = {}
 
+            # Normalize user input: ensure "user_input" key is set
+            # Accept common key names from frontend
+            # FIX: Handle structured payloads (code, language, etc.) that don't use standard keys
+            user_input = (
+                input_payload.get("user_input")
+                or input_payload.get("message")
+                or input_payload.get("question")
+                or input_payload.get("input")
+                or input_payload.get("task_description")
+                or input_payload.get("prompt")
+            )
+
+            # FIX: If no standard key found but payload has data, serialize entire payload
+            # This handles structured inputs like {"code": "...", "language": "python"}
+            if not user_input and input_payload:
+                import json
+                # Check if there are any meaningful keys in the payload (not just metadata)
+                meaningful_keys = {k for k in input_payload.keys()
+                                   if k not in ("workflow_id", "run_id", "mode", "version", "context")}
+                if meaningful_keys:
+                    # Serialize the structured input as JSON string for agents to parse
+                    user_input = json.dumps(input_payload, indent=2)
+                    print(f"[Executor] Serialized structured payload as user_input: {user_input[:200]}...")
+
+            # Final fallback to empty string
+            if not user_input:
+                user_input = ""
+
+            # FIXED: Set initial state with original_user_input preserved
+            # This ensures all agents throughout the workflow have access
+            # to the original user request, not just the first agent
             initial_state = {
                 **input_payload,
+                "user_input": user_input,
+                "original_user_input": user_input,  # CRITICAL: Preserve original
+                "task_description": user_input,     # Alias for compatibility
                 "messages": [],
                 "workflow_id": workflow_id,
                 "run_id": run_id

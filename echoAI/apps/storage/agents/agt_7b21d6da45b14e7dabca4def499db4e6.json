@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_7b21d6da45b14e7dabca4def499db4e6",
+  "name": "Testing Engineer",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 1133.333333333333,
+      "y": 137.91666666666663,
+      "icon": "\ud83d\udd36",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-23T21:47:03.880850",
+    "registered_at": "2026-01-23T21:47:04.033759"
+  }
+}

@@ -1,0 +1,20 @@
+2026-01-26 12:35:45,593 INFO [apps.workflow.designer.compiler] CrewAI adapter initialized successfully
+INFO:     Started server process [306336]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2026-01-26 19:03:18,139 INFO [apps.tool.storage] ToolStorage initialized at C:\Users\Shashank Singh\Desktop\Phase 2 - ECHO\echoAI\apps\storage\tools
+2026-01-26 19:03:18,139 INFO [apps.tool.container] ToolStorage initialized at C:\Users\Shashank Singh\Desktop\Phase 2 - ECHO\echoAI\apps\storage\tools
+2026-01-26 19:03:18,166 INFO [apps.tool.storage] Loaded 5 tools from storage
+2026-01-26 19:03:18,166 INFO [apps.tool.registry] ToolRegistry initialized with 5 tools, 1 discovery directories
+2026-01-26 19:03:18,167 INFO [apps.tool.container] ToolRegistry initialized with 5 tools, 1 discovery directories
+INFO:     127.0.0.1:57969 - "GET /tools/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54719 - "GET /agents/registry/master-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61127 - "GET /agents/registry/master-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61127 - "GET /tools/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61127 - "OPTIONS /workflows/design/prompt?prompt=give%20me%20workflow%20for%20code%20generation%2C%20make%20only%20one%201%20agent. HTTP/1.1" 200 OK
+2026-01-26 19:04:16,400 INFO [llm_manager] LLM configuration valid: openrouter / allenai/molmo-2-8b:free
+2026-01-26 19:04:16,400 INFO [llm_manager] LLM Manager initialized successfully
+2026-01-26 19:04:16,400 INFO [llm_manager] Creating new LLM: provider=openrouter, model=allenai/molmo-2-8b:free
+2026-01-26 19:04:20,821 INFO [httpx] HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:61127 - "POST /workflows/design/prompt?prompt=give%20me%20workflow%20for%20code%20generation%2C%20make%20only%20one%201%20agent. HTTP/1.1" 200 OK

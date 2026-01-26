@@ -1,0 +1,46 @@
+{
+  "workflow_id": "wf_d5176e3f4589407899e157984791bf4d",
+  "name": "Unified Market Analysis Report",
+  "description": "Created from canvas on 2026-01-24",
+  "status": "testing",
+  "version": "0.1",
+  "execution_model": "hybrid",
+  "agents": [
+    "agt_b2941ac8a85e416698d5adf8b44fd788",
+    "agt_e088cb3d784c42afb57930b7e6985238",
+    "agt_2961c513d9bc4c8ca92f0853a981b620",
+    "agt_c444e2f82ce148f69d8b621bd3836e71",
+    "agt_2bcb5171bcde4dc993782564e440a6fc"
+  ],
+  "connections": [
+    {
+      "from": "agt_b2941ac8a85e416698d5adf8b44fd788",
+      "to": "agt_e088cb3d784c42afb57930b7e6985238"
+    },
+    {
+      "from": "agt_e088cb3d784c42afb57930b7e6985238",
+      "to": "agt_2961c513d9bc4c8ca92f0853a981b620"
+    },
+    {
+      "from": "agt_2961c513d9bc4c8ca92f0853a981b620",
+      "to": "agt_c444e2f82ce148f69d8b621bd3836e71"
+    },
+    {
+      "from": "agt_c444e2f82ce148f69d8b621bd3836e71",
+      "to": "agt_2bcb5171bcde4dc993782564e440a6fc"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-24T06:38:24.162904",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    },
+    "is_temp": true
+  }
+}

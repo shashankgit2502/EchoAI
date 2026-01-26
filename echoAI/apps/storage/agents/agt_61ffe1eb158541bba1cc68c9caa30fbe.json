@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_61ffe1eb158541bba1cc68c9caa30fbe",
+  "name": "AutomatedChecker",
+  "role": "Validator",
+  "goal": "Flag potential vulnerabilities",
+  "description": "Scans code for common security flaws",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "file_paths"
+  ],
+  "output_schema": [
+    "warnings"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T22:27:44.996259",
+    "registered_at": "2026-01-23T22:27:45.018768"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_0d896577f4a74a85a55f36f30260f75e",
+  "name": "ImplementationEngine",
+  "role": "Build code",
+  "goal": "Translate designs into functional code",
+  "description": "Translate specifications into Python modules",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "design_specs"
+  ],
+  "output_schema": [
+    "code_modules"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T18:42:05.151005",
+    "registered_at": "2026-01-23T18:42:05.160431"
+  }
+}

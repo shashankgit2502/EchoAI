@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_b6edb2d06bf346fcabf6cb214d76a0e4",
+  "name": "Reviewer A",
+  "role": "Primary Reviewer",
+  "goal": "Validate code quality",
+  "description": "Analyzes code for bugs and compliance",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "input_keys"
+  ],
+  "output_schema": [
+    "output_keys"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-24T19:31:14.902494",
+    "registered_at": "2026-01-24T19:31:14.903496"
+  }
+}

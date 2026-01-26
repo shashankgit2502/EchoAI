@@ -1,0 +1,43 @@
+{
+  "agent_id": "agt_1c0a096610d54a5d966a7f43d1c2d943",
+  "name": "StockSage",
+  "icon": "\ud83e\udd16",
+  "role": "StockSage",
+  "description": "The StockSage analyzes market trends and financial data to provide insights for informed investment decisions.",
+  "prompt": "Analyze historical and real-time stock data, identify trends, predict market movements, and offer actionable recommendations based on current and projected financial metrics.",
+  "model": "gpt-4",
+  "tools": [],
+  "variables": [],
+  "settings": {
+    "temperature": 0.1,
+    "max_token": 2000,
+    "top_p": 0.9,
+    "max_iteration": 5
+  },
+  "input_schema": [
+    "input",
+    "keys"
+  ],
+  "output_schema": [
+    "list",
+    "of",
+    "output",
+    "keys"
+  ],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false,
+    "allowed_agents": []
+  },
+  "metadata": {
+    "created_by": "agent_designer",
+    "created_at": "2026-01-23T18:27:25.413201",
+    "tags": [
+      "auto-generated"
+    ],
+    "registered_at": "2026-01-23T18:27:25.413201"
+  }
+}

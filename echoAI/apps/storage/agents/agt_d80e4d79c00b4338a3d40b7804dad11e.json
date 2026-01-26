@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_d80e4d79c00b4338a3d40b7804dad11e",
+  "name": "CodeReviewer",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 264.97533225867323,
+      "y": 291.42939825476685,
+      "icon": "\ud83e\udd16",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-23T23:05:10.589537",
+    "registered_at": "2026-01-23T23:05:10.721220"
+  }
+}

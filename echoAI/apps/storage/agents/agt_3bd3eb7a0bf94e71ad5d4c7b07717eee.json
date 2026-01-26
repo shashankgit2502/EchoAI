@@ -1,0 +1,27 @@
+{
+  "agent_id": "agt_3bd3eb7a0bf94e71ad5d4c7b07717eee",
+  "name": "Analyzer",
+  "role": "Data Analysis",
+  "description": "Analyzes input data",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "input_data"
+  ],
+  "output_schema": [
+    "analysis_result"
+  ],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 30
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T18:59:33.387848",
+    "registered_at": "2026-01-23T18:59:33.387848"
+  }
+}

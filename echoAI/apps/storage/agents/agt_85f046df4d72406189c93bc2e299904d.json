@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_85f046df4d72406189c93bc2e299904d",
+  "name": "Integration Hub",
+  "role": "Coordinator",
+  "goal": "Merge results from parallel groups",
+  "description": "Aggregates outputs for final synthesis",
+  "llm": {
+    "default_llm": null
+  },
+  "tools": [],
+  "input_schema": [
+    "parallel_outputs"
+  ],
+  "output_schema": [
+    "final_output"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-23T21:06:35.433492",
+    "registered_at": "2026-01-23T21:06:35.489720"
+  }
+}

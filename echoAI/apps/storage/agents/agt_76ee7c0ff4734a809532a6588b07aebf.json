@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_76ee7c0ff4734a809532a6588b07aebf",
+  "name": "CodeAnalyst",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "tngtech/tng-r1t-chimera:free",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 380,
+      "y": 100,
+      "icon": "\ud83d\udd36",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-23T18:36:14.718715",
+    "registered_at": "2026-01-23T18:36:14.753211"
+  }
+}

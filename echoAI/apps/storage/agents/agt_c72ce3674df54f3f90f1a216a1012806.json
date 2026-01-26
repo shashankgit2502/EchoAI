@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_c72ce3674df54f3f90f1a216a1012806",
+  "name": "Code Generator",
+  "role": "Python Code Writer",
+  "goal": "Write Python code based on user requirements",
+  "description": "Generates Python code that fulfills the user's specifications.",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "requirements"
+  ],
+  "output_schema": [
+    "generated_code"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-26T20:30:42.014149",
+    "registered_at": "2026-01-26T20:30:42.014149"
+  }
+}

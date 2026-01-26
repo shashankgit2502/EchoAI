@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_de740a116a204279be1dea619d409ca4",
+  "name": "CodeReceiver",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.3,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 380,
+      "y": 100,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-25T15:08:48.258047",
+    "registered_at": "2026-01-25T15:08:48.307930"
+  }
+}
