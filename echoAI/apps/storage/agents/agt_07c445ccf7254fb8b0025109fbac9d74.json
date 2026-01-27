@@ -1,0 +1,32 @@
+{
+  "agent_id": "agt_07c445ccf7254fb8b0025109fbac9d74",
+  "name": "Code Reviewer",
+  "role": "Analyze and review executed code",
+  "goal": "Evaluate the output and provide feedback",
+  "description": "Reviews the results from the code executor, checks for errors, and provides suggestions or validation.",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "code",
+    "output",
+    "error",
+    "status"
+  ],
+  "output_schema": [
+    "review",
+    "suggestions"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-27T09:33:57.376561",
+    "registered_at": "2026-01-27T09:33:57.402128"
+  }
+}

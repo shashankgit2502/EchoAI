@@ -1,0 +1,40 @@
+{
+  "workflow_id": "wf_f1887fe103b54514a2f89c0cb1129686",
+  "name": "Code Generation and Review",
+  "description": "Created from canvas on 2026-01-27",
+  "status": "draft",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_f69473c8a30741afab11fe30985a1507",
+    "agt_d2f51e6c77c74671a518810758234819",
+    "agt_6c5a42fc23f947688bf08296882157a7",
+    "agt_eb37ed08d770493b88a7a594d5f44331"
+  ],
+  "connections": [
+    {
+      "from": "agt_d2f51e6c77c74671a518810758234819",
+      "to": "agt_6c5a42fc23f947688bf08296882157a7"
+    },
+    {
+      "from": "agt_6c5a42fc23f947688bf08296882157a7",
+      "to": "agt_eb37ed08d770493b88a7a594d5f44331"
+    },
+    {
+      "from": "agt_f69473c8a30741afab11fe30985a1507",
+      "to": "agt_d2f51e6c77c74671a518810758234819"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-27T09:26:43.177980",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    }
+  }
+}

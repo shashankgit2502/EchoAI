@@ -53,7 +53,25 @@ class WorkflowExecutor:
             input_payload = {}
 
         # Load workflow based on mode
-        if execution_mode == "test":
+        if execution_mode == "draft":
+            # Try draft first, fall back to temp for backwards compatibility
+            try:
+                workflow = self.storage.load_workflow(
+                    workflow_id=workflow_id,
+                    state="draft"
+                )
+            except FileNotFoundError:
+                # Fallback: try temp folder (for workflows saved before draft-chat feature)
+                print(f"Draft not found for {workflow_id}, trying temp folder...")
+                workflow = self.storage.load_workflow(
+                    workflow_id=workflow_id,
+                    state="temp"
+                )
+            # Draft workflows can be in draft, validated, or testing status (for temp fallback)
+            if workflow.get("status") not in ("draft", "validated", "testing"):
+                raise RuntimeError("Workflow not in usable state")
+
+        elif execution_mode == "test":
             workflow = self.storage.load_workflow(
                 workflow_id=workflow_id,
                 state="temp"
@@ -183,13 +201,18 @@ class WorkflowExecutor:
 
         Args:
             workflow_id: Workflow identifier
-            mode: "test" or "final"
+            mode: "draft", "test", or "final"
             version: Version (for final mode)
 
         Returns:
             Workflow definition
         """
-        if mode == "test":
+        if mode == "draft":
+            return self.storage.load_workflow(
+                workflow_id=workflow_id,
+                state="draft"
+            )
+        elif mode == "test":
             return self.storage.load_workflow(
                 workflow_id=workflow_id,
                 state="temp"

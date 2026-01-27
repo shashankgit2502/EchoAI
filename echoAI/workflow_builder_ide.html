@@ -1717,6 +1717,61 @@
                 </div>
             </div>
         </div>
+
+        <!-- Load Workflow Modal -->
+        <div v-if="showLoadModal" class="fixed inset-0 bg-slate-900/60 flex items-center justify-center z-50" @click.self="showLoadModal = false">
+            <div class="bg-white rounded-lg shadow-xl w-[500px] max-w-[90vw] max-h-[600px] flex flex-col overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-3 border-b bg-gradient-to-r from-indigo-50 to-blue-50">
+                    <h3 class="text-sm font-bold text-slate-800">📂 Load Workflow</h3>
+                    <button @click="showLoadModal = false" class="text-xs text-slate-500 hover:text-slate-700">✖</button>
+                </div>
+
+                <!-- Manual ID Entry -->
+                <div class="p-4 border-b bg-slate-50">
+                    <div class="text-xs font-semibold text-slate-600 mb-2">Load by Workflow ID</div>
+                    <div class="flex gap-2">
+                        <input v-model="manualWorkflowId"
+                               @keydown.enter="loadManualId"
+                               placeholder="Enter workflow ID (e.g., wf_abc123...)"
+                               class="flex-1 px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <button @click="loadManualId"
+                                :disabled="!manualWorkflowId.trim()"
+                                class="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed">
+                            Load
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Draft List -->
+                <div class="flex-1 overflow-y-auto p-4">
+                    <div class="text-xs font-semibold text-slate-600 mb-2">Or Select from Saved Drafts</div>
+                    <div v-if="isLoadingDrafts" class="text-center py-8">
+                        <div class="w-6 h-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                        <span class="text-xs text-slate-500">Loading drafts...</span>
+                    </div>
+                    <div v-else-if="draftWorkflows.length === 0" class="text-center py-8 text-slate-400 text-xs">
+                        No draft workflows found. Create and save a workflow first.
+                    </div>
+                    <div v-else class="space-y-2">
+                        <div v-for="wf in draftWorkflows" :key="wf.workflow_id"
+                             @click="loadSelectedDraft(wf.workflow_id)"
+                             class="p-3 border border-slate-200 rounded-lg hover:border-indigo-300 hover:bg-indigo-50 cursor-pointer transition-all">
+                            <div class="flex items-center justify-between">
+                                <div class="text-xs font-semibold text-slate-700">{{ wf.name || 'Untitled Workflow' }}</div>
+                                <span class="px-2 py-0.5 text-[10px] font-medium bg-slate-100 text-slate-500 rounded">{{ wf.execution_model }}</span>
+                            </div>
+                            <div class="text-[10px] text-slate-400 mt-1">
+                                {{ wf.workflow_id }} • {{ wf.agent_count }} agent(s)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-4 py-3 border-t bg-slate-50 text-[11px] text-slate-500">
+                    Select a draft or enter a workflow ID to load it onto the canvas.
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1748,7 +1803,7 @@
             },
 
             // Save workflow to backend (canvas format)
-            async saveCanvas(canvasNodes, connections, workflowName = null, saveAs = 'draft', executionModel = 'sequential') {
+            async saveCanvas(canvasNodes, connections, workflowName = null, saveAs = 'draft', executionModel = 'sequential', workflowId = null) {
                 try {
                     const response = await fetch(`${API_BASE_URL}/workflows/canvas/save`, {
                         method: 'POST',
@@ -1758,7 +1813,8 @@
                             connections: connections,
                             workflow_name: workflowName,
                             save_as: saveAs,
-                            execution_model: executionModel
+                            execution_model: executionModel,
+                            workflow_id: workflowId  // Preserve existing ID if provided
                         })
                     });
                     if (!response.ok) {
@@ -1852,6 +1908,21 @@
                     return await response.json();
                 } catch (error) {
                     console.error('Workflow execute API error:', error);
+                    throw error;
+                }
+            },
+
+            // List all draft workflows
+            async listDrafts() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/workflows/draft/list`);
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to load draft list');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Workflow list drafts API error:', error);
                     throw error;
                 }
             }
@@ -2060,6 +2131,12 @@
                 const showWorkflowDialog = ref(false);
                 const pendingWorkflowGeneration = ref(false);
                 const workflowState = ref('empty');
+
+                // Load Modal State
+                const showLoadModal = ref(false);
+                const draftWorkflows = ref([]);
+                const isLoadingDrafts = ref(false);
+                const manualWorkflowId = ref('');
 
                 // Tool System State
                 const registeredTools = ref([]);
@@ -3309,12 +3386,14 @@
                     saveStatus.value = 'Saving...';
 
                     try {
+                        // Pass existing workflow_id to preserve it across saves
                         const result = await workflowAPI.saveCanvas(
                             activeNodes.value,
                             connections.value,
                             workflowName.value || 'Untitled Workflow',
                             saveAs,
-                            workflowExecutionModel.value
+                            workflowExecutionModel.value,
+                            currentWorkflowId.value  // Preserve existing ID
                         );
 
                         if (result.success) {
@@ -3345,9 +3424,24 @@
                 };
 
                 const loadWorkflowDialog = async () => {
-                    const workflowId = prompt('Enter workflow ID to load');
-                    if (!workflowId) return;
+                    // Show modal and fetch draft list
+                    showLoadModal.value = true;
+                    isLoadingDrafts.value = true;
+                    manualWorkflowId.value = '';
 
+                    try {
+                        const result = await workflowAPI.listDrafts();
+                        draftWorkflows.value = result.workflows || [];
+                    } catch (error) {
+                        console.error('Failed to load draft list:', error);
+                        draftWorkflows.value = [];
+                    } finally {
+                        isLoadingDrafts.value = false;
+                    }
+                };
+
+                // Load a workflow by ID (reusable helper)
+                const loadWorkflowById = async (workflowId) => {
                     try {
                         const result = await workflowAPI.loadWorkflow(workflowId);
                         const workflow = result.workflow || result;
@@ -3364,10 +3458,31 @@
                         workflowModified.value = false;
                         workflowState.value = 'saved';
                         currentThreadId.value = null;
+                        chatSessionId.value = null;  // Reset chat session for new workflow
+                        chatMessages.value = [];     // Clear chat history
+
+                        return true;
                     } catch (error) {
                         console.error('Load workflow error:', error);
                         alert(`Failed to load workflow: ${error.message}`);
+                        return false;
                     }
+                };
+
+                // Load selected draft from list
+                const loadSelectedDraft = async (workflowId) => {
+                    showLoadModal.value = false;
+                    await loadWorkflowById(workflowId);
+                };
+
+                // Load workflow by manually entered ID
+                const loadManualId = async () => {
+                    const workflowId = manualWorkflowId.value.trim();
+                    if (!workflowId) return;
+
+                    showLoadModal.value = false;
+                    manualWorkflowId.value = '';
+                    await loadWorkflowById(workflowId);
                 };
 
                 const runWorkflow = async () => {
@@ -3478,10 +3593,11 @@
                         return;
                     }
 
+                    // Check if workflow needs to be saved first
                     if (!workflowSaved.value || !currentWorkflowId.value) {
                         const shouldSave = confirm('Workflow must be saved before chatting. Save now?');
                         if (shouldSave) {
-                            await saveWorkflow('temp');  // Save as temp for testing
+                            await saveWorkflow('draft');  // Save as draft (NOT temp)
                             if (!currentWorkflowId.value) {
                                 alert('Failed to save workflow. Please try again.');
                                 return;
@@ -3489,10 +3605,8 @@
                         } else {
                             return;
                         }
-                    } else {
-                        // Re-save as temp to capture latest changes
-                        await saveWorkflow('temp');
                     }
+                    // NOTE: Do NOT re-save - use the existing draft workflow
 
                     const userTimestamp = new Date().toLocaleTimeString();
                     chatMessages.value.push({
@@ -3511,7 +3625,7 @@
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
                                     workflow_id: currentWorkflowId.value,
-                                    workflow_mode: 'temp',
+                                    workflow_mode: 'draft',  // Use draft mode for chat
                                     context: {
                                         workflow_name: workflowName.value || 'Untitled Workflow'
                                     }
@@ -3725,6 +3839,10 @@
                     showInputModal,
                     workflowInput,
                     showWorkflowDialog,
+                    showLoadModal,
+                    draftWorkflows,
+                    isLoadingDrafts,
+                    manualWorkflowId,
                     nodeLibrary,
                     filteredLibrary,
                     agentTemplates,
@@ -3750,6 +3868,8 @@
                     clearCanvas,
                     saveWorkflow,
                     loadWorkflowDialog,
+                    loadSelectedDraft,
+                    loadManualId,
                     runWorkflow,
                     addInputVariable,
                     addOutputVariable,

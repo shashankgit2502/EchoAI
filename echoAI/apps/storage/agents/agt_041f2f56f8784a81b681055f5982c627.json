@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_041f2f56f8784a81b681055f5982c627",
+  "name": "Code Generator",
+  "role": "Generate code based on user requirements",
+  "goal": "Produce clean, functional code that meets the specified requirements",
+  "description": "This agent takes user requirements and generates code, ensuring it follows best practices and is well-documented.",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "requirements"
+  ],
+  "output_schema": [
+    "generated_code"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-27T09:25:45.542918",
+    "registered_at": "2026-01-27T09:25:45.542918"
+  }
+}

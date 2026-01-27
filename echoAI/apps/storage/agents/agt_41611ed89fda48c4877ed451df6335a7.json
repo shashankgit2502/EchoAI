@@ -1,0 +1,34 @@
+{
+  "agent_id": "agt_41611ed89fda48c4877ed451df6335a7",
+  "name": "Code Executor",
+  "role": "Autonomous AI agent",
+  "description": "Agent node",
+  "llm": {
+    "model": "openrouter-model",
+    "temperature": 0.3,
+    "max_tokens": 4000
+  },
+  "tools": [
+    "tool_code_generator"
+  ],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 380,
+      "y": 100,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-27T09:35:27.439751",
+    "registered_at": "2026-01-27T09:35:27.511556"
+  }
+}

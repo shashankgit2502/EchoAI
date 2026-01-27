@@ -168,6 +168,17 @@ async def validate_final(req: WorkflowValidationRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+# Draft Listing
+@router.get('/draft/list')
+async def list_draft_workflows():
+    """List all workflows in draft folder."""
+    try:
+        storage = container.resolve('workflow.storage')
+        workflows = storage.list_draft_workflows()
+        return {"workflows": workflows, "total": len(workflows)}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Storage
 @router.post('/temp/save')
 async def save_temp(workflow: dict):
@@ -417,7 +428,8 @@ async def save_canvas_workflow(request: dict):
       "canvas_nodes": [...],
       "connections": [...],
       "workflow_name": "Optional",
-      "save_as": "draft|temp"
+      "save_as": "draft|temp",
+      "workflow_id": "Optional - preserves existing ID if provided"
     }
     """
     try:
@@ -426,12 +438,13 @@ async def save_canvas_workflow(request: dict):
         storage = container.resolve('workflow.storage')
         agent_registry = container.resolve('agent.registry')
 
-        # Convert to backend format
+        # Convert to backend format (preserve existing workflow_id if provided)
         workflow, agents = node_mapper.map_frontend_to_backend(
             canvas_nodes=request.get("canvas_nodes", []),
             connections=request.get("connections", []),
             workflow_name=request.get("workflow_name"),
-            execution_model=request.get("execution_model")
+            execution_model=request.get("execution_model"),
+            workflow_id=request.get("workflow_id")
         )
 
         # Validate

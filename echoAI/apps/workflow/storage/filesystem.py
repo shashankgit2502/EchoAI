@@ -279,3 +279,27 @@ class WorkflowStorage:
             return f"{major}.{minor + 1}"
         else:
             raise ValueError("Invalid version level")
+
+    def list_draft_workflows(self) -> List[Dict]:
+        """
+        Return list of all workflows in draft folder with metadata.
+
+        Returns:
+            List of workflow metadata dictionaries sorted by created_at (newest first)
+        """
+        workflows = []
+        for file in self.draft_dir.glob("*.draft.json"):
+            try:
+                with open(file) as f:
+                    workflow = json.load(f)
+                workflows.append({
+                    "workflow_id": workflow.get("workflow_id"),
+                    "name": workflow.get("name", "Untitled"),
+                    "execution_model": workflow.get("execution_model", "sequential"),
+                    "agent_count": len(workflow.get("agents", [])),
+                    "created_at": workflow.get("metadata", {}).get("created_at"),
+                    "status": workflow.get("status", "draft")
+                })
+            except Exception:
+                continue  # Skip corrupted files
+        return sorted(workflows, key=lambda x: x.get("created_at") or "", reverse=True)

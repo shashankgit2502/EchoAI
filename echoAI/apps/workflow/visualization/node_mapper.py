@@ -69,7 +69,8 @@ class NodeMapper:
         connections: List[Dict[str, Any]],
         workflow_name: Optional[str] = None,
         auto_generate_name: bool = True,
-        execution_model: Optional[str] = None
+        execution_model: Optional[str] = None,
+        workflow_id: Optional[str] = None
     ) -> Tuple[Dict[str, Any], Dict[str, Dict[str, Any]]]:
         """
         Convert frontend canvas to backend workflow JSON.
@@ -79,6 +80,7 @@ class NodeMapper:
             connections: Frontend connection list
             workflow_name: Explicit workflow name (optional)
             auto_generate_name: Generate name from first agent if not provided
+            workflow_id: Existing workflow ID to preserve (optional)
 
         Returns:
             Tuple of (workflow_dict, agents_dict)
@@ -89,8 +91,9 @@ class NodeMapper:
         # Validate Start node
         self._validate_start_node(canvas_nodes)
 
-        # Generate workflow ID
-        workflow_id = new_id("wf_")
+        # Use existing workflow ID if provided, otherwise generate new
+        if not workflow_id:
+            workflow_id = new_id("wf_")
 
         # Determine workflow name
         if not workflow_name and auto_generate_name:

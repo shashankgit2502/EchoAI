@@ -34,7 +34,7 @@ class ChatSession:
     """Chat session for workflow testing"""
     session_id: str
     workflow_id: str
-    workflow_mode: str  # "test" | "final"
+    workflow_mode: str  # "draft" | "test" | "final"
     workflow_version: Optional[str] = None
     created_at: datetime = field(default_factory=datetime.utcnow)
     last_activity: datetime = field(default_factory=datetime.utcnow)

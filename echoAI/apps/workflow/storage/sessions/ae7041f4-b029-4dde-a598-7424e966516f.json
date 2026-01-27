@@ -1,0 +1,91 @@
+{
+  "session_id": "ae7041f4-b029-4dde-a598-7424e966516f",
+  "workflow_id": "wf_745296aa645b4012a211773c08cb9ed9",
+  "workflow_mode": "draft",
+  "workflow_version": null,
+  "created_at": "2026-01-27T09:34:55.862023",
+  "last_activity": "2026-01-27T09:44:02.185673",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Started testing workflow: wf_745296aa645b4012a211773c08cb9ed9",
+      "timestamp": "2026-01-27T09:34:55.862023",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "user",
+      "content": "hello",
+      "timestamp": "2026-01-27T09:34:55.893208",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "{'agent': 'agt_95ff00e004d742f6bce3c49e8ec5bcf2', 'name': 'Workflow End', 'role': 'Workflow exit point', 'tools_bound': 0, 'tool_names': [], 'original_request': 'hello', 'had_previous_context': True, 'had_parallel_context': False, 'output_preview': 'Hello! Your request has been received. How can I assist you today?', 'timestamp': '2026-01-27T09:35:10.814344'}",
+      "timestamp": "2026-01-27T09:35:10.817756",
+      "agent_id": null,
+      "metadata": {
+        "execution_status": "completed"
+      }
+    },
+    {
+      "role": "user",
+      "content": "give me code for fabonacci series in java",
+      "timestamp": "2026-01-27T09:38:50.327614",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "Workflow executed: {}",
+      "timestamp": "2026-01-27T09:39:02.903851",
+      "agent_id": null,
+      "metadata": {
+        "execution_status": "failed"
+      }
+    },
+    {
+      "role": "user",
+      "content": "give me code for linked list",
+      "timestamp": "2026-01-27T09:42:56.476901",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "{'agent': 'agt_f908dd3a60b14da6bac208280e6614e9', 'name': 'Workflow End', 'role': 'Workflow exit point', 'tools_bound': 0, 'tool_names': [], 'original_request': 'give me code for linked list', 'had_previous_context': True, 'had_parallel_context': False, 'output_preview': 'The final answer is the complete Python code for a basic linked list class, including node creation, insertion, and display methods. The example usage demonstrates how to create, insert elements into, and display the linked list contents.', 'timestamp': '2026-01-27T09:43:05.863703'}",
+      "timestamp": "2026-01-27T09:43:05.865703",
+      "agent_id": null,
+      "metadata": {
+        "execution_status": "completed"
+      }
+    },
+    {
+      "role": "user",
+      "content": "give me code of linked list in java",
+      "timestamp": "2026-01-27T09:43:51.532724",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "{'agent': 'agt_f908dd3a60b14da6bac208280e6614e9', 'name': 'Workflow End', 'role': 'Workflow exit point', 'tools_bound': 0, 'tool_names': [], 'original_request': 'give me code of linked list in java', 'had_previous_context': True, 'had_parallel_context': False, 'output_preview': '```\\npublic class LinkedList {\\n    private Node head;\\n\\n    private class Node {\\n        int data;\\n        Node next;\\n\\n        Node(int data) {\\n            this.data = data;\\n            this.next = null;\\n        }\\n    }\\n\\n    public void add(int data) {\\n        Node newNode = new Node(data);\\n\\n        if (head == null) {\\n            head = newNode;\\n        } else {\\n            Node current = head;\\n            while (current.next != null) {\\n                current = current.next;\\n            }\\n      ', 'timestamp': '2026-01-27T09:44:02.182647'}",
+      "timestamp": "2026-01-27T09:44:02.185673",
+      "agent_id": null,
+      "metadata": {
+        "execution_status": "completed"
+      }
+    }
+  ],
+  "context": {
+    "workflow_name": "Code Execution and Review Workflow"
+  },
+  "run_ids": [
+    "run_107dbfaf08e8496eb5ab03d7741390e4",
+    "run_2d6c5339cf3e4464b3f92e4719de9806",
+    "run_75199b793a634ca5b2117c22d9333ff8",
+    "run_a8564e10694e4a7492fabd9d2bf29bdd"
+  ],
+  "message_count": 9
+}

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la \"C:\\\\Users\\\\Shashank Singh\\\\Desktop\\\\Phase 2 - ECHO\\\\echoAI\\\\apps\"\" | grep -E \"^d \")"
+    ]
+  }
+}

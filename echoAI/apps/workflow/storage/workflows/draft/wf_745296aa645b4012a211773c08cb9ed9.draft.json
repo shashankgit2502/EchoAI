@@ -1,0 +1,40 @@
+{
+  "workflow_id": "wf_745296aa645b4012a211773c08cb9ed9",
+  "name": "Code Execution and Review Workflow",
+  "description": "Created from canvas on 2026-01-27",
+  "status": "draft",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_86e9ea1779894f1c818630cfa5119952",
+    "agt_41611ed89fda48c4877ed451df6335a7",
+    "agt_50d2fb84b606488b808c00832e9d1658",
+    "agt_f908dd3a60b14da6bac208280e6614e9"
+  ],
+  "connections": [
+    {
+      "from": "agt_86e9ea1779894f1c818630cfa5119952",
+      "to": "agt_41611ed89fda48c4877ed451df6335a7"
+    },
+    {
+      "from": "agt_41611ed89fda48c4877ed451df6335a7",
+      "to": "agt_50d2fb84b606488b808c00832e9d1658"
+    },
+    {
+      "from": "agt_50d2fb84b606488b808c00832e9d1658",
+      "to": "agt_f908dd3a60b14da6bac208280e6614e9"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-27T09:35:27.439751",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    }
+  }
+}
