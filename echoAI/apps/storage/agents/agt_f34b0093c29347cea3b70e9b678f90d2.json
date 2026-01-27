@@ -1,0 +1,38 @@
+{
+  "agent_id": "agt_f34b0093c29347cea3b70e9b678f90d2",
+  "name": "Report Complete",
+  "role": "Workflow exit point",
+  "goal": "",
+  "prompt": "",
+  "description": "End node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [
+    "report_url",
+    "page_count",
+    "key_insights"
+  ],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "End",
+    "ui_layout": {
+      "x": 2600,
+      "y": 300,
+      "icon": "⏹️",
+      "color": "#64748b"
+    },
+    "created_at": "2026-01-27T21:23:13.933918",
+    "registered_at": "2026-01-27T21:23:14.291264"
+  }
+}

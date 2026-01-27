@@ -1,0 +1,210 @@
+{
+  "title": "Talent Acquisition Workflow",
+  "description": "End-to-end recruiting process with AI screening, skills assessment, and interview coordination",
+  "nodes": [
+    {
+      "id": 8000,
+      "type": "Start",
+      "name": "Application Received",
+      "icon": "▶️",
+      "color": "#10b981",
+      "x": 100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "triggerType": "webhook",
+        "inputVariables": [
+          {"name": "candidate_name", "type": "string", "required": true},
+          {"name": "position_id", "type": "string", "required": true},
+          {"name": "resume_url", "type": "string", "required": true},
+          {"name": "cover_letter", "type": "string", "required": false}
+        ]
+      }
+    },
+    {
+      "id": 8001,
+      "type": "Agent",
+      "name": "Resume Parser",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 350,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "Parse and extract structured information from resume. Extract: Contact information, Work experience (company, title, dates, responsibilities), Education (degree, institution, graduation date), Skills (technical, soft, languages), Certifications and awards, Projects and publications. Normalize job titles and skills to standard taxonomy.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-sonnet-4-5-20250514",
+          "displayName": "Claude Sonnet 4.5"
+        },
+        "tools": [],
+        "maxIterations": 3,
+        "temperature": 0.2
+      }
+    },
+    {
+      "id": 8002,
+      "type": "API",
+      "name": "Fetch Job Requirements",
+      "icon": "🌐",
+      "color": "#3b82f6",
+      "x": 600,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "method": "GET",
+        "url": "https://api.ats.com/v1/positions/{position_id}",
+        "authentication": "bearer"
+      }
+    },
+    {
+      "id": 8003,
+      "type": "Agent",
+      "name": "Skills Matcher",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 850,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "Match candidate qualifications against job requirements. Assess: Required skills coverage (% match), Preferred qualifications met, Years of experience vs. requirement, Education level match, Industry experience relevance, Career progression trajectory, Red flags (employment gaps, job hopping). Calculate overall fit score (0-100).",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-sonnet-4-5-20250514",
+          "displayName": "Claude Sonnet 4.5"
+        },
+        "tools": [],
+        "maxIterations": 3,
+        "temperature": 0.3
+      }
+    },
+    {
+      "id": 8004,
+      "type": "Conditional",
+      "name": "Meets Minimum?",
+      "icon": "🔀",
+      "color": "#8b5cf6",
+      "x": 1100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "branches": [
+          {"type": "if", "condition": "fit_score < 60", "targetNodeId": 8005},
+          {"type": "else", "condition": "", "targetNodeId": 8006}
+        ]
+      }
+    },
+    {
+      "id": 8005,
+      "type": "API",
+      "name": "Send Rejection Email",
+      "icon": "🌐",
+      "color": "#3b82f6",
+      "x": 1350,
+      "y": 200,
+      "status": "idle",
+      "config": {
+        "method": "POST",
+        "url": "https://api.email.com/v1/send-template",
+        "authentication": "api_key"
+      }
+    },
+    {
+      "id": 8006,
+      "type": "Agent",
+      "name": "Screening Questions Generator",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 1350,
+      "y": 400,
+      "status": "idle",
+      "config": {
+        "prompt": "Generate customized screening questions based on role and candidate background. Create 3-5 questions covering: Technical competency gaps, Situational judgment, Cultural fit, Motivation and career goals, Availability and logistics. Questions should be open-ended, role-specific, and designed to reveal red flags.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-sonnet-4-5-20250514",
+          "displayName": "Claude Sonnet 4.5"
+        },
+        "tools": [],
+        "temperature": 0.5
+      }
+    },
+    {
+      "id": 8007,
+      "type": "API",
+      "name": "Schedule Phone Screen",
+      "icon": "🌐",
+      "color": "#3b82f6",
+      "x": 1600,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "method": "POST",
+        "url": "https://api.calendar.com/v1/schedule",
+        "authentication": "oauth2"
+      }
+    },
+    {
+      "id": 8008,
+      "type": "HITL",
+      "name": "Recruiter Assessment",
+      "icon": "👤",
+      "color": "#06b6d4",
+      "x": 1850,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "reviewTitle": "Phone Screen Review",
+        "priority": "medium",
+        "message": "Review screening responses and decide on next steps",
+        "allowedDecisions": ["advance_to_interview", "reject", "request_more_info"],
+        "notificationChannels": ["email"]
+      }
+    },
+    {
+      "id": 8009,
+      "type": "API",
+      "name": "Update ATS",
+      "icon": "🌐",
+      "color": "#3b82f6",
+      "x": 2100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "method": "PUT",
+        "url": "https://api.ats.com/v1/candidates/{candidate_id}/stage",
+        "authentication": "bearer"
+      }
+    },
+    {
+      "id": 8010,
+      "type": "End",
+      "name": "Screening Complete",
+      "icon": "⏹️",
+      "color": "#64748b",
+      "x": 2350,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "outputVariables": [
+          {"name": "fit_score", "type": "number"},
+          {"name": "decision", "type": "string"},
+          {"name": "next_stage", "type": "string"}
+        ]
+      }
+    }
+  ],
+  "connections": [
+    {"id": 9000, "from": 8000, "to": 8001},
+    {"id": 9001, "from": 8001, "to": 8002},
+    {"id": 9002, "from": 8002, "to": 8003},
+    {"id": 9003, "from": 8003, "to": 8004},
+    {"id": 9004, "from": 8004, "to": 8005},
+    {"id": 9005, "from": 8004, "to": 8006},
+    {"id": 9006, "from": 8005, "to": 8010},
+    {"id": 9007, "from": 8006, "to": 8007},
+    {"id": 9008, "from": 8007, "to": 8008},
+    {"id": 9009, "from": 8008, "to": 8009},
+    {"id": 9010, "from": 8009, "to": 8010}
+  ]
+}

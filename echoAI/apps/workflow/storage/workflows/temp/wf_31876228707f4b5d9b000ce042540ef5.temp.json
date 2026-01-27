@@ -1,0 +1,91 @@
+{
+  "workflow_id": "wf_31876228707f4b5d9b000ce042540ef5",
+  "name": "Talent Acquisition Workflow",
+  "description": "Created from canvas on 2026-01-27",
+  "status": "testing",
+  "version": "0.1",
+  "execution_model": "hybrid",
+  "agents": [
+    "agt_54a78090a61c40a5910cea7a78ef174b",
+    "agt_fd55eac5c22c4333bcf13604b3ebc3d3",
+    "agt_da9206aed69d4c66a46108872cfc42c4",
+    "agt_61549556c15c4f95a6479839f59d00bd",
+    "agt_3977e38969c142128656e9f5b88a7e93",
+    "agt_c3cff87eb14147c3be875627d759b910",
+    "agt_7e63f7aa42744e8caeed99e00745947d",
+    "agt_8583975653694b4582d2e95f2a24e423",
+    "agt_c67dc57788b9439fa3a5b936299e90a5",
+    "agt_6b7f58ee09474bdda6b7ae48a6559fe1",
+    "agt_c49e6ae313a24c25a156d6ccc8e93487"
+  ],
+  "connections": [
+    {
+      "from": "agt_54a78090a61c40a5910cea7a78ef174b",
+      "to": "agt_fd55eac5c22c4333bcf13604b3ebc3d3"
+    },
+    {
+      "from": "agt_fd55eac5c22c4333bcf13604b3ebc3d3",
+      "to": "agt_da9206aed69d4c66a46108872cfc42c4"
+    },
+    {
+      "from": "agt_da9206aed69d4c66a46108872cfc42c4",
+      "to": "agt_61549556c15c4f95a6479839f59d00bd"
+    },
+    {
+      "from": "agt_61549556c15c4f95a6479839f59d00bd",
+      "to": "agt_3977e38969c142128656e9f5b88a7e93"
+    },
+    {
+      "from": "agt_3977e38969c142128656e9f5b88a7e93",
+      "to": "agt_c3cff87eb14147c3be875627d759b910"
+    },
+    {
+      "from": "agt_3977e38969c142128656e9f5b88a7e93",
+      "to": "agt_7e63f7aa42744e8caeed99e00745947d"
+    },
+    {
+      "from": "agt_c3cff87eb14147c3be875627d759b910",
+      "to": "agt_c49e6ae313a24c25a156d6ccc8e93487"
+    },
+    {
+      "from": "agt_7e63f7aa42744e8caeed99e00745947d",
+      "to": "agt_8583975653694b4582d2e95f2a24e423"
+    },
+    {
+      "from": "agt_8583975653694b4582d2e95f2a24e423",
+      "to": "agt_c67dc57788b9439fa3a5b936299e90a5"
+    },
+    {
+      "from": "agt_c67dc57788b9439fa3a5b936299e90a5",
+      "to": "agt_6b7f58ee09474bdda6b7ae48a6559fe1"
+    },
+    {
+      "from": "agt_6b7f58ee09474bdda6b7ae48a6559fe1",
+      "to": "agt_c49e6ae313a24c25a156d6ccc8e93487"
+    }
+  ],
+  "state_schema": {
+    "candidate_name": "string",
+    "position_id": "string",
+    "resume_url": "string",
+    "cover_letter": "string",
+    "fit_score": "number",
+    "decision": "string",
+    "next_stage": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-27T21:30:17.943516",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    },
+    "is_temp": true
+  },
+  "human_in_loop": {
+    "enabled": true,
+    "review_points": [
+      "agt_c67dc57788b9439fa3a5b936299e90a5"
+    ]
+  }
+}

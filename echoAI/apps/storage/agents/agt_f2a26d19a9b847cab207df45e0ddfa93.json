@@ -1,0 +1,34 @@
+{
+  "agent_id": "agt_f2a26d19a9b847cab207df45e0ddfa93",
+  "name": "Solution Designer",
+  "role": "Autonomous AI agent",
+  "goal": "",
+  "prompt": "Design tailored solution addressing all RFP requirements. Create: Solution architecture and approach, Methodology and deliverables, Team composition and qualifications, Project plan with phases, Risk mitigation strategies, Innovation and value-adds. Map solution to evaluation criteria.",
+  "description": "Agent node",
+  "llm": {
+    "model": "claude-opus-4-20250514",
+    "temperature": 0.4,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 1100,
+      "y": 400,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-27T20:31:30.733561",
+    "registered_at": "2026-01-27T20:31:30.904142"
+  }
+}

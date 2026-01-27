@@ -1,0 +1,39 @@
+{
+  "agent_id": "agt_46c74d04f4d5403aabc894a123a6a6bc",
+  "name": "Compliance Check",
+  "role": "Quality validation",
+  "goal": "",
+  "prompt": "",
+  "description": "Self-Review node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Self-Review",
+    "ui_layout": {
+      "x": 2100,
+      "y": 300,
+      "icon": "✅",
+      "color": "#06b6d4"
+    },
+    "created_at": "2026-01-27T20:31:30.733561",
+    "review_config": {
+      "checkCompleteness": true,
+      "checkAccuracy": true,
+      "confidenceThreshold": 0.8
+    },
+    "registered_at": "2026-01-27T20:31:30.998910"
+  }
+}

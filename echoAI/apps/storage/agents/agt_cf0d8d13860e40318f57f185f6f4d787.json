@@ -1,0 +1,41 @@
+{
+  "agent_id": "agt_cf0d8d13860e40318f57f185f6f4d787",
+  "name": "Partner Final Review",
+  "role": "Human approval gate",
+  "goal": "",
+  "prompt": "",
+  "description": "HITL node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "HITL",
+    "ui_layout": {
+      "x": 2350,
+      "y": 300,
+      "icon": "👤",
+      "color": "#06b6d4"
+    },
+    "created_at": "2026-01-27T20:31:27.198002",
+    "hitl_config": {
+      "title": "",
+      "message": "Review proposal quality, pricing strategy, and competitive positioning",
+      "priority": "high",
+      "allowEdit": true,
+      "allowDefer": false
+    },
+    "registered_at": "2026-01-27T20:31:27.504259"
+  }
+}

@@ -525,212 +525,646 @@ class WorkflowCompiler:
         graph: Any
     ) -> Any:
         """
-        Infer hybrid topology from connections when not explicitly specified.
+        Build hybrid workflow by properly traversing the entire connection graph.
 
-        FIXED: Properly detects parallel patterns by analyzing connection graph:
-        - Parallel: One source node connects to multiple targets
-        - Merge: Multiple source nodes connect to one target
-        - Sequential: Linear chain of connections
+        This method handles ANY workflow structure with:
+        - Sequential sections (linear chains)
+        - Parallel sections (fan-out from single node to multiple targets)
+        - Merge points (fan-in from multiple sources to single target)
+        - Multiple parallel/merge sections in the same workflow
+        - HITL nodes in any position
+        - Conditional/Router branching (routes to ONE target, not parallel)
 
-        IMPORTANT: This function now also handles Start/End pseudo-nodes from canvas
-        and properly filters them from agent execution.
+        Algorithm:
+        1. Build adjacency lists from connections (outgoing and incoming edges)
+        2. Identify node types: conditional nodes, parallel sources, merge targets, entry points, terminals
+        3. Use BFS traversal starting from entry point
+        4. Handle CONDITIONAL nodes using LangGraph add_conditional_edges (routes to ONE branch)
+        5. Handle parallel sources by creating CrewAI parallel Crew nodes (executes ALL branches)
+        6. Handle merge targets by connecting parallel outputs
+        7. Handle sequential nodes individually
+        8. Connect terminal nodes to LangGraph END
+
+        IMPORTANT:
+        - Conditional/Router nodes are NOT parallel sources - they route to ONE target based on a condition
+        - This function handles Start/End pseudo-nodes from canvas and properly filters them
         """
         from langgraph.graph import END
         from langgraph.checkpoint.memory import MemorySaver
+        from collections import deque
 
-        logger.info("Inferring hybrid topology from connections...")
+        logger.info("Building hybrid workflow by traversing connection graph...")
 
         agents = workflow.get("agents", [])
         connections = workflow.get("connections", [])
 
-        if not connections and not agents:
-            raise ValueError("No agents or connections defined for hybrid workflow")
+        if not agents:
+            raise ValueError("No agents defined for hybrid workflow")
 
-        # FIX: Normalize connections - handle Start/End pseudo-nodes from canvas
-        # Canvas may include connections like {"from": "start_xxx", "to": "agt_xxx"}
-        # We need to identify these and handle them properly
+        # =====================================================================
+        # STEP 1: Normalize connections - handle Start/End pseudo-nodes
+        # =====================================================================
         normalized_connections = []
-        start_node_id = None
-        end_node_id = None
+        canvas_start_targets = []  # Nodes that Start connects to
 
         for conn in connections:
             from_node = conn.get("from", "")
             to_node = conn.get("to", "")
 
+            # Convert to string for comparison (handle integer IDs from canvas)
+            from_node_str = str(from_node) if from_node else ""
+            to_node_str = str(to_node) if to_node else ""
+
             # Detect Start pseudo-node (not in agents list, connects TO agents)
-            if from_node and from_node not in agents and to_node in agents:
-                if from_node.lower().startswith("start") or "start" in from_node.lower():
-                    start_node_id = from_node
-                    logger.info(f"Detected Start pseudo-node: {from_node}")
-                    # Don't add this connection, but remember start -> to_node
+            if from_node_str and from_node_str not in agents and to_node_str in agents:
+                if "start" in from_node_str.lower():
+                    logger.debug(f"Detected Start pseudo-node: {from_node}")
+                    canvas_start_targets.append(to_node_str)
                     continue
 
             # Detect End pseudo-node (not in agents list, receives FROM agents)
-            if to_node and to_node not in agents and from_node in agents:
-                if to_node.lower().startswith("end") or "end" in to_node.lower():
-                    end_node_id = to_node
-                    logger.info(f"Detected End pseudo-node: {to_node}")
-                    # Don't add this connection
+            if to_node_str and to_node_str not in agents and from_node_str in agents:
+                if "end" in to_node_str.lower():
+                    logger.debug(f"Detected End pseudo-node: {to_node}")
                     continue
 
             # Only include connections between actual agents
-            if from_node in agents and to_node in agents:
-                normalized_connections.append(conn)
+            if from_node_str in agents and to_node_str in agents:
+                normalized_connections.append({
+                    "from": from_node_str,
+                    "to": to_node_str
+                })
 
-        # Use normalized connections for analysis (agent-to-agent only)
-        if normalized_connections:
-            connections = normalized_connections
-            logger.info(f"Using {len(connections)} normalized agent-to-agent connections")
+        # Use normalized connections for analysis
+        connections = normalized_connections
+        logger.info(f"Using {len(connections)} agent-to-agent connections")
 
-        # Analyze connection graph to detect parallel patterns
-        from_counts = {}  # How many targets each source connects to
-        to_counts = {}    # How many sources connect to each target
+        # =====================================================================
+        # STEP 2: Build adjacency lists
+        # =====================================================================
+        outgoing = {agent: [] for agent in agents}  # node -> [targets]
+        incoming = {agent: [] for agent in agents}  # node -> [sources]
 
         for conn in connections:
             from_node = conn.get("from")
             to_node = conn.get("to")
-            from_counts[from_node] = from_counts.get(from_node, 0) + 1
-            to_counts[to_node] = to_counts.get(to_node, 0) + 1
+            if from_node in outgoing and to_node in incoming:
+                outgoing[from_node].append(to_node)
+                incoming[to_node].append(from_node)
 
-        # Identify parallel sections (one source -> multiple targets)
-        # FIX: Only consider nodes that are actual agents
-        parallel_sources = {node for node, count in from_counts.items()
-                           if count > 1 and node in agents}
-        # Identify merge points (multiple sources -> one target)
-        merge_targets = {node for node, count in to_counts.items()
-                        if count > 1 and node in agents}
+        # =====================================================================
+        # STEP 3: Identify node types
+        # =====================================================================
+        # Build node_types dictionary for filtering
+        node_types = {}
+        for agent_id in agents:
+            agent_config = agent_registry.get(agent_id, {})
+            # Check both metadata.node_type and top-level type field
+            node_type = agent_config.get("metadata", {}).get("node_type", "")
+            if not node_type:
+                node_type = agent_config.get("type", "")
+            node_types[agent_id] = node_type
 
-        logger.info(f"Detected parallel sources: {parallel_sources}, merge targets: {merge_targets}")
-        logger.info(f"Connection analysis: from_counts={from_counts}, to_counts={to_counts}")
+        # Conditional/Router nodes: nodes with multiple outgoing edges that should BRANCH (not parallel)
+        # These nodes route to ONE target based on a condition, not all targets simultaneously
+        conditional_nodes = {
+            a for a in agents
+            if len(outgoing[a]) > 1
+            and node_types.get(a) in ("Conditional", "Router", "conditional", "router")
+        }
 
-        # If we detect parallel patterns, use CrewAI parallel execution
-        if parallel_sources and self._use_crewai and self._crewai_adapter:
-            logger.info("Parallel pattern detected, using CrewAI parallel Crew")
+        # Parallel sources: nodes with multiple outgoing edges EXCLUDING Conditional/Router
+        # These nodes truly fan out to execute multiple branches in parallel
+        parallel_sources = {
+            a for a in agents
+            if len(outgoing[a]) > 1
+            and a not in conditional_nodes
+        }
 
-            # Build parallel groups from connections
-            parallel_groups = []
-            for source in parallel_sources:
-                parallel_targets = [conn.get("to") for conn in connections if conn.get("from") == source]
-                parallel_agent_configs = [agent_registry.get(aid, {}) for aid in parallel_targets if aid in agent_registry]
-                if parallel_agent_configs:
-                    parallel_groups.append({
-                        "source": source,
-                        "agents": parallel_targets,
-                        "configs": parallel_agent_configs
-                    })
+        # Merge targets: nodes with multiple incoming edges
+        merge_targets = {a for a in agents if len(incoming[a]) > 1}
 
-            # Find entry point (node with no incoming edges)
-            all_to = {conn.get("to") for conn in connections}
-            all_from = {conn.get("from") for conn in connections}
-            entry_candidates = all_from - all_to
-            entry_point = list(entry_candidates)[0] if entry_candidates else agents[0] if agents else None
+        logger.info(f"  Conditional nodes ({len(conditional_nodes)}): {conditional_nodes}")
 
-            # Find terminal nodes (nodes with no outgoing edges)
-            terminal_nodes = all_to - all_from
-
-            # Create coordinator to preserve user input
-            def coordinator(state: Dict[str, Any]) -> Dict[str, Any]:
-                """Coordinator preserves user input for inferred hybrid execution."""
-                original_input = state.get("user_input") or state.get("message") or state.get("task_description") or ""
-                logger.info(f"Inferred hybrid coordinator with {len(parallel_groups)} parallel groups")
-                return {
-                    "original_user_input": original_input,
-                    "messages": [{
-                        "node": "coordinator",
-                        "action": "inferred_hybrid_execution"
-                    }]
-                }
-
-            graph.add_node("coordinator", coordinator)
-            graph.set_entry_point("coordinator")
-
-            # If entry point is a parallel source, create parallel Crew node
-            if entry_point in parallel_sources and parallel_groups:
-                group = parallel_groups[0]
-                parallel_node_func = self._crewai_adapter.create_parallel_crew_node(
-                    agent_configs=group["configs"],
-                    aggregation_strategy="combine"
-                )
-                graph.add_node("parallel_execution", parallel_node_func)
-                graph.add_edge("coordinator", "parallel_execution")
-
-                # Connect to merge target or END
-                if merge_targets:
-                    merge_target = list(merge_targets)[0]
-                    # Add merge target as sequential node after parallel
-                    if merge_target in agent_registry:
-                        merge_agent = agent_registry.get(merge_target, {})
-                        merge_node_func = self._create_agent_node(merge_target, merge_agent)
-                        graph.add_node(merge_target, merge_node_func)
-                        graph.add_edge("parallel_execution", merge_target)
-
-                        # Continue sequential chain from merge target
-                        prev_node = merge_target
-                        visited = {entry_point, merge_target} | set(group["agents"])
-
-                        # Follow connections from merge target
-                        for conn in connections:
-                            if conn.get("from") == prev_node:
-                                next_node = conn.get("to")
-                                if next_node not in visited and next_node in agent_registry:
-                                    agent = agent_registry.get(next_node, {})
-                                    node_func = self._create_agent_node(next_node, agent)
-                                    graph.add_node(next_node, node_func)
-                                    graph.add_edge(prev_node, next_node)
-                                    visited.add(next_node)
-                                    prev_node = next_node
-
-                        graph.add_edge(prev_node, END)
-                    else:
-                        graph.add_edge("parallel_execution", END)
-                else:
-                    graph.add_edge("parallel_execution", END)
-            else:
-                # Entry point is not parallel source - handle as sequential start
-                if entry_point and entry_point in agent_registry:
-                    agent = agent_registry.get(entry_point, {})
-                    node_func = self._create_agent_node(entry_point, agent)
-                    graph.add_node(entry_point, node_func)
-                    graph.add_edge("coordinator", entry_point)
-                    # Then continue building the graph
-                    # (simplified - full implementation would trace all paths)
-                    for node in terminal_nodes:
-                        if node in agent_registry and node not in [entry_point]:
-                            agent = agent_registry.get(node, {})
-                            node_func = self._create_agent_node(node, agent)
-                            graph.add_node(node, node_func)
-                        graph.add_edge(node if node in agent_registry else entry_point, END)
-                else:
-                    graph.add_edge("coordinator", END)
-
+        # Entry point: node with no incoming edges (or first in canvas_start_targets)
+        if canvas_start_targets:
+            entry_point = canvas_start_targets[0]
         else:
-            # No parallel patterns or CrewAI not available - use sequential
-            logger.info("No parallel patterns detected or CrewAI unavailable, using sequential execution")
+            entry_candidates = [a for a in agents if not incoming[a]]
+            entry_point = entry_candidates[0] if entry_candidates else agents[0]
 
-            for agent_id in agents:
-                agent = agent_registry.get(agent_id, {})
-                node_func = self._create_agent_node(agent_id, agent)
-                graph.add_node(agent_id, node_func)
+        # Terminal nodes: nodes with no outgoing edges
+        terminal_nodes = {a for a in agents if not outgoing[a]}
 
-            if connections:
-                graph.set_entry_point(connections[0].get("from"))
-                for conn in connections:
-                    graph.add_edge(conn.get("from"), conn.get("to"))
-                # Find terminal nodes
-                all_to = {conn.get("to") for conn in connections}
-                all_from = {conn.get("from") for conn in connections}
-                terminal_nodes = all_to - all_from
-                for node in terminal_nodes:
-                    graph.add_edge(node, END)
-            elif agents:
-                # Linear chain
-                graph.set_entry_point(agents[0])
-                for i in range(len(agents) - 1):
-                    graph.add_edge(agents[i], agents[i + 1])
-                graph.add_edge(agents[-1], END)
+        logger.info(f"Graph analysis complete:")
+        logger.info(f"  Entry point: {entry_point}")
+        logger.info(f"  Parallel sources ({len(parallel_sources)}): {parallel_sources}")
+        logger.info(f"  Merge targets ({len(merge_targets)}): {merge_targets}")
+        logger.info(f"  Terminal nodes ({len(terminal_nodes)}): {terminal_nodes}")
 
+        # =====================================================================
+        # STEP 4: Create coordinator node (preserves user input)
+        # =====================================================================
+        def coordinator(state: Dict[str, Any]) -> Dict[str, Any]:
+            """Coordinator preserves user input and prepares for hybrid execution."""
+            original_input = (
+                state.get("user_input")
+                or state.get("message")
+                or state.get("task_description")
+                or ""
+            )
+            logger.info(f"Hybrid coordinator starting execution with {len(agents)} agents")
+            return {
+                "original_user_input": original_input,
+                "messages": [{
+                    "node": "coordinator",
+                    "action": "hybrid_execution_start",
+                    "total_agents": len(agents),
+                    "parallel_sections": len(parallel_sources),
+                    "merge_points": len(merge_targets)
+                }]
+            }
+
+        graph.add_node("coordinator", coordinator)
+        graph.set_entry_point("coordinator")
+
+        # =====================================================================
+        # STEP 5: BFS traversal to build the full graph
+        # =====================================================================
+        visited = set()  # Agents that have been processed
+        nodes_created = set()  # LangGraph nodes that have been created
+        parallel_crew_counter = 0  # Counter for unique parallel crew names
+        conditional_targets = set()  # Track nodes reached via conditional edges
+
+        # Track which parallel crew a merge target should connect from
+        merge_target_to_parallel_crew = {}
+
+        # Queue: (agent_id, previous_langgraph_node)
+        queue = deque([(entry_point, "coordinator")])
+
+        while queue:
+            current, prev_lg_node = queue.popleft()
+
+            if current is None or current in visited:
+                continue
+
+            visited.add(current)
+
+            # Skip if this node is a target of a parallel section (handled by Crew)
+            # But only if it's NOT also a merge target (merge targets need individual nodes)
+            # IMPORTANT: Do NOT skip nodes that are targets of conditional nodes
+            is_parallel_target = any(
+                current in outgoing.get(ps, [])
+                for ps in parallel_sources
+            )
+
+            # Check if this node is a target of a conditional node (should NOT be skipped)
+            is_conditional_target = any(
+                current in outgoing.get(cn, [])
+                for cn in conditional_nodes
+            )
+
+            if is_parallel_target and current not in merge_targets and current not in parallel_sources and not is_conditional_target:
+                # This node is handled by a parallel Crew, skip individual creation
+                logger.debug(f"Skipping {current} - handled by parallel Crew")
+                continue
+
+            # Get agent config
+            agent_config = agent_registry.get(current, {})
+
+            # Check if this is a HITL node
+            node_type = agent_config.get("metadata", {}).get("node_type", "")
+            is_hitl = node_type == "HITL" or agent_config.get("type") == "HITL"
+
+            # =====================================================================
+            # CASE A0: Current node is a CONDITIONAL/ROUTER (branches to ONE target)
+            # =====================================================================
+            # IMPORTANT: Conditional nodes must NOT execute branches in parallel.
+            # They evaluate a condition and route to exactly ONE branch.
+            if current in conditional_nodes:
+                logger.info(f"Processing conditional node: {current}")
+
+                # Create the conditional node itself
+                if current not in nodes_created:
+                    conditional_func = self._create_conditional_node(current, agent_config)
+                    graph.add_node(current, conditional_func)
+                    nodes_created.add(current)
+                    graph.add_edge(prev_lg_node, current)
+                    logger.info(f"Created conditional node: {current}")
+
+                # Get branch targets from config
+                branch_targets = outgoing[current]
+                branches_config = agent_config.get("config", {}).get("branches", [])
+
+                # Create routing function for LangGraph conditional edges
+                routing_func = self._create_conditional_routing_function(
+                    current, agent_config, branch_targets, branches_config
+                )
+
+                # Build path_map: maps routing function return values to target nodes
+                # The routing function returns the target node ID directly
+                path_map = {target: target for target in branch_targets}
+
+                # Add conditional edges using LangGraph's native routing
+                graph.add_conditional_edges(
+                    current,
+                    routing_func,
+                    path_map
+                )
+                logger.info(f"Added conditional edges from {current} to targets: {branch_targets}")
+
+                # Mark all branch targets as conditional targets (they already have conditional edges)
+                for target in branch_targets:
+                    conditional_targets.add(target)
+
+                # Queue all branch targets for individual processing
+                # Each branch is processed as a separate sequential chain
+                for target in branch_targets:
+                    if target not in visited:
+                        queue.append((target, current))
+
+            # =====================================================================
+            # CASE A: Current node is a PARALLEL SOURCE (fans out to multiple targets)
+            # =====================================================================
+            elif current in parallel_sources:
+                logger.info(f"Processing parallel source: {current}")
+
+                # First, create the parallel source node itself (if it's not just routing)
+                # Check if this is a pure routing node (like Conditional) or an agent
+                agent_role = agent_config.get("role", "")
+                is_pure_router = agent_config.get("type") in ("Conditional", "Router")
+
+                if not is_pure_router and current not in nodes_created:
+                    # Create the source agent node
+                    source_func = self._create_agent_node(current, agent_config)
+                    graph.add_node(current, source_func)
+                    nodes_created.add(current)
+                    graph.add_edge(prev_lg_node, current)
+                    prev_lg_node = current
+                    logger.info(f"Created agent node for parallel source: {current}")
+                elif is_pure_router and current not in nodes_created:
+                    # For pure routers, still create the node
+                    router_func = self._create_agent_node(current, agent_config)
+                    graph.add_node(current, router_func)
+                    nodes_created.add(current)
+                    graph.add_edge(prev_lg_node, current)
+                    prev_lg_node = current
+                    logger.info(f"Created router node for: {current}")
+
+                # Get parallel targets
+                parallel_targets = outgoing[current]
+                parallel_target_configs = [
+                    agent_registry.get(t, {})
+                    for t in parallel_targets
+                    if t in agent_registry
+                ]
+
+                # Find the merge target for this parallel group
+                merge_target_for_group = None
+                for target in parallel_targets:
+                    for next_node in outgoing.get(target, []):
+                        if next_node in merge_targets:
+                            merge_target_for_group = next_node
+                            break
+                    if merge_target_for_group:
+                        break
+
+                # Create parallel Crew node for the targets
+                if self._use_crewai and self._crewai_adapter and parallel_target_configs:
+                    parallel_crew_counter += 1
+                    parallel_node_name = f"parallel_crew_{parallel_crew_counter}"
+
+                    parallel_func = self._crewai_adapter.create_parallel_crew_node(
+                        agent_configs=parallel_target_configs,
+                        aggregation_strategy="combine"
+                    )
+                    graph.add_node(parallel_node_name, parallel_func)
+                    nodes_created.add(parallel_node_name)
+                    graph.add_edge(prev_lg_node, parallel_node_name)
+
+                    logger.info(f"Created parallel Crew '{parallel_node_name}' with {len(parallel_targets)} agents: {parallel_targets}")
+
+                    # Mark parallel targets as visited (they're in the Crew)
+                    for target in parallel_targets:
+                        visited.add(target)
+
+                    # If there's a merge target, record the connection
+                    if merge_target_for_group:
+                        merge_target_to_parallel_crew[merge_target_for_group] = parallel_node_name
+                        # Queue the merge target for processing
+                        queue.append((merge_target_for_group, parallel_node_name))
+                    else:
+                        # No merge target - parallel targets might be terminal
+                        # Check if any parallel target has outgoing connections
+                        has_continuation = False
+                        for target in parallel_targets:
+                            for next_node in outgoing.get(target, []):
+                                if next_node not in visited:
+                                    queue.append((next_node, parallel_node_name))
+                                    has_continuation = True
+
+                        if not has_continuation:
+                            # Parallel targets are terminal
+                            graph.add_edge(parallel_node_name, END)
+                            logger.info(f"Parallel crew {parallel_node_name} connects to END")
+                else:
+                    # Fallback: create individual nodes for each target
+                    logger.warning("CrewAI not available, creating individual nodes for parallel targets")
+                    for target in parallel_targets:
+                        if target not in visited:
+                            queue.append((target, prev_lg_node))
+
+            # =====================================================================
+            # CASE B: Current node is a MERGE TARGET (receives from multiple sources)
+            # =====================================================================
+            elif current in merge_targets:
+                logger.info(f"Processing merge target: {current}")
+
+                # Create the merge target as a sequential node
+                if current not in nodes_created:
+                    merge_func = self._create_agent_node(current, agent_config)
+                    graph.add_node(current, merge_func)
+                    nodes_created.add(current)
+
+                    # Connect from the parallel crew that feeds into this merge target
+                    if current in merge_target_to_parallel_crew:
+                        parallel_crew_name = merge_target_to_parallel_crew[current]
+                        graph.add_edge(parallel_crew_name, current)
+                        logger.info(f"Connected {parallel_crew_name} -> {current}")
+                    else:
+                        # Fallback: connect from prev_lg_node
+                        graph.add_edge(prev_lg_node, current)
+
+                # Queue outgoing nodes
+                for next_node in outgoing.get(current, []):
+                    if next_node not in visited:
+                        queue.append((next_node, current))
+
+                # If terminal, connect to END
+                if current in terminal_nodes:
+                    graph.add_edge(current, END)
+                    logger.info(f"Terminal merge target {current} connects to END")
+
+            # =====================================================================
+            # CASE C: Regular sequential node
+            # =====================================================================
+            else:
+                logger.info(f"Processing sequential node: {current}")
+
+                if current not in nodes_created:
+                    # Create agent node
+                    node_func = self._create_agent_node(current, agent_config)
+                    graph.add_node(current, node_func)
+                    nodes_created.add(current)
+                    # Only add edge if this node is NOT a conditional target
+                    # (conditional targets already have edges via add_conditional_edges)
+                    if current not in conditional_targets:
+                        graph.add_edge(prev_lg_node, current)
+                    logger.info(f"Created sequential node: {current}")
+
+                # Queue outgoing nodes
+                for next_node in outgoing.get(current, []):
+                    if next_node not in visited:
+                        queue.append((next_node, current))
+
+                # If terminal, connect to END
+                if current in terminal_nodes:
+                    graph.add_edge(current, END)
+                    logger.info(f"Terminal node {current} connects to END")
+
+        # =====================================================================
+        # STEP 6: Verify graph completeness
+        # =====================================================================
+        unvisited = set(agents) - visited
+        if unvisited:
+            logger.warning(f"Some agents were not visited during traversal: {unvisited}")
+            # These might be disconnected nodes - add them with edge to END
+            for agent_id in unvisited:
+                if agent_id not in nodes_created:
+                    agent_config = agent_registry.get(agent_id, {})
+                    node_func = self._create_agent_node(agent_id, agent_config)
+                    graph.add_node(agent_id, node_func)
+                    nodes_created.add(agent_id)
+                    graph.add_edge("coordinator", agent_id)
+                    graph.add_edge(agent_id, END)
+                    logger.info(f"Added disconnected node {agent_id} with direct path to END")
+
+        logger.info(f"Hybrid workflow graph complete: {len(nodes_created)} nodes created")
+
+        # =====================================================================
+        # STEP 7: Compile with memory checkpointer
+        # =====================================================================
         memory = MemorySaver()
         return graph.compile(checkpointer=memory)
+
+    def _create_conditional_node(
+        self,
+        node_id: str,
+        agent_config: Dict[str, Any]
+    ):
+        """
+        Create a conditional/router node function.
+
+        This node evaluates conditions and stores the routing decision in state.
+        The actual routing is handled by LangGraph's add_conditional_edges.
+
+        Args:
+            node_id: Node identifier
+            agent_config: Node configuration with branches
+
+        Returns:
+            Callable node function that evaluates conditions
+        """
+        node_name = agent_config.get("name", node_id)
+        branches_config = agent_config.get("config", {}).get("branches", [])
+
+        def conditional_node(state: Dict[str, Any]) -> Dict[str, Any]:
+            """
+            Conditional node that evaluates branch conditions.
+
+            The routing decision is stored in state for the routing function
+            to use when LangGraph invokes add_conditional_edges.
+            """
+            logger.info(f"Conditional node '{node_name}' evaluating branches")
+
+            # Evaluate each branch condition against current state
+            selected_branch = None
+            selected_target = None
+
+            for branch in branches_config:
+                branch_type = branch.get("type", "")
+                condition = branch.get("condition", "")
+                target_node_id = branch.get("targetNodeId")
+
+                if branch_type == "else":
+                    # Else branch is the fallback - save it but continue checking
+                    if selected_branch is None:
+                        selected_branch = branch
+                        selected_target = str(target_node_id) if target_node_id else None
+                    continue
+
+                if branch_type == "if" and condition:
+                    # Evaluate the condition against state
+                    try:
+                        # Create evaluation context from state
+                        eval_context = dict(state)
+                        # Safe evaluation of simple conditions
+                        result = self._evaluate_condition(condition, eval_context)
+                        if result:
+                            selected_branch = branch
+                            selected_target = str(target_node_id) if target_node_id else None
+                            logger.info(f"Condition '{condition}' evaluated to True, routing to {selected_target}")
+                            break
+                    except Exception as e:
+                        logger.warning(f"Failed to evaluate condition '{condition}': {e}")
+                        continue
+
+            # If no condition matched and we have an else branch, use it
+            if selected_target is None and branches_config:
+                # Find the else branch
+                for branch in branches_config:
+                    if branch.get("type") == "else":
+                        selected_target = str(branch.get("targetNodeId"))
+                        logger.info(f"No conditions matched, using else branch to {selected_target}")
+                        break
+
+            # Store routing decision in state for the routing function
+            return {
+                "_conditional_route": selected_target,
+                "_conditional_node": node_id,
+                "messages": [{
+                    "node": node_id,
+                    "type": "conditional",
+                    "name": node_name,
+                    "selected_route": selected_target,
+                    "action": "branch_evaluated"
+                }]
+            }
+
+        return conditional_node
+
+    def _create_conditional_routing_function(
+        self,
+        node_id: str,
+        agent_config: Dict[str, Any],
+        branch_targets: List[str],
+        branches_config: List[Dict[str, Any]]
+    ):
+        """
+        Create routing function for LangGraph conditional edges.
+
+        This function is called by LangGraph to determine which branch to take.
+        It reads the routing decision from state (set by _create_conditional_node).
+
+        Args:
+            node_id: Conditional node identifier
+            agent_config: Node configuration
+            branch_targets: List of possible target node IDs
+            branches_config: Branch configurations with conditions
+
+        Returns:
+            Callable routing function that returns the target node ID
+        """
+        # Determine default target (else branch or last target)
+        default_target = None
+        for branch in branches_config:
+            if branch.get("type") == "else":
+                target = branch.get("targetNodeId")
+                default_target = str(target) if target else None
+                break
+
+        if default_target is None and branch_targets:
+            default_target = branch_targets[-1]
+
+        def routing_function(state: Dict[str, Any]) -> str:
+            """
+            Routing function that returns the target node ID.
+
+            This reads the decision made by the conditional node and returns
+            the appropriate target for LangGraph to route to.
+            """
+            # Get the routing decision from state
+            selected_route = state.get("_conditional_route")
+
+            if selected_route and selected_route in branch_targets:
+                logger.info(f"Routing from {node_id} to {selected_route}")
+                return selected_route
+
+            # Fallback: evaluate conditions directly if not in state
+            # This handles cases where the conditional node result isn't in state
+            for branch in branches_config:
+                branch_type = branch.get("type", "")
+                condition = branch.get("condition", "")
+                target_node_id = branch.get("targetNodeId")
+
+                if branch_type == "if" and condition:
+                    try:
+                        eval_context = dict(state)
+                        result = self._evaluate_condition(condition, eval_context)
+                        if result:
+                            target = str(target_node_id) if target_node_id else None
+                            if target and target in branch_targets:
+                                logger.info(f"Direct condition evaluation: routing to {target}")
+                                return target
+                    except Exception as e:
+                        logger.warning(f"Routing function condition eval failed: {e}")
+                        continue
+
+            # Use default target
+            logger.info(f"Using default route from {node_id} to {default_target}")
+            return default_target
+
+        return routing_function
+
+    def _evaluate_condition(self, condition: str, context: Dict[str, Any]) -> bool:
+        """
+        Safely evaluate a condition string against a context.
+
+        Supports simple conditions like:
+        - "win_probability < 30"
+        - "status == 'approved'"
+        - "win_probability < 30 AND opportunity_value < 500000"
+
+        Args:
+            condition: Condition string to evaluate
+            context: Dictionary of variable values
+
+        Returns:
+            Boolean result of condition evaluation
+        """
+        if not condition or not condition.strip():
+            return False
+
+        # Normalize the condition
+        normalized = condition.strip()
+
+        # Handle AND/OR operators (case insensitive)
+        normalized = normalized.replace(" AND ", " and ").replace(" OR ", " or ")
+
+        # Create a safe evaluation environment with only the context variables
+        # and basic comparison operators
+        safe_globals = {"__builtins__": {}}
+        safe_locals = dict(context)
+
+        # Add common boolean values
+        safe_locals["True"] = True
+        safe_locals["False"] = False
+        safe_locals["true"] = True
+        safe_locals["false"] = False
+        safe_locals["None"] = None
+        safe_locals["null"] = None
+
+        try:
+            # Evaluate the condition
+            result = eval(normalized, safe_globals, safe_locals)
+            return bool(result)
+        except NameError as e:
+            # Variable not found in context - treat as False
+            logger.debug(f"Variable not found in condition '{condition}': {e}")
+            return False
+        except Exception as e:
+            logger.warning(f"Condition evaluation error for '{condition}': {e}")
+            return False
 
     def _create_agent_node(
         self,

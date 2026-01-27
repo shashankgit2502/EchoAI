@@ -1,0 +1,100 @@
+{
+  "workflow_id": "wf_e13a8ea8e7cc484abc4366ecd0fbfdd4",
+  "name": "Proposal Generation",
+  "description": "Created from canvas on 2026-01-27",
+  "status": "draft",
+  "version": "0.1",
+  "execution_model": "hybrid",
+  "agents": [
+    "agt_d0541f764cd94d48b2f895082a3899db",
+    "agt_93d489831bb94ec8acac14d7d0b022bb",
+    "agt_30723eaf931b4a859b171811d4c83d26",
+    "agt_a3fe230d5eec4ed9831e407702518a4b",
+    "agt_3e4e02e774cf447bbb3f0b11a7280221",
+    "agt_a23c127cdd3f417cb3fe334b692fc99e",
+    "agt_c89311d01b9441feaeb98abd8eb5b2d2",
+    "agt_836758b5f34d46a98125ccbc6e91adcc",
+    "agt_d14ece449aab4b6894823be67af3502a",
+    "agt_6a2bebfdc781413e83ce5be8888e1ce4",
+    "agt_cf0d8d13860e40318f57f185f6f4d787",
+    "agt_c3c36b8c1b0447f6b8b16a280396d308",
+    "agt_6a226ab3804d498797c278d512c463c9"
+  ],
+  "connections": [
+    {
+      "from": "agt_d0541f764cd94d48b2f895082a3899db",
+      "to": "agt_93d489831bb94ec8acac14d7d0b022bb"
+    },
+    {
+      "from": "agt_93d489831bb94ec8acac14d7d0b022bb",
+      "to": "agt_30723eaf931b4a859b171811d4c83d26"
+    },
+    {
+      "from": "agt_30723eaf931b4a859b171811d4c83d26",
+      "to": "agt_a3fe230d5eec4ed9831e407702518a4b"
+    },
+    {
+      "from": "agt_a3fe230d5eec4ed9831e407702518a4b",
+      "to": "agt_3e4e02e774cf447bbb3f0b11a7280221"
+    },
+    {
+      "from": "agt_a3fe230d5eec4ed9831e407702518a4b",
+      "to": "agt_a23c127cdd3f417cb3fe334b692fc99e"
+    },
+    {
+      "from": "agt_3e4e02e774cf447bbb3f0b11a7280221",
+      "to": "agt_6a226ab3804d498797c278d512c463c9"
+    },
+    {
+      "from": "agt_a23c127cdd3f417cb3fe334b692fc99e",
+      "to": "agt_c89311d01b9441feaeb98abd8eb5b2d2"
+    },
+    {
+      "from": "agt_c89311d01b9441feaeb98abd8eb5b2d2",
+      "to": "agt_836758b5f34d46a98125ccbc6e91adcc"
+    },
+    {
+      "from": "agt_836758b5f34d46a98125ccbc6e91adcc",
+      "to": "agt_d14ece449aab4b6894823be67af3502a"
+    },
+    {
+      "from": "agt_d14ece449aab4b6894823be67af3502a",
+      "to": "agt_6a2bebfdc781413e83ce5be8888e1ce4"
+    },
+    {
+      "from": "agt_6a2bebfdc781413e83ce5be8888e1ce4",
+      "to": "agt_cf0d8d13860e40318f57f185f6f4d787"
+    },
+    {
+      "from": "agt_cf0d8d13860e40318f57f185f6f4d787",
+      "to": "agt_c3c36b8c1b0447f6b8b16a280396d308"
+    },
+    {
+      "from": "agt_c3c36b8c1b0447f6b8b16a280396d308",
+      "to": "agt_6a226ab3804d498797c278d512c463c9"
+    }
+  ],
+  "state_schema": {
+    "rfp_document": "string",
+    "prospect_name": "string",
+    "deadline": "string",
+    "opportunity_value": "number",
+    "proposal_id": "string",
+    "final_price": "number",
+    "submission_timestamp": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-27T20:31:27.198002",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    }
+  },
+  "human_in_loop": {
+    "enabled": true,
+    "review_points": [
+      "agt_cf0d8d13860e40318f57f185f6f4d787"
+    ]
+  }
+}

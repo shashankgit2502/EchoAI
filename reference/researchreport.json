@@ -1,0 +1,230 @@
+{
+  "title": "Research Report Generation",
+  "description": "Comprehensive market research workflow with data collection, analysis, synthesis, and quality review",
+  "nodes": [
+    {
+      "id": 9000,
+      "type": "Start",
+      "name": "Research Request",
+      "icon": "▶️",
+      "color": "#10b981",
+      "x": 100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "triggerType": "manual",
+        "inputVariables": [
+          {"name": "research_topic", "type": "string", "required": true},
+          {"name": "target_industry", "type": "string", "required": true},
+          {"name": "geography", "type": "string", "required": true},
+          {"name": "research_questions", "type": "array", "required": true},
+          {"name": "deadline", "type": "string", "required": true}
+        ]
+      }
+    },
+    {
+      "id": 9001,
+      "type": "Agent",
+      "name": "Research Plan Designer",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 350,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "Design comprehensive research plan and methodology. Define: Specific research objectives, Key questions to answer, Required data sources (primary, secondary), Search strategy and keywords, Data quality criteria, Analysis framework. Create structured research outline with sections and sub-topics.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-sonnet-4-5-20250514",
+          "displayName": "Claude Sonnet 4.5"
+        },
+        "tools": [],
+        "maxIterations": 3,
+        "temperature": 0.4
+      }
+    },
+    {
+      "id": 9002,
+      "type": "Agent",
+      "name": "Secondary Research",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 600,
+      "y": 200,
+      "status": "idle",
+      "config": {
+        "prompt": "Conduct comprehensive secondary research from public sources. Gather: Industry reports and white papers, Market sizing data, Competitive landscape information, Regulatory environment, Technology trends, Expert commentary and analysis. Evaluate source credibility and data recency. Extract key facts, statistics, and insights.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-opus-4-20250514",
+          "displayName": "Claude Opus 4"
+        },
+        "tools": [],
+        "maxIterations": 10,
+        "temperature": 0.3
+      }
+    },
+    {
+      "id": 9003,
+      "type": "API",
+      "name": "Query Market Data APIs",
+      "icon": "🌐",
+      "color": "#3b82f6",
+      "x": 600,
+      "y": 400,
+      "status": "idle",
+      "config": {
+        "method": "GET",
+        "url": "https://api.marketdata.com/v1/research",
+        "authentication": "api_key"
+      }
+    },
+    {
+      "id": 9004,
+      "type": "Merge",
+      "name": "Consolidate Data",
+      "icon": "🖇️",
+      "color": "#8b5cf6",
+      "x": 850,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "mergeStrategy": "aggregate",
+        "waitForAll": true
+      }
+    },
+    {
+      "id": 9005,
+      "type": "Agent",
+      "name": "Data Synthesizer",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 1100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "Synthesize research findings into coherent analysis. Identify: Key themes and patterns, Contradictions in data, Emerging trends, Market opportunities and threats, Competitive dynamics, Strategic implications. Create evidence-based insights with supporting data. Highlight data gaps or limitations.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-opus-4-20250514",
+          "displayName": "Claude Opus 4"
+        },
+        "tools": [],
+        "maxIterations": 5,
+        "temperature": 0.4
+      }
+    },
+    {
+      "id": 9006,
+      "type": "Code",
+      "name": "Data Visualization",
+      "icon": "💻",
+      "color": "#0ea5e9",
+      "x": 1350,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "language": "python",
+        "code": "# Generate charts and visualizations\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\n# Market size evolution\nyears = [2020, 2021, 2022, 2023, 2024]\nmarket_size = [45.2, 52.1, 61.3, 72.8, 87.5]\n\nplt.figure(figsize=(10, 6))\nplt.plot(years, market_size, marker='o', linewidth=2)\nplt.title('Market Size Evolution ($B)', fontsize=14)\nplt.xlabel('Year')\nplt.ylabel('Market Size ($B)')\nplt.grid(True, alpha=0.3)\nplt.savefig('market_size.png', dpi=300, bbox_inches='tight')\n\n# Competitive landscape\ncompanies = ['Company A', 'Company B', 'Company C', 'Others']\nmarket_share = [35, 28, 22, 15]\nplt.figure(figsize=(8, 8))\nplt.pie(market_share, labels=companies, autopct='%1.1f%%')\nplt.title('Market Share Distribution')\nplt.savefig('market_share.png', dpi=300, bbox_inches='tight')",
+        "packages": ["matplotlib", "pandas"]
+      }
+    },
+    {
+      "id": 9007,
+      "type": "Agent",
+      "name": "Report Writer",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 1600,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "Generate professional research report. Structure: Executive Summary (key findings, recommendations), Introduction (scope, methodology), Market Overview (size, growth, trends), Competitive Landscape, Regional Analysis, Technology & Innovation, Regulatory Environment, Strategic Implications, Recommendations, Conclusion, Appendices. Use clear, professional language. Incorporate data visualizations. Cite all sources.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-opus-4-20250514",
+          "displayName": "Claude Opus 4"
+        },
+        "tools": [],
+        "temperature": 0.4
+      }
+    },
+    {
+      "id": 9008,
+      "type": "Self-Review",
+      "name": "Fact Check",
+      "icon": "✅",
+      "color": "#06b6d4",
+      "x": 1850,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "reviewPrompt": "Verify accuracy and quality of research report. Check: All claims supported by data, Statistics properly cited, No contradictory statements, Logical flow and coherence, Professional formatting, Charts and visuals accurate.",
+        "minConfidence": 0.9
+      }
+    },
+    {
+      "id": 9009,
+      "type": "HITL",
+      "name": "Senior Analyst Review",
+      "icon": "👤",
+      "color": "#06b6d4",
+      "x": 2100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "reviewTitle": "Research Report Review",
+        "priority": "high",
+        "message": "Review report quality, insights, and recommendations",
+        "allowedDecisions": ["approve", "request_revisions", "escalate"],
+        "notificationChannels": ["email"]
+      }
+    },
+    {
+      "id": 9010,
+      "type": "API",
+      "name": "Publish to Knowledge Base",
+      "icon": "🌐",
+      "color": "#3b82f6",
+      "x": 2350,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "method": "POST",
+        "url": "https://api.knowledgebase.com/v1/reports",
+        "authentication": "bearer"
+      }
+    },
+    {
+      "id": 9011,
+      "type": "End",
+      "name": "Report Complete",
+      "icon": "⏹️",
+      "color": "#64748b",
+      "x": 2600,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "outputVariables": [
+          {"name": "report_url", "type": "string"},
+          {"name": "page_count", "type": "number"},
+          {"name": "key_insights", "type": "array"}
+        ]
+      }
+    }
+  ],
+  "connections": [
+    {"id": 10000, "from": 9000, "to": 9001},
+    {"id": 10001, "from": 9001, "to": 9002},
+    {"id": 10002, "from": 9001, "to": 9003},
+    {"id": 10003, "from": 9002, "to": 9004},
+    {"id": 10004, "from": 9003, "to": 9004},
+    {"id": 10005, "from": 9004, "to": 9005},
+    {"id": 10006, "from": 9005, "to": 9006},
+    {"id": 10007, "from": 9006, "to": 9007},
+    {"id": 10008, "from": 9007, "to": 9008},
+    {"id": 10009, "from": 9008, "to": 9009},
+    {"id": 10010, "from": 9009, "to": 9010},
+    {"id": 10011, "from": 9010, "to": 9011}
+  ]
+}

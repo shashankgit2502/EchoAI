@@ -1,0 +1,97 @@
+{
+  "workflow_id": "wf_8b84e829de384288b1a33028257344b9",
+  "name": "Research Report Generation",
+  "description": "Created from canvas on 2026-01-27",
+  "status": "testing",
+  "version": "0.1",
+  "execution_model": "parallel",
+  "agents": [
+    "agt_920545a858034602bb6e576482d1f742",
+    "agt_7433703ec1b3416eb34b8eb39836e52d",
+    "agt_e290d09cfb994a4e95035da326610a54",
+    "agt_835ae8ae73934616ad6f217a0636b203",
+    "agt_e4c44bde716746429d3ba91a2e0a8f08",
+    "agt_bd27898cc2c34b649c40ad3216fdc574",
+    "agt_0b42bf2f27a645569b2ce9bf82078723",
+    "agt_7f26b263fbf949dba00562e5edb300b8",
+    "agt_dd10bd03278d4a8ca17eb81b16db63d3",
+    "agt_94e9c8725cf2456a910162884d20c6f0",
+    "agt_c1da357b87d74b2b8f0120ec366e56a7",
+    "agt_7566a45a2d5b48bf857a52da43fc08eb"
+  ],
+  "connections": [
+    {
+      "from": "agt_920545a858034602bb6e576482d1f742",
+      "to": "agt_7433703ec1b3416eb34b8eb39836e52d"
+    },
+    {
+      "from": "agt_7433703ec1b3416eb34b8eb39836e52d",
+      "to": "agt_e290d09cfb994a4e95035da326610a54"
+    },
+    {
+      "from": "agt_7433703ec1b3416eb34b8eb39836e52d",
+      "to": "agt_835ae8ae73934616ad6f217a0636b203"
+    },
+    {
+      "from": "agt_e290d09cfb994a4e95035da326610a54",
+      "to": "agt_e4c44bde716746429d3ba91a2e0a8f08"
+    },
+    {
+      "from": "agt_835ae8ae73934616ad6f217a0636b203",
+      "to": "agt_e4c44bde716746429d3ba91a2e0a8f08"
+    },
+    {
+      "from": "agt_e4c44bde716746429d3ba91a2e0a8f08",
+      "to": "agt_bd27898cc2c34b649c40ad3216fdc574"
+    },
+    {
+      "from": "agt_bd27898cc2c34b649c40ad3216fdc574",
+      "to": "agt_0b42bf2f27a645569b2ce9bf82078723"
+    },
+    {
+      "from": "agt_0b42bf2f27a645569b2ce9bf82078723",
+      "to": "agt_7f26b263fbf949dba00562e5edb300b8"
+    },
+    {
+      "from": "agt_7f26b263fbf949dba00562e5edb300b8",
+      "to": "agt_dd10bd03278d4a8ca17eb81b16db63d3"
+    },
+    {
+      "from": "agt_dd10bd03278d4a8ca17eb81b16db63d3",
+      "to": "agt_94e9c8725cf2456a910162884d20c6f0"
+    },
+    {
+      "from": "agt_94e9c8725cf2456a910162884d20c6f0",
+      "to": "agt_c1da357b87d74b2b8f0120ec366e56a7"
+    },
+    {
+      "from": "agt_c1da357b87d74b2b8f0120ec366e56a7",
+      "to": "agt_7566a45a2d5b48bf857a52da43fc08eb"
+    }
+  ],
+  "state_schema": {
+    "research_topic": "string",
+    "target_industry": "string",
+    "geography": "string",
+    "research_questions": "array",
+    "deadline": "string",
+    "report_url": "string",
+    "page_count": "number",
+    "key_insights": "array"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-27T21:18:40.608402",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    },
+    "is_temp": true
+  },
+  "human_in_loop": {
+    "enabled": true,
+    "review_points": [
+      "agt_94e9c8725cf2456a910162884d20c6f0"
+    ]
+  }
+}

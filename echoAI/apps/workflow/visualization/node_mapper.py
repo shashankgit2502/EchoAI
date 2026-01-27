@@ -2,7 +2,7 @@
 Node Mapper: Bidirectional conversion between frontend canvas and backend workflow schema.
 Handles all 16 node types with layout persistence and connection preservation.
 """
-from typing import Dict, Any, List, Tuple, Optional
+from typing import Dict, Any, List, Tuple, Optional, Union
 from datetime import datetime
 from echolib.utils import new_id
 
@@ -126,9 +126,9 @@ class NodeMapper:
                 connection["condition"] = conn.get("condition")
             backend_connections.append(connection)
 
-        # Use explicit execution model if provided, otherwise infer from structure
-        if not execution_model:
-            execution_model = self._infer_execution_model(canvas_nodes, connections)
+        # Always infer execution model from structure
+        # (frontend value may be incorrect for imported workflows that default to 'sequential')
+        execution_model = self._infer_execution_model(canvas_nodes, connections)
 
         # Extract state schema from Start/End nodes
         state_schema = self._extract_state_schema(canvas_nodes)
@@ -221,11 +221,14 @@ class NodeMapper:
         config = node.get("config", {})
 
         # Base agent structure with all required fields
+        # Extract role, goal, prompt from config (for imported workflows)
         agent = {
             "agent_id": "",  # Will be set by caller
             "name": node.get("name", node_type),
-            "role": self._get_node_role(node_type),
-            "description": f"{node_type} node",
+            "role": config.get("role") or self._get_node_role(node_type),
+            "goal": config.get("goal", ""),
+            "prompt": config.get("prompt", ""),
+            "description": config.get("description") or f"{node_type} node",
             "llm": self._extract_llm_config(config),  # Required field for all agents (uses defaults if empty)
             "tools": [],  # Required field for all agents
             "input_schema": [],
@@ -354,12 +357,16 @@ class NodeMapper:
             "max_tokens": config.get("maxTokens", 4000)
         }
 
-    def _resolve_tools(self, frontend_tools: List[Dict[str, Any]]) -> List[str]:
+    def _resolve_tools(self, frontend_tools: List[Union[str, Dict[str, Any]]]) -> List[str]:
         """
         Resolve tool names to tool IDs (pre-registered).
 
+        Handles two input formats:
+        1. String format (imported workflows): ["Document Analysis", "OCR"]
+        2. Dict format (canvas UI): [{"name": "...", "tool_id": "..."}]
+
         Args:
-            frontend_tools: List of frontend tool configs
+            frontend_tools: List of frontend tool configs (strings or dicts)
 
         Returns:
             List of tool IDs
@@ -367,28 +374,42 @@ class NodeMapper:
         tool_ids = []
 
         for tool in frontend_tools:
-            # Priority 1: Use tool_id if already provided (from registered tools)
-            if tool.get("tool_id"):
-                tool_ids.append(tool["tool_id"])
+            # Handle string format (imported workflows)
+            if isinstance(tool, str):
+                # Try to resolve via tool registry first
+                if self.tool_registry:
+                    tool_id = self.tool_registry.get_tool_id_by_name(tool)
+                    if tool_id:
+                        tool_ids.append(tool_id)
+                        continue
+                # Fallback: normalize string name as placeholder ID
+                tool_ids.append(tool.lower().replace(" ", "_"))
                 continue
 
-            # Priority 2: Resolve by name using tool registry
-            tool_name = tool.get("name", "")
-            if self.tool_registry:
-                tool_id = self.tool_registry.get_tool_id_by_name(tool_name)
-                if tool_id:
-                    tool_ids.append(tool_id)
+            # Handle dict format (canvas UI) - existing logic
+            if isinstance(tool, dict):
+                # Priority 1: Use tool_id if already provided (from registered tools)
+                if tool.get("tool_id"):
+                    tool_ids.append(tool["tool_id"])
                     continue
 
-            # Priority 3: For builtin types (code, subworkflow, mcp_server), use type as marker
-            tool_type = tool.get("type", "")
-            if tool_type in ["code", "subworkflow", "subworkflow_deployment", "mcp_server"]:
-                tool_ids.append(f"builtin_{tool_type}")
-                continue
+                # Priority 2: Resolve by name using tool registry
+                tool_name = tool.get("name", "")
+                if self.tool_registry:
+                    tool_id = self.tool_registry.get_tool_id_by_name(tool_name)
+                    if tool_id:
+                        tool_ids.append(tool_id)
+                        continue
 
-            # Fallback: use name as placeholder
-            if tool_name:
-                tool_ids.append(tool_name.lower().replace(" ", "_"))
+                # Priority 3: For builtin types (code, subworkflow, mcp_server), use type as marker
+                tool_type = tool.get("type", "")
+                if tool_type in ["code", "subworkflow", "subworkflow_deployment", "mcp_server"]:
+                    tool_ids.append(f"builtin_{tool_type}")
+                    continue
+
+                # Fallback: use name as placeholder
+                if tool_name:
+                    tool_ids.append(tool_name.lower().replace(" ", "_"))
 
         return tool_ids
 

@@ -1,0 +1,40 @@
+{
+  "agent_id": "agt_bcb490a1b8e04c09a29c42121af8ca34",
+  "name": "Decline & Notify",
+  "role": "HTTP request",
+  "goal": "",
+  "prompt": "",
+  "description": "API node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "API",
+    "ui_layout": {
+      "x": 1100,
+      "y": 150,
+      "icon": "🌐",
+      "color": "#3b82f6"
+    },
+    "created_at": "2026-01-27T20:37:20.771292",
+    "api_config": {
+      "method": "POST",
+      "url": "https://api.crm.com/v1/opportunities/decline",
+      "headers": {},
+      "auth": {}
+    },
+    "registered_at": "2026-01-27T20:37:20.928632"
+  }
+}

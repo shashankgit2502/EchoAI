@@ -1,0 +1,114 @@
+{
+  "workflow_id": "wf_e104b9133680427294953cbe360daf8c",
+  "name": "Imported Workflow",
+  "description": "Created from canvas on 2026-01-27",
+  "status": "testing",
+  "version": "0.1",
+  "execution_model": "hybrid",
+  "agents": [
+    "agt_b4163e2c5b9e40e5a38c12acec779b0f",
+    "agt_38100a9a4cbc4b7886251051ab39562d",
+    "agt_ef52b6b5c1914144859b98862f30e718",
+    "agt_bf3b7f110d704ab39ba4706e490bf320",
+    "agt_1641e95d64a647f1bfd415d1ea88c601",
+    "agt_ce853875564945fca13bd6cdd7bbff86",
+    "agt_beb94444aef546fc8cd79ec54cb5c5fb",
+    "agt_16e383b744384261a352dcf442e81139",
+    "agt_9232a0eb7e2d48739212122fc894bf85",
+    "agt_d95be020d5524ebf84c6d97a912ab17c",
+    "agt_10447f1add484793a4f07085cae34ed5",
+    "agt_8bdbf21a97ce441a9210cab983e0bef1",
+    "agt_75bbd32aca8541c48c5631e41093fa5d"
+  ],
+  "connections": [
+    {
+      "from": "agt_b4163e2c5b9e40e5a38c12acec779b0f",
+      "to": "agt_38100a9a4cbc4b7886251051ab39562d"
+    },
+    {
+      "from": "agt_38100a9a4cbc4b7886251051ab39562d",
+      "to": "agt_ef52b6b5c1914144859b98862f30e718"
+    },
+    {
+      "from": "agt_38100a9a4cbc4b7886251051ab39562d",
+      "to": "agt_bf3b7f110d704ab39ba4706e490bf320"
+    },
+    {
+      "from": "agt_38100a9a4cbc4b7886251051ab39562d",
+      "to": "agt_1641e95d64a647f1bfd415d1ea88c601"
+    },
+    {
+      "from": "agt_ef52b6b5c1914144859b98862f30e718",
+      "to": "agt_ce853875564945fca13bd6cdd7bbff86"
+    },
+    {
+      "from": "agt_bf3b7f110d704ab39ba4706e490bf320",
+      "to": "agt_ce853875564945fca13bd6cdd7bbff86"
+    },
+    {
+      "from": "agt_1641e95d64a647f1bfd415d1ea88c601",
+      "to": "agt_ce853875564945fca13bd6cdd7bbff86"
+    },
+    {
+      "from": "agt_ce853875564945fca13bd6cdd7bbff86",
+      "to": "agt_beb94444aef546fc8cd79ec54cb5c5fb"
+    },
+    {
+      "from": "agt_beb94444aef546fc8cd79ec54cb5c5fb",
+      "to": "agt_16e383b744384261a352dcf442e81139"
+    },
+    {
+      "from": "agt_16e383b744384261a352dcf442e81139",
+      "to": "agt_9232a0eb7e2d48739212122fc894bf85"
+    },
+    {
+      "from": "agt_16e383b744384261a352dcf442e81139",
+      "to": "agt_d95be020d5524ebf84c6d97a912ab17c"
+    },
+    {
+      "from": "agt_16e383b744384261a352dcf442e81139",
+      "to": "agt_10447f1add484793a4f07085cae34ed5"
+    },
+    {
+      "from": "agt_9232a0eb7e2d48739212122fc894bf85",
+      "to": "agt_8bdbf21a97ce441a9210cab983e0bef1"
+    },
+    {
+      "from": "agt_d95be020d5524ebf84c6d97a912ab17c",
+      "to": "agt_8bdbf21a97ce441a9210cab983e0bef1"
+    },
+    {
+      "from": "agt_10447f1add484793a4f07085cae34ed5",
+      "to": "agt_8bdbf21a97ce441a9210cab983e0bef1"
+    },
+    {
+      "from": "agt_8bdbf21a97ce441a9210cab983e0bef1",
+      "to": "agt_75bbd32aca8541c48c5631e41093fa5d"
+    }
+  ],
+  "state_schema": {
+    "target_company": "string",
+    "deal_size": "number",
+    "industry": "string",
+    "documents": "array",
+    "risk_score": "number",
+    "recommendation": "string",
+    "report_url": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-27T20:22:43.627424",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    },
+    "is_temp": true
+  },
+  "human_in_loop": {
+    "enabled": true,
+    "review_points": [
+      "agt_9232a0eb7e2d48739212122fc894bf85",
+      "agt_d95be020d5524ebf84c6d97a912ab17c"
+    ]
+  }
+}

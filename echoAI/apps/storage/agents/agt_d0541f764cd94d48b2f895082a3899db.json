@@ -1,0 +1,39 @@
+{
+  "agent_id": "agt_d0541f764cd94d48b2f895082a3899db",
+  "name": "RFP Received",
+  "role": "Workflow entry point",
+  "goal": "",
+  "prompt": "",
+  "description": "Start node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [
+    "rfp_document",
+    "prospect_name",
+    "deadline",
+    "opportunity_value"
+  ],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Start",
+    "ui_layout": {
+      "x": 100,
+      "y": 300,
+      "icon": "▶️",
+      "color": "#10b981"
+    },
+    "created_at": "2026-01-27T20:31:27.197002",
+    "registered_at": "2026-01-27T20:31:27.263123"
+  }
+}

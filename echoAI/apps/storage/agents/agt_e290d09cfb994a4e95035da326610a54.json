@@ -1,0 +1,34 @@
+{
+  "agent_id": "agt_e290d09cfb994a4e95035da326610a54",
+  "name": "Secondary Research",
+  "role": "Autonomous AI agent",
+  "goal": "",
+  "prompt": "Conduct comprehensive secondary research from public sources. Gather: Industry reports and white papers, Market sizing data, Competitive landscape information, Regulatory environment, Technology trends, Expert commentary and analysis. Evaluate source credibility and data recency. Extract key facts, statistics, and insights.",
+  "description": "Agent node",
+  "llm": {
+    "model": "claude-opus-4-20250514",
+    "temperature": 0.3,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 600,
+      "y": 200,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-27T21:18:40.607401",
+    "registered_at": "2026-01-27T21:18:40.705107"
+  }
+}

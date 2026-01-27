@@ -1,0 +1,40 @@
+{
+  "agent_id": "agt_776ae3dccb294f2b81373fbfbd91ed92",
+  "name": "Query Market Data APIs",
+  "role": "HTTP request",
+  "goal": "",
+  "prompt": "",
+  "description": "API node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "API",
+    "ui_layout": {
+      "x": 600,
+      "y": 400,
+      "icon": "🌐",
+      "color": "#3b82f6"
+    },
+    "created_at": "2026-01-27T21:23:13.933918",
+    "api_config": {
+      "method": "GET",
+      "url": "https://api.marketdata.com/v1/research",
+      "headers": {},
+      "auth": {}
+    },
+    "registered_at": "2026-01-27T21:23:14.071764"
+  }
+}

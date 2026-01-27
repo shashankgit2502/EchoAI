@@ -1,0 +1,38 @@
+{
+  "agent_id": "agt_c49e6ae313a24c25a156d6ccc8e93487",
+  "name": "Screening Complete",
+  "role": "Workflow exit point",
+  "goal": "",
+  "prompt": "",
+  "description": "End node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [
+    "fit_score",
+    "decision",
+    "next_stage"
+  ],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "End",
+    "ui_layout": {
+      "x": 2350,
+      "y": 300,
+      "icon": "⏹️",
+      "color": "#64748b"
+    },
+    "created_at": "2026-01-27T21:30:17.943516",
+    "registered_at": "2026-01-27T21:30:18.270308"
+  }
+}

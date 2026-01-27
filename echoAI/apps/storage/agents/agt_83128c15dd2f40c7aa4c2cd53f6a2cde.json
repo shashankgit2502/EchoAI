@@ -1,0 +1,38 @@
+{
+  "agent_id": "agt_83128c15dd2f40c7aa4c2cd53f6a2cde",
+  "name": "Proposal Submitted",
+  "role": "Workflow exit point",
+  "goal": "",
+  "prompt": "",
+  "description": "End node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [
+    "proposal_id",
+    "final_price",
+    "submission_timestamp"
+  ],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "End",
+    "ui_layout": {
+      "x": 2850,
+      "y": 300,
+      "icon": "⏹️",
+      "color": "#64748b"
+    },
+    "created_at": "2026-01-27T20:37:20.771292",
+    "registered_at": "2026-01-27T20:37:21.144095"
+  }
+}

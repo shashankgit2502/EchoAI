@@ -1,0 +1,34 @@
+{
+  "agent_id": "agt_61549556c15c4f95a6479839f59d00bd",
+  "name": "Skills Matcher",
+  "role": "Autonomous AI agent",
+  "goal": "",
+  "prompt": "Match candidate qualifications against job requirements. Assess: Required skills coverage (% match), Preferred qualifications met, Years of experience vs. requirement, Education level match, Industry experience relevance, Career progression trajectory, Red flags (employment gaps, job hopping). Calculate overall fit score (0-100).",
+  "description": "Agent node",
+  "llm": {
+    "model": "claude-sonnet-4-5-20250514",
+    "temperature": 0.3,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 3,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 850,
+      "y": 300,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-27T21:30:17.942514",
+    "registered_at": "2026-01-27T21:30:18.071244"
+  }
+}

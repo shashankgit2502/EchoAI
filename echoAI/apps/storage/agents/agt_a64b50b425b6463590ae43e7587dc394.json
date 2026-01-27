@@ -1,0 +1,40 @@
+{
+  "agent_id": "agt_a64b50b425b6463590ae43e7587dc394",
+  "name": "Fetch Job Requirements",
+  "role": "HTTP request",
+  "goal": "",
+  "prompt": "",
+  "description": "API node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "API",
+    "ui_layout": {
+      "x": 600,
+      "y": 300,
+      "icon": "🌐",
+      "color": "#3b82f6"
+    },
+    "created_at": "2026-01-27T21:30:14.725978",
+    "api_config": {
+      "method": "GET",
+      "url": "https://api.ats.com/v1/positions/{position_id}",
+      "headers": {},
+      "auth": {}
+    },
+    "registered_at": "2026-01-27T21:30:14.829102"
+  }
+}

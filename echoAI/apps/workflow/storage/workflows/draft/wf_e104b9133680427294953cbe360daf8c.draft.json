@@ -1,0 +1,113 @@
+{
+  "workflow_id": "wf_e104b9133680427294953cbe360daf8c",
+  "name": "M&A Due Diligence Workflow",
+  "description": "Created from canvas on 2026-01-27",
+  "status": "draft",
+  "version": "0.1",
+  "execution_model": "hybrid",
+  "agents": [
+    "agt_492b727335044bdb9bff7b8244d6570e",
+    "agt_7926ad6a8e7b44b7b5070761819fb774",
+    "agt_7efdf011e69648f2963a02bb5339e7b1",
+    "agt_ec8315d98a1e494dad15879480ae2555",
+    "agt_c5af5443c92942c3a0589e804d36309e",
+    "agt_637fc8337be141b399f86e93021e9847",
+    "agt_5d1f4d08855e4674aecf4d35b3cdb36d",
+    "agt_f83ff87c266c42a1a78445bfc970bb3d",
+    "agt_6c61be7ad64143b796268b57a9f7ad65",
+    "agt_f9e294ce679b4a318393b00ed8a44e31",
+    "agt_b8ae3f6f26fa454f99c9cda112dd64af",
+    "agt_911666371e4549de892cf330d07e26fe",
+    "agt_65a5326000f54c93a9df1de87bb9c67b"
+  ],
+  "connections": [
+    {
+      "from": "agt_492b727335044bdb9bff7b8244d6570e",
+      "to": "agt_7926ad6a8e7b44b7b5070761819fb774"
+    },
+    {
+      "from": "agt_7926ad6a8e7b44b7b5070761819fb774",
+      "to": "agt_7efdf011e69648f2963a02bb5339e7b1"
+    },
+    {
+      "from": "agt_7926ad6a8e7b44b7b5070761819fb774",
+      "to": "agt_ec8315d98a1e494dad15879480ae2555"
+    },
+    {
+      "from": "agt_7926ad6a8e7b44b7b5070761819fb774",
+      "to": "agt_c5af5443c92942c3a0589e804d36309e"
+    },
+    {
+      "from": "agt_7efdf011e69648f2963a02bb5339e7b1",
+      "to": "agt_637fc8337be141b399f86e93021e9847"
+    },
+    {
+      "from": "agt_ec8315d98a1e494dad15879480ae2555",
+      "to": "agt_637fc8337be141b399f86e93021e9847"
+    },
+    {
+      "from": "agt_c5af5443c92942c3a0589e804d36309e",
+      "to": "agt_637fc8337be141b399f86e93021e9847"
+    },
+    {
+      "from": "agt_637fc8337be141b399f86e93021e9847",
+      "to": "agt_5d1f4d08855e4674aecf4d35b3cdb36d"
+    },
+    {
+      "from": "agt_5d1f4d08855e4674aecf4d35b3cdb36d",
+      "to": "agt_f83ff87c266c42a1a78445bfc970bb3d"
+    },
+    {
+      "from": "agt_f83ff87c266c42a1a78445bfc970bb3d",
+      "to": "agt_6c61be7ad64143b796268b57a9f7ad65"
+    },
+    {
+      "from": "agt_f83ff87c266c42a1a78445bfc970bb3d",
+      "to": "agt_f9e294ce679b4a318393b00ed8a44e31"
+    },
+    {
+      "from": "agt_f83ff87c266c42a1a78445bfc970bb3d",
+      "to": "agt_b8ae3f6f26fa454f99c9cda112dd64af"
+    },
+    {
+      "from": "agt_6c61be7ad64143b796268b57a9f7ad65",
+      "to": "agt_911666371e4549de892cf330d07e26fe"
+    },
+    {
+      "from": "agt_f9e294ce679b4a318393b00ed8a44e31",
+      "to": "agt_911666371e4549de892cf330d07e26fe"
+    },
+    {
+      "from": "agt_b8ae3f6f26fa454f99c9cda112dd64af",
+      "to": "agt_911666371e4549de892cf330d07e26fe"
+    },
+    {
+      "from": "agt_911666371e4549de892cf330d07e26fe",
+      "to": "agt_65a5326000f54c93a9df1de87bb9c67b"
+    }
+  ],
+  "state_schema": {
+    "target_company": "string",
+    "deal_size": "string",
+    "industry": "string",
+    "documents": "string",
+    "risk_score": "string",
+    "recommendation": "string",
+    "report_url": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-27T20:31:02.677098",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    }
+  },
+  "human_in_loop": {
+    "enabled": true,
+    "review_points": [
+      "agt_6c61be7ad64143b796268b57a9f7ad65",
+      "agt_f9e294ce679b4a318393b00ed8a44e31"
+    ]
+  }
+}

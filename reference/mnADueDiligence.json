@@ -1,0 +1,268 @@
+{
+  "title": "M&A Due Diligence Workflow",
+  "description": "Comprehensive due diligence process with financial, legal, and operational analysis",
+  "nodes": [
+    {
+      "id": 1000,
+      "type": "Start",
+      "name": "DD Request Received",
+      "icon": "▶️",
+      "color": "#10b981",
+      "x": 100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "triggerType": "manual",
+        "inputVariables": [
+          {"name": "target_company", "type": "string", "required": true},
+          {"name": "deal_size", "type": "number", "required": true},
+          {"name": "industry", "type": "string", "required": true},
+          {"name": "documents", "type": "array", "required": true}
+        ]
+      }
+    },
+    {
+      "id": 1001,
+      "type": "Agent",
+      "name": "Document Classifier",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 350,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "You are a due diligence specialist. Classify uploaded documents into categories: Financial Statements, Legal Contracts, HR Documents, Operational Data, IP Documentation, Customer Contracts, Regulatory Filings. Extract key metadata from each document.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-sonnet-4-5-20250514",
+          "displayName": "Claude Sonnet 4.5"
+        },
+        "tools": [],
+        "maxIterations": 3,
+        "temperature": 0.3
+      }
+    },
+    {
+      "id": 1002,
+      "type": "Agent",
+      "name": "Financial Analysis",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 600,
+      "y": 150,
+      "status": "idle",
+      "config": {
+        "prompt": "Analyze financial statements and perform comprehensive financial due diligence. Calculate key metrics: Revenue growth, EBITDA margins, Working capital trends, Debt/Equity ratio, Cash flow analysis. Identify red flags: Revenue concentration, Declining margins, Cash flow issues, Unusual transactions. Generate detailed financial risk assessment.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-opus-4-20250514",
+          "displayName": "Claude Opus 4"
+        },
+        "tools": [],
+        "maxIterations": 5,
+        "temperature": 0.2
+      }
+    },
+    {
+      "id": 1003,
+      "type": "Agent",
+      "name": "Legal Risk Analysis",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 600,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "Review legal documents and contracts for risks and liabilities. Assess: Contract terms and obligations, Litigation history, Regulatory compliance, IP ownership and disputes, Employment agreements, Material contracts. Flag high-risk items requiring immediate attention.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-sonnet-4-5-20250514",
+          "displayName": "Claude Sonnet 4.5"
+        },
+        "tools": [],
+        "maxIterations": 5,
+        "temperature": 0.2
+      }
+    },
+    {
+      "id": 1004,
+      "type": "Agent",
+      "name": "Operational Assessment",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 600,
+      "y": 450,
+      "status": "idle",
+      "config": {
+        "prompt": "Evaluate operational efficiency and identify integration challenges. Analyze: Key customer concentration, Supplier dependencies, IT systems and infrastructure, Employee retention risks, Process maturity, Scalability concerns. Assess post-merger integration complexity.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-sonnet-4-5-20250514",
+          "displayName": "Claude Sonnet 4.5"
+        },
+        "tools": [],
+        "maxIterations": 3,
+        "temperature": 0.3
+      }
+    },
+    {
+      "id": 1005,
+      "type": "Merge",
+      "name": "Consolidate Findings",
+      "icon": "🖇️",
+      "color": "#8b5cf6",
+      "x": 850,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "mergeStrategy": "aggregate",
+        "waitForAll": true
+      }
+    },
+    {
+      "id": 1006,
+      "type": "Agent",
+      "name": "Risk Scoring Engine",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 1100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "Synthesize all due diligence findings and calculate overall risk score. Use weighted scoring model: Financial risks (40%), Legal risks (30%), Operational risks (30%). Generate risk rating: Low (0-30), Medium (31-60), High (61-100). Provide executive summary with key findings and deal-breakers.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-opus-4-20250514",
+          "displayName": "Claude Opus 4"
+        },
+        "tools": [],
+        "maxIterations": 3,
+        "temperature": 0.2
+      }
+    },
+    {
+      "id": 1007,
+      "type": "Conditional",
+      "name": "Risk Assessment Gate",
+      "icon": "🔀",
+      "color": "#8b5cf6",
+      "x": 1350,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "branches": [
+          {"type": "if", "condition": "risk_score > 70", "targetNodeId": 1008},
+          {"type": "elif", "condition": "risk_score > 40", "targetNodeId": 1009},
+          {"type": "else", "condition": "", "targetNodeId": 1010}
+        ]
+      }
+    },
+    {
+      "id": 1008,
+      "type": "HITL",
+      "name": "Partner Escalation",
+      "icon": "👤",
+      "color": "#06b6d4",
+      "x": 1600,
+      "y": 150,
+      "status": "idle",
+      "config": {
+        "reviewTitle": "High Risk Deal - Partner Review Required",
+        "priority": "critical",
+        "message": "Deal has critical risks requiring partner decision",
+        "allowedDecisions": ["proceed_with_conditions", "request_more_info", "recommend_no_go"],
+        "notificationChannels": ["email", "slack"]
+      }
+    },
+    {
+      "id": 1009,
+      "type": "HITL",
+      "name": "Senior Manager Review",
+      "icon": "👤",
+      "color": "#06b6d4",
+      "x": 1600,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "reviewTitle": "Moderate Risk - Manager Review",
+        "priority": "high",
+        "message": "Moderate risks identified requiring management review",
+        "allowedDecisions": ["approve", "request_clarification", "escalate"],
+        "notificationChannels": ["email"]
+      }
+    },
+    {
+      "id": 1010,
+      "type": "Agent",
+      "name": "Report Generator",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 1600,
+      "y": 450,
+      "status": "idle",
+      "config": {
+        "prompt": "Generate comprehensive due diligence report. Include: Executive Summary, Detailed Findings by Category, Risk Analysis with Scores, Recommendations, Mitigation Strategies, Deal Structure Suggestions. Format as professional consulting deliverable.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-sonnet-4-5-20250514",
+          "displayName": "Claude Sonnet 4.5"
+        },
+        "tools": [],
+        "temperature": 0.4
+      }
+    },
+    {
+      "id": 1011,
+      "type": "API",
+      "name": "Deliver to Client Portal",
+      "icon": "🌐",
+      "color": "#3b82f6",
+      "x": 1850,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "method": "POST",
+        "url": "https://api.clientportal.com/v1/deliverables",
+        "authentication": "bearer",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "id": 1012,
+      "type": "End",
+      "name": "DD Complete",
+      "icon": "⏹️",
+      "color": "#64748b",
+      "x": 2100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "outputVariables": [
+          {"name": "risk_score", "type": "number"},
+          {"name": "recommendation", "type": "string"},
+          {"name": "report_url", "type": "string"}
+        ]
+      }
+    }
+  ],
+  "connections": [
+    {"id": 2000, "from": 1000, "to": 1001},
+    {"id": 2001, "from": 1001, "to": 1002},
+    {"id": 2002, "from": 1001, "to": 1003},
+    {"id": 2003, "from": 1001, "to": 1004},
+    {"id": 2004, "from": 1002, "to": 1005},
+    {"id": 2005, "from": 1003, "to": 1005},
+    {"id": 2006, "from": 1004, "to": 1005},
+    {"id": 2007, "from": 1005, "to": 1006},
+    {"id": 2008, "from": 1006, "to": 1007},
+    {"id": 2009, "from": 1007, "to": 1008},
+    {"id": 2010, "from": 1007, "to": 1009},
+    {"id": 2011, "from": 1007, "to": 1010},
+    {"id": 2012, "from": 1008, "to": 1011},
+    {"id": 2013, "from": 1009, "to": 1011},
+    {"id": 2014, "from": 1010, "to": 1011},
+    {"id": 2015, "from": 1011, "to": 1012}
+  ]
+}

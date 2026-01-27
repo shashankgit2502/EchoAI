@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls -la \"C:\\\\Users\\\\Shashank Singh\\\\Desktop\\\\Phase 2 - ECHO\\\\echoAI\\\\apps\"\" | grep -E \"^d \")"
+      "Bash(ls -la \"C:\\\\Users\\\\Shashank Singh\\\\Desktop\\\\Phase 2 - ECHO\\\\echoAI\\\\apps\"\" | grep -E \"^d \")",
+      "WebSearch",
+      "WebFetch(domain:reference.langchain.com)"
     ]
   }
 }

@@ -1,0 +1,246 @@
+{
+  "title": "Proposal Generation Workflow",
+  "description": "End-to-end RFP response with requirements analysis, solution design, and pricing optimization",
+  "nodes": [
+    {
+      "id": 5000,
+      "type": "Start",
+      "name": "RFP Received",
+      "icon": "▶️",
+      "color": "#10b981",
+      "x": 100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "triggerType": "email",
+        "inputVariables": [
+          {"name": "rfp_document", "type": "string", "required": true},
+          {"name": "prospect_name", "type": "string", "required": true},
+          {"name": "deadline", "type": "string", "required": true},
+          {"name": "opportunity_value", "type": "number", "required": true}
+        ]
+      }
+    },
+    {
+      "id": 5001,
+      "type": "Agent",
+      "name": "RFP Analyzer",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 350,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "Analyze RFP document comprehensively. Extract: Scope and objectives, Specific requirements (functional, technical, compliance), Evaluation criteria and weights, Timeline and milestones, Budget constraints, Mandatory vs. optional requirements, Submission requirements. Create structured requirement matrix.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-opus-4-20250514",
+          "displayName": "Claude Opus 4"
+        },
+        "tools": [],
+        "maxIterations": 5,
+        "temperature": 0.2
+      }
+    },
+    {
+      "id": 5002,
+      "type": "Agent",
+      "name": "Win Probability Scorer",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 600,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "Assess win probability and bid/no-bid decision factors. Evaluate: Alignment with firm capabilities, Relationship with prospect, Competitive positioning, Resource availability, Margin potential, Strategic value. Calculate win probability score (0-100). Recommend bid strategy.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-sonnet-4-5-20250514",
+          "displayName": "Claude Sonnet 4.5"
+        },
+        "tools": [],
+        "temperature": 0.3
+      }
+    },
+    {
+      "id": 5003,
+      "type": "Conditional",
+      "name": "Pursue Opportunity?",
+      "icon": "🔀",
+      "color": "#8b5cf6",
+      "x": 850,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "branches": [
+          {"type": "if", "condition": "win_probability < 30 AND opportunity_value < 500000", "targetNodeId": 5004},
+          {"type": "else", "condition": "", "targetNodeId": 5005}
+        ]
+      }
+    },
+    {
+      "id": 5004,
+      "type": "API",
+      "name": "Decline & Notify",
+      "icon": "🌐",
+      "color": "#3b82f6",
+      "x": 1100,
+      "y": 150,
+      "status": "idle",
+      "config": {
+        "method": "POST",
+        "url": "https://api.crm.com/v1/opportunities/decline",
+        "authentication": "bearer"
+      }
+    },
+    {
+      "id": 5005,
+      "type": "Agent",
+      "name": "Solution Designer",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 1100,
+      "y": 400,
+      "status": "idle",
+      "config": {
+        "prompt": "Design tailored solution addressing all RFP requirements. Create: Solution architecture and approach, Methodology and deliverables, Team composition and qualifications, Project plan with phases, Risk mitigation strategies, Innovation and value-adds. Map solution to evaluation criteria.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-opus-4-20250514",
+          "displayName": "Claude Opus 4"
+        },
+        "tools": [],
+        "maxIterations": 5,
+        "temperature": 0.4
+      }
+    },
+    {
+      "id": 5006,
+      "type": "API",
+      "name": "Query Historical Projects",
+      "icon": "🌐",
+      "color": "#3b82f6",
+      "x": 1350,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "method": "GET",
+        "url": "https://api.projectdb.com/v1/similar-projects",
+        "authentication": "api_key"
+      }
+    },
+    {
+      "id": 5007,
+      "type": "Code",
+      "name": "Pricing Calculator",
+      "icon": "💻",
+      "color": "#0ea5e9",
+      "x": 1600,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "language": "python",
+        "code": "# Calculate competitive pricing\nimport numpy as np\n\n# Resource-based costing\nhours_by_role = {'partner': 100, 'manager': 300, 'consultant': 800}\nrates = {'partner': 450, 'manager': 275, 'consultant': 175}\n\ncost = sum(hours_by_role[role] * rates[role] for role in hours_by_role)\nmargin = 0.25\nbase_price = cost / (1 - margin)\n\n# Adjust for win probability and competitive factors\nadjustment = 0.9 if win_probability < 50 else 1.0\nfinal_price = base_price * adjustment\n\nprint(f'Recommended price: ${final_price:,.0f}')",
+        "packages": []
+      }
+    },
+    {
+      "id": 5008,
+      "type": "Agent",
+      "name": "Proposal Writer",
+      "icon": "🔶",
+      "color": "#f59e0b",
+      "x": 1850,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "prompt": "Generate compelling proposal document. Structure: Executive Summary (value proposition, key differentiators), Understanding (restate client needs and challenges), Approach & Methodology, Team & Qualifications, Project Plan & Timeline, Pricing & Commercial Terms, Case Studies & References, Terms & Conditions. Use persuasive, client-focused language. Highlight competitive advantages.",
+        "model": {
+          "provider": "anthropic",
+          "modelName": "claude-opus-4-20250514",
+          "displayName": "Claude Opus 4"
+        },
+        "tools": [],
+        "temperature": 0.5
+      }
+    },
+    {
+      "id": 5009,
+      "type": "Self-Review",
+      "name": "Compliance Check",
+      "icon": "✅",
+      "color": "#06b6d4",
+      "x": 2100,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "reviewPrompt": "Verify proposal meets all RFP requirements and submission guidelines. Check: All mandatory requirements addressed, Format and structure compliance, Page limits respected, Required attachments included, Signature and certification pages, Pricing format matches requirements.",
+        "minConfidence": 0.9
+      }
+    },
+    {
+      "id": 5010,
+      "type": "HITL",
+      "name": "Partner Final Review",
+      "icon": "👤",
+      "color": "#06b6d4",
+      "x": 2350,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "reviewTitle": "Proposal Final Approval",
+        "priority": "high",
+        "message": "Review proposal quality, pricing strategy, and competitive positioning",
+        "allowedDecisions": ["approve", "request_revisions"],
+        "notificationChannels": []
+      }
+    },
+    {
+      "id": 5011,
+      "type": "API",
+      "name": "Submit Proposal",
+      "icon": "🌐",
+      "color": "#3b82f6",
+      "x": 2600,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "method": "POST",
+        "url": "https://api.proposalportal.com/v1/submit",
+        "authentication": "oauth2"
+      }
+    },
+    {
+      "id": 5012,
+      "type": "End",
+      "name": "Proposal Submitted",
+      "icon": "⏹️",
+      "color": "#64748b",
+      "x": 2850,
+      "y": 300,
+      "status": "idle",
+      "config": {
+        "outputVariables": [
+          {"name": "proposal_id", "type": "string"},
+          {"name": "final_price", "type": "number"},
+          {"name": "submission_timestamp", "type": "string"}
+        ]
+      }
+    }
+  ],
+  "connections": [
+    {"id": 6000, "from": 5000, "to": 5001},
+    {"id": 6001, "from": 5001, "to": 5002},
+    {"id": 6002, "from": 5002, "to": 5003},
+    {"id": 6003, "from": 5003, "to": 5004},
+    {"id": 6004, "from": 5003, "to": 5005},
+    {"id": 6005, "from": 5004, "to": 5012},
+    {"id": 6006, "from": 5005, "to": 5006},
+    {"id": 6007, "from": 5006, "to": 5007},
+    {"id": 6008, "from": 5007, "to": 5008},
+    {"id": 6009, "from": 5008, "to": 5009},
+    {"id": 6010, "from": 5009, "to": 5010},
+    {"id": 6011, "from": 5010, "to": 5011},
+    {"id": 6012, "from": 5011, "to": 5012}
+  ]
+}

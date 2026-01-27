@@ -1,0 +1,39 @@
+{
+  "agent_id": "agt_dd10bd03278d4a8ca17eb81b16db63d3",
+  "name": "Fact Check",
+  "role": "Quality validation",
+  "goal": "",
+  "prompt": "",
+  "description": "Self-Review node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Self-Review",
+    "ui_layout": {
+      "x": 1850,
+      "y": 300,
+      "icon": "✅",
+      "color": "#06b6d4"
+    },
+    "created_at": "2026-01-27T21:18:40.608402",
+    "review_config": {
+      "checkCompleteness": true,
+      "checkAccuracy": true,
+      "confidenceThreshold": 0.8
+    },
+    "registered_at": "2026-01-27T21:18:40.883955"
+  }
+}

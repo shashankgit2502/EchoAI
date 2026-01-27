@@ -1,0 +1,40 @@
+{
+  "agent_id": "agt_37dd6b953d8e40069b8b9a4f3f320b58",
+  "name": "Send Rejection Email",
+  "role": "HTTP request",
+  "goal": "",
+  "prompt": "",
+  "description": "API node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "API",
+    "ui_layout": {
+      "x": 1350,
+      "y": 200,
+      "icon": "🌐",
+      "color": "#3b82f6"
+    },
+    "created_at": "2026-01-27T21:30:14.725978",
+    "api_config": {
+      "method": "POST",
+      "url": "https://api.email.com/v1/send-template",
+      "headers": {},
+      "auth": {}
+    },
+    "registered_at": "2026-01-27T21:30:14.921004"
+  }
+}

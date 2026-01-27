@@ -1,0 +1,41 @@
+{
+  "agent_id": "agt_c67dc57788b9439fa3a5b936299e90a5",
+  "name": "Recruiter Assessment",
+  "role": "Human approval gate",
+  "goal": "",
+  "prompt": "",
+  "description": "HITL node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "HITL",
+    "ui_layout": {
+      "x": 1850,
+      "y": 300,
+      "icon": "👤",
+      "color": "#06b6d4"
+    },
+    "created_at": "2026-01-27T21:30:17.942514",
+    "hitl_config": {
+      "title": "",
+      "message": "Review screening responses and decide on next steps",
+      "priority": "medium",
+      "allowEdit": true,
+      "allowDefer": false
+    },
+    "registered_at": "2026-01-27T21:30:18.214108"
+  }
+}

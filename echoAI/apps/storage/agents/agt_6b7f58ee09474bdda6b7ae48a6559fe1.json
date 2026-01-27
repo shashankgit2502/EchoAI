@@ -1,0 +1,40 @@
+{
+  "agent_id": "agt_6b7f58ee09474bdda6b7ae48a6559fe1",
+  "name": "Update ATS",
+  "role": "HTTP request",
+  "goal": "",
+  "prompt": "",
+  "description": "API node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "API",
+    "ui_layout": {
+      "x": 2100,
+      "y": 300,
+      "icon": "🌐",
+      "color": "#3b82f6"
+    },
+    "created_at": "2026-01-27T21:30:17.942514",
+    "api_config": {
+      "method": "PUT",
+      "url": "https://api.ats.com/v1/candidates/{candidate_id}/stage",
+      "headers": {},
+      "auth": {}
+    },
+    "registered_at": "2026-01-27T21:30:18.241736"
+  }
+}

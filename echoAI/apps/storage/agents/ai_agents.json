@@ -1,4089 +1,1051 @@
 {
   "agents": [
     {
-      "agent_id": "agt_0efa5b549a414881990514ea440e186c",
-      "name": "Custom Agent",
+      "agent_id": "agt_b4163e2c5b9e40e5a38c12acec779b0f",
+      "name": "DD Request Received",
       "icon": "🤖",
-      "role": "Processing",
-      "description": "create me a python agent for coding"
-    },
-    {
-      "agent_id": "agent-1",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "create me a python agent for coding"
-    },
-    {
-      "agent_id": "agt_1c7b087e13a34978b2c8f35e85c2213e",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "Create me an agent which will help me to do coding in python"
-    },
-    {
-      "agent_id": "agt_2cf7b46d68054607a23e69ff9fc6b7ab",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "Create me an agent that performs coding in python review that code and if required give me the better optimised version."
-    },
-    {
-      "agent_id": "agt_fe8471444bed43e9ad2fd72de1cddc6e",
-      "name": "Python Code Optimizer",
-      "icon": "🤖",
-      "role": "Python Code Reviewer and Optimizer",
-      "description": "This agent reviews Python code for quality, efficiency, and best practices, then provides an optimized version if improvements are needed."
-    },
-    {
-      "agent_id": "agent-2",
-      "name": "this is fine",
-      "icon": "🤖",
-      "role": "Python Code Reviewer and Optimizer",
-      "description": "This agent reviews Python code for quality, efficiency, and best practices, then provides an optimized version if improvements are needed."
-    },
-    {
-      "agent_id": "agt_2654b99219b84810b25957a40a5c8d0b",
-      "name": "ContentWriterAndAnalyzer",
-      "icon": "🤖",
-      "role": "Content Creation and Quality Analysis",
-      "description": "This agent writes high-quality content and performs a thorough analysis to ensure it meets quality standards."
-    },
-    {
-      "agent_id": "agt_f78150af5874483ea7f9477b617f67a9",
-      "name": "PyOptiMaster",
-      "icon": "🤖",
-      "role": "Senior Python Code Reviewer and Optimizer",
-      "description": "Reviews Python code for quality, efficiency, and best practices, then provides optimized versions with improvements."
-    },
-    {
-      "agent_id": "agent-3",
-      "name": "PyOptiMaster",
-      "icon": "🤖",
-      "role": "Senior Python Code Reviewer and Optimizer",
-      "description": "Reviews Python code for quality, efficiency, and best practices, then provides optimized versions with improvements."
-    },
-    {
-      "agent_id": "agt_77b3a49ebcc54da981df3d55f83a95fc",
-      "name": "CodeWriter",
-      "icon": "🤖",
-      "role": "Code Implementation",
-      "description": "Writes and generates code based on given requirements or specifications."
-    },
-    {
-      "agent_id": "agt_55ac6ba9dd524f58ab85a933c9cac1da",
-      "name": "CodeReviewer",
-      "icon": "🤖",
-      "role": "Code Review",
-      "description": "Reviews the generated code for correctness, readability, and adherence to best practices."
-    },
-    {
-      "agent_id": "agt_d534bf901d0d48f58b86794d78db39b5",
-      "name": "CodeTester",
-      "icon": "🤖",
-      "role": "Testing and Optimization",
-      "description": "Tests the code for functionality and performance, and suggests optimizations if needed."
-    },
-    {
-      "agent_id": "agt_38f697f510fe4b339dc560de73eade4d",
-      "name": "EditorManager",
-      "icon": "🤖",
-      "role": "Master agent coordinating the workflow",
-      "description": "Manages the overall workflow, delegates tasks to sub-agents, and ensures smooth operation of the coding editor."
-    },
-    {
-      "agent_id": "agt_361331ae60924bf09dc0163ff7ab300d",
-      "name": "CodeAnalyzer",
-      "icon": "🤖",
-      "role": "Analyzes the code for syntax and structure",
-      "description": "Performs static analysis on the code to detect syntax errors, structural issues, and potential bugs."
-    },
-    {
-      "agent_id": "agt_1239193f222c43e3ab098f9a33d631a5",
-      "name": "CodeFormatter",
-      "icon": "🤖",
-      "role": "Formats the code according to standards",
-      "description": "Applies consistent formatting rules to the code to improve readability and maintainability."
-    },
-    {
-      "agent_id": "agt_0432216e26014b4c928584eb37238c8d",
-      "name": "CodeExecutor",
-      "icon": "🤖",
-      "role": "Executes the code in a sandboxed environment",
-      "description": "Runs the code in a secure environment to test functionality and catch runtime errors."
-    },
-    {
-      "agent_id": "agt_0ebf3d76843b43cfb52b79bce5dcee87",
-      "name": "CodeSuggester",
-      "icon": "🤖",
-      "role": "Provides suggestions for code improvements",
-      "description": "Offers recommendations for optimizing, refactoring, or enhancing the code based on best practices."
-    },
-    {
-      "agent_id": "agt_6323072397864c24b06e74c595fea77a",
-      "name": "CodeExecutor",
-      "icon": "🤖",
-      "role": "Execute provided code",
-      "description": "Runs the given code in a sandboxed environment and captures the output."
-    },
-    {
-      "agent_id": "agt_80fc108a1c4049efb7ee5826ea5e8737",
-      "name": "CodeAnalyzer",
-      "icon": "🤖",
-      "role": "Analyze code execution results",
-      "description": "Evaluates the execution output for errors, performance, and correctness."
-    },
-    {
-      "agent_id": "agt_2ca5f87404674c6c81b482176918ddba",
-      "name": "CodeReviewer",
-      "icon": "🤖",
-      "role": "Review and provide feedback",
-      "description": "Generates a final review report with suggestions for improvement."
-    },
-    {
-      "agent_id": "agt_06c999b3133044b1a32cb3d355a6ed10",
-      "name": "CodeExecutor",
-      "icon": "🤖",
-      "role": "Execute the provided code",
-      "description": "Runs the given code in a secure environment and captures the output or errors."
-    },
-    {
-      "agent_id": "agt_60db72af84dd417b931e0d2aa80cac4a",
-      "name": "CodeReviewer",
-      "icon": "🤖",
-      "role": "Review the code for quality and best practices",
-      "description": "Analyzes the code for style, structure, and adherence to best practices."
-    },
-    {
-      "agent_id": "agt_3174e8eef42a4f7f976a9f7706d0239b",
-      "name": "CodeTester",
-      "icon": "🤖",
-      "role": "Test the code for correctness and edge cases",
-      "description": "Runs predefined or generated test cases to validate the code's functionality."
-    },
-    {
-      "agent_id": "agt_28763d12c06a4a719674e6e63b35ce0e",
-      "name": "CodeExecutor",
-      "icon": "🤖",
-      "role": "Execute provided code and capture outputs",
-      "description": "Runs the submitted code in a controlled environment and returns execution results, logs, and any errors."
-    },
-    {
-      "agent_id": "agt_657dc095456c40fc8b232c296ee61235",
-      "name": "CodeReviewer",
-      "icon": "🤖",
-      "role": "Analyze code for quality and correctness",
-      "description": "Reviews the code for syntax errors, style issues, and adherence to best practices. Provides feedback and suggestions."
-    },
-    {
-      "agent_id": "agt_485b4aa08f794b0c8bdf3983dec8c8e0",
-      "name": "CodeOptimizer",
-      "icon": "🤖",
-      "role": "Optimize code for performance and readability",
-      "description": "Applies optimizations based on the review report, improving performance, reducing complexity, and enhancing readability."
-    },
-    {
-      "agent_id": "agt_e1bb07237d4b411899e5f16702075cdd",
-      "name": "Code Analyzer",
-      "icon": "🤖",
-      "role": "Static code analysis",
-      "description": "Analyzes source code for potential optimizations, inefficiencies, and anti-patterns."
-    },
-    {
-      "agent_id": "agt_82bddbe3e11b4b969bc0af3b085e1c4a",
-      "name": "Optimizer",
-      "icon": "🤖",
-      "role": "Code transformation",
-      "description": "Applies optimizations based on the analysis report, refactoring code for better performance."
-    },
-    {
-      "agent_id": "agt_4b9a86d953ca4ca7bf7c94afb0c018ac",
-      "name": "Validator",
-      "icon": "🤖",
-      "role": "Quality assurance",
-      "description": "Validates the optimized code for correctness, performance, and adherence to best practices."
-    },
-    {
-      "agent_id": "agt_a327349ce47449848a1a39fb6a4856a8",
-      "name": "Executor",
-      "icon": "🤖",
-      "role": "Execution flow manager",
-      "description": "Executes the optimized code in the target environment and monitors runtime behavior."
-    },
-    {
-      "agent_id": "agt_943c94abdbc4488b90677779897e2bfa",
-      "name": "CodeExecutor",
-      "icon": "🤖",
-      "role": "Execute provided code",
-      "description": "Runs the input code and captures the output, errors, and performance metrics."
-    },
-    {
-      "agent_id": "agt_6a3883a1520549bba6245e08f428e963",
-      "name": "CodeAnalyzer",
-      "icon": "🤖",
-      "role": "Analyze code for optimization opportunities",
-      "description": "Reviews the code and execution results to identify inefficiencies and potential improvements."
-    },
-    {
-      "agent_id": "agt_a8d234430ca14a37ab4dd77facbcb3d3",
-      "name": "CodeOptimizer",
-      "icon": "🤖",
-      "role": "Optimize the code based on analysis",
-      "description": "Applies optimization techniques to improve code performance and efficiency."
-    },
-    {
-      "agent_id": "agt_d110e6d3ad3246df8956850d667e6463",
-      "name": "Code Parser",
-      "icon": "🤖",
-      "role": "Parse and validate input code",
-      "description": "Analyzes the input code for syntax errors, dependencies, and structure."
-    },
-    {
-      "agent_id": "agt_22d5a7328ea54bb982e8e250a25bb762",
-      "name": "Code Executor",
-      "icon": "🤖",
-      "role": "Execute the parsed code",
-      "description": "Runs the code in a sandboxed environment and captures the output."
-    },
-    {
-      "agent_id": "agt_30c4107d7f264d33904e574fe025e31b",
-      "name": "Code Analyzer",
-      "icon": "🤖",
-      "role": "Analyze execution results",
-      "description": "Evaluates the execution output and performance metrics to identify optimization opportunities."
-    },
-    {
-      "agent_id": "agt_f91619baea0b4336961c131b101d3934",
-      "name": "Code Optimizer",
-      "icon": "🤖",
-      "role": "Optimize the code",
-      "description": "Applies optimizations based on the suggestions and generates an optimized version of the code."
-    },
-    {
-      "agent_id": "agt_16e20d14e2ce4b8cae98fa157a30b6d8",
-      "name": "Code Analyzer",
-      "icon": "🤖",
-      "role": "Analyze the input code for syntax, structure, and potential issues",
-      "description": "Performs static analysis on the provided code to identify syntax errors, inefficiencies, and areas for improvement."
-    },
-    {
-      "agent_id": "agt_a719f3fdf3134b7b9adf5d2b1dbae470",
-      "name": "Code Executor",
-      "icon": "🤖",
-      "role": "Execute the code in a controlled environment",
-      "description": "Runs the provided code in a sandboxed environment to ensure it executes without errors and captures the output."
-    },
-    {
-      "agent_id": "agt_0ee9efc70fc04b8283930b23419890e8",
-      "name": "Optimizer",
-      "icon": "🤖",
-      "role": "Optimize the code based on analysis and execution results",
-      "description": "Applies optimizations to the code based on the analysis report and execution results to improve performance and efficiency."
-    },
-    {
-      "agent_id": "agt_01683924a5c5427e9907b6b190593c0f",
-      "name": "Validator",
-      "icon": "🤖",
-      "role": "Validate the optimized code",
-      "description": "Ensures the optimized code meets the original requirements and performs as expected by running validation tests."
-    },
-    {
-      "agent_id": "agt_1d8412c4791543e0a262c6fde53ef419",
-      "name": "CodeValidator",
-      "icon": "🤖",
-      "role": "Validate and preprocess code",
-      "description": "Checks code syntax, dependencies, and structure before execution."
-    },
-    {
-      "agent_id": "agt_d5bdbfcf0d9f46ae8f0ff4f3cc5d40a3",
-      "name": "CodeExecutor",
-      "icon": "🤖",
-      "role": "Execute the validated code",
-      "description": "Runs the code in a controlled environment and captures outputs/logs."
-    },
-    {
-      "agent_id": "agt_e2a0165689dd43ae9014d88fcf394053",
-      "name": "PerformanceAnalyzer",
-      "icon": "🤖",
-      "role": "Analyze execution performance",
-      "description": "Evaluates runtime, memory usage, and bottlenecks from execution logs."
-    },
-    {
-      "agent_id": "agt_6cc3acb0ebd14165af8b2b634816cae9",
-      "name": "CodeOptimizer",
-      "icon": "🤖",
-      "role": "Optimize the code",
-      "description": "Applies optimizations based on analysis (e.g., refactoring, algorithm improvements)."
-    },
-    {
-      "agent_id": "agt_5d6e93affb3e4301adac34f579330f4c",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_1e15d99db9304e7ab9afe34002796889",
-      "name": "CodeValidator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_fb6b28ac43bf48309f6c5aa267c675b0",
-      "name": "CodeExecutor",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_10c46b37ad5c424ca9127cbffe03e56b",
-      "name": "PerformanceAnalyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_370ae10d953b46bfa03cb57949e20f35",
-      "name": "CodeOptimizer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_a9635ba49b7b4bcea02e132832fae61a",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_b312c96733d14971a0a0cbe657068baa",
-      "name": "CodeValidator",
-      "icon": "🤖",
-      "role": "Validate and preprocess code",
-      "description": "Checks code syntax, dependencies, and structure before execution."
-    },
-    {
-      "agent_id": "agt_feea77724dfb456383cb33c414c3c0c1",
-      "name": "CodeExecutor",
-      "icon": "🤖",
-      "role": "Execute the validated code",
-      "description": "Runs the code in a controlled environment and captures outputs/logs."
-    },
-    {
-      "agent_id": "agt_7b951dce2c5f44d59d5a0b008e7546b2",
-      "name": "PerformanceAnalyzer",
-      "icon": "🤖",
-      "role": "Analyze execution performance",
-      "description": "Evaluates performance metrics and identifies bottlenecks."
-    },
-    {
-      "agent_id": "agt_46cd07f1e38c4c69b1fd4feae6e57899",
-      "name": "CodeOptimizer",
-      "icon": "🤖",
-      "role": "Optimize the code",
-      "description": "Applies optimizations based on analysis and revalidates the code."
-    },
-    {
-      "agent_id": "agt_1765001cc63f4afd847615f1945d6a33",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_5eedc80f1dd940d5b175867771e32081",
-      "name": "CodeValidator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_b935e56469464b7bacf02c74bcdc48be",
-      "name": "CodeExecutor",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_31a6ad43567f40ea86d3b56b45f25a46",
-      "name": "PerformanceAnalyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_aa1f334bdc1e41a285b1ce2842a100b1",
-      "name": "CodeOptimizer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_9235091378954c0eb91d016b2d3347eb",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_e9490aa14f2f4a47acecc03d3c092b66",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_5f07cceefab94883b08216710687bbff",
-      "name": "CodeValidator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_b24318c6943b4b4aa58121a2da22d439",
-      "name": "CodeExecutor",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_9e8f9963f2214fe1b250e112142a03da",
-      "name": "PerformanceAnalyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_1e3f57e192554faa902ccb9bc20e309d",
-      "name": "CodeOptimizer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_ce74f99413c944008c07e6b770d15dfc",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_107be7c2c36a4d69923b19d0a7c285d4",
-      "name": "Code Analyzer",
-      "icon": "🤖",
-      "role": "Analyze the input code for structure and dependencies",
-      "description": "Parses the code to understand its structure, dependencies, and potential issues."
-    },
-    {
-      "agent_id": "agt_371127e5a4e1497789e8c950eca618ff",
-      "name": "Code Executor",
-      "icon": "🤖",
-      "role": "Execute the code in a controlled environment",
-      "description": "Runs the code and captures the output, errors, and performance metrics."
-    },
-    {
-      "agent_id": "agt_0d71d32a31a54cfaa6f635bc7f99e4be",
-      "name": "Optimization Suggester",
-      "icon": "🤖",
-      "role": "Suggest optimizations based on execution results",
-      "description": "Analyzes the execution results and suggests optimizations for performance and efficiency."
-    },
-    {
-      "agent_id": "agt_e515485eeaeb4e1fa2cea0a31fcfd610",
-      "name": "Code Optimizer",
-      "icon": "🤖",
-      "role": "Apply optimizations to the code",
-      "description": "Implements the suggested optimizations and returns the optimized code."
-    },
-    {
-      "agent_id": "agt_71c475f208f944c199f2d1be68b9d135",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_0ada589b8a774968ad432ee1afe85936",
-      "name": "Code Analyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d939a36dfb034a8aa261f66733ac2461",
-      "name": "Code Executor",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_f0bffcfe5b9b4bbb84e4574311e74cd1",
-      "name": "Optimization Suggester",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_1153642e1dbd4861b7c35dfdf21bdf40",
-      "name": "Code Optimizer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_2016a98bd5ee47788871fb6127825004",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_e2067c388ca24253bb327c37dfe4e8ec",
-      "name": "Code Analyzer",
-      "icon": "🤖",
-      "role": "Analyze the input code for syntax and structure",
-      "description": "Checks the code for syntax errors, structure, and basic quality metrics."
-    },
-    {
-      "agent_id": "agt_125d91696a2e4318a69254359f5062b5",
-      "name": "Code Executor",
-      "icon": "🤖",
-      "role": "Execute the validated code",
-      "description": "Runs the code in a controlled environment and captures the output."
-    },
-    {
-      "agent_id": "agt_ca9b178981914eca99d1a44f5ab47840",
-      "name": "Performance Profiler",
-      "icon": "🤖",
-      "role": "Profile the code execution for performance metrics",
-      "description": "Analyzes the execution to identify bottlenecks and performance issues."
-    },
-    {
-      "agent_id": "agt_49eb00f68baa4b3aa4ed3c90736abf1c",
-      "name": "Code Optimizer",
-      "icon": "🤖",
-      "role": "Optimize the code based on analysis and profiling",
-      "description": "Applies optimizations to improve performance and efficiency."
-    },
-    {
-      "agent_id": "agt_15cc5eae5f664671ab708f88a3849b8f",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_2741062f837946db8f291bf397456d5c",
-      "name": "Code Analyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_44cef4d30a4042f8b791e1db99f02430",
-      "name": "Code Executor",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_211e33446e934228b449b55e118ff137",
-      "name": "Performance Profiler",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_fe495e5bfb55406bb4a8710a5a686e16",
-      "name": "Code Optimizer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_a754cca9573e4498ab7dbf1251c6062c",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agent-4",
-      "name": "test",
-      "icon": "🤖",
-      "role": "test",
-      "description": "test"
-    },
-    {
-      "agent_id": "agent-5",
-      "name": "test231",
-      "icon": "🤖",
-      "role": "test231",
-      "description": "test231"
-    },
-    {
-      "agent_id": "agt_69260d5dd89143cc8a868a6429b123e5",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
-    },
-    {
-      "agent_id": "agt_af37cf9b86b94b13a8e92f318f4b13d3",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
-    },
-    {
-      "agent_id": "agt_56f3219abf284cc0bd39466127ee1521",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
-    },
-    {
-      "agent_id": "agt_750113dd298b4b0e9535fcc00d75b57e",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
-    },
-    {
-      "agent_id": "agt_5c8ba20508444314b8d02c3b191e29aa",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_fc146bc823674aab8242b539bcbef687",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_29998b7c350046e6b7e48fbdd0cb9fe6",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_05c94a285f7542f584c2e32023a42b92",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_0cd7dfa7304d4ec59526f567377cf359",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_4dc525fbd2b844f9858b476657d55df3",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_6ae677206c30488f9bbc05e12367829a",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_39b06bfda53d485884e6aa7279dd6693",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_d21dc2d21dd54f0eb0f9bd1f93656382",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_5d1475f28a06484384c79dc8797277e4",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_7c26a621d42c40b88f7c723dff915804",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_6d41678fa5c149069ccacd4bcf50fbbf",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_dc271bc79fe84439b49efbeacad769b8",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d982a13073ea4dd3802725e258e2ad92",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_13bad322d8ff4803beafa658b3fee53a",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_830e9c64136c4f8b92adccb922adbd4b",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_4a126abd548a4a71aaa34b5ff6e9f9eb",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_f9803c47db034591ad2d1f0e93ad03b4",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_24882d5ca6c54a2294245d4ff36471d9",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "create an agent for stock analyser"
-    },
-    {
-      "agent_id": "agt_7695aa4bdd564853869c8c4f2d666551",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "Create me an agent for stock analysis"
-    },
-    {
-      "agent_id": "agt_e114a165d07e457da5e729acba8f47fc",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "Create me an agent for stock analysis"
-    },
-    {
-      "agent_id": "agt_4ec0956e3a6347a79ae00b8d7e5ad21d",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "create me an agent for stock analysis"
-    },
-    {
-      "agent_id": "agt_d319673412ef417cbf80f93cccbd8432",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "create me an agent for stock analysis"
-    },
-    {
-      "agent_id": "agt_2a232fab131e40a08eb6ab54ef0a55ac",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "Create me an agent that does stock analysis"
-    },
-    {
-      "agent_id": "agt_4f4d435639e046d89de04f93eb94dcc6",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "Create me an agent that does stock analysis"
-    },
-    {
-      "agent_id": "agt_46985c09d59d4b3dbea48949bad0f36f",
-      "name": "Custom Agent",
-      "icon": "🤖",
-      "role": "Processing",
-      "description": "Create me an agent that does stock analysis"
-    },
-    {
-      "agent_id": "agt_1c0a096610d54a5d966a7f43d1c2d943",
-      "name": "StockSage",
-      "icon": "🤖",
-      "role": "StockSage",
-      "description": "The StockSage analyzes market trends and financial data to provide insights for informed investment decisions."
-    },
-    {
-      "agent_id": "agt_2aca97424d6041ef9c953599fe3cb166",
-      "name": "Parser",
-      "icon": "🤖",
-      "role": "Handles parsing code structure",
-      "description": "Extracts basic elements from code snippets"
-    },
-    {
-      "agent_id": "agt_923e561c320f4daf83a576893494e980",
-      "name": "Validator",
-      "icon": "🤖",
-      "role": "Checks for syntax and type correctness",
-      "description": "Validates code against predefined rules"
-    },
-    {
-      "agent_id": "agt_e9fc2cb6bf174dedb4d64d61f3409ea6",
-      "name": "Tester",
-      "icon": "🤖",
-      "role": "Tests functionality and edge cases",
-      "description": "Simulates user interaction"
-    },
-    {
-      "agent_id": "agt_f2c4b60196bd407f97578b130d92c8cd",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_7d4bca39d51b446db7e4a002785974ee",
-      "name": "Parser",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_4f40dfa1f8724ed3b668cabb41142219",
-      "name": "Validator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_f4b77768402548868db56552b43dca41",
-      "name": "Tester",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d22460d2e1b1439fa7f1a61b2191d2e7",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_3f2c573dbb9c496ebd68e36e34182dea",
-      "name": "API Designer",
-      "icon": "🤖",
-      "role": "Handles API specification",
-      "description": "Focuses on defining endpoints and data structures"
-    },
-    {
-      "agent_id": "agt_5277c9c72a614384a8243ad9d4183ab5",
-      "name": "CodeAnalyst",
-      "icon": "🤖",
-      "role": "Analyzes code for syntax and best practices",
-      "description": ""
-    },
-    {
-      "agent_id": "agt_47f8be0c382c444c820dcb79807a647d",
-      "name": "TestEngineer",
-      "icon": "🤖",
-      "role": "Automates unit tests",
-      "description": ""
-    },
-    {
-      "agent_id": "agt_1a4e8ff770964be2968ce4fe766ea010",
-      "name": "Deployer",
-      "icon": "🤖",
-      "role": "Deploys code to production",
-      "description": ""
-    },
-    {
-      "agent_id": "agt_191a4b8d744447919b12e28a2c6eea5f",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_56342a2a7cd948ff99c7b06516fe4422",
-      "name": "CodeAnalyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_1651ff524f1b405fa3443eb0efad9531",
-      "name": "TestEngineer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_80a3d86386d1460cb2c49929f464e5e0",
-      "name": "Deployer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_270eb535f71a4506b4b1f301e13b5e7d",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_f4a330a1f4e544299c6f7f77332f74fd",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_76ee7c0ff4734a809532a6588b07aebf",
-      "name": "CodeAnalyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_934e40331bcd4e77a7b0ca298147fb71",
-      "name": "TestEngineer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_20259a62a3f6494b8e6c031f569e6ae8",
-      "name": "Deployer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_efe001d9da81440391c1b5dcf024b4d0",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_8fceaaebc4e54cad992ec8b7873b95c3",
-      "name": "CodeGeneratorAgent",
-      "icon": "🤖",
-      "role": "Manages workflow execution",
-      "description": "Coordinates design, implementation, and testing of the code generation workflow"
-    },
-    {
-      "agent_id": "agt_a32dfbf3daee4439a2f857b4a66397b5",
-      "name": "Code Generator Agent",
-      "icon": "🤖",
-      "role": "Code Generator",
-      "description": "Responsible for creating Python code from requirements"
-    },
-    {
-      "agent_id": "agt_cacea48fa4dd4a0ea171bda321e7cb6d",
-      "name": "APIDesigner",
-      "icon": "🤖",
-      "role": "Design API structure",
-      "description": "Defines endpoints and requirements"
-    },
-    {
-      "agent_id": "agt_0d896577f4a74a85a55f36f30260f75e",
-      "name": "ImplementationEngine",
-      "icon": "🤖",
-      "role": "Build code",
-      "description": "Translate specifications into Python modules"
-    },
-    {
-      "agent_id": "agt_44f62dd989084b0295db6ff4de236a2a",
-      "name": "TestAutomation",
-      "icon": "🤖",
-      "role": "Validate",
-      "description": "Check for bugs and compliance"
-    },
-    {
-      "agent_id": "agt_b7bceea62b4f46f08f721ef78a8523d2",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_6194927d6afc44d0b655a58163d37641",
-      "name": "APIDesigner",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_b14e5b77737d4022a9de695d4f0efd48",
-      "name": "ImplementationEngine",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_e148a48d9e6a414184f9a850cf452e78",
-      "name": "TestAutomation",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_4434f114d9c14120b86f67ca3059e204",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_acc69d8c8e9c4060adf96acffe8b04c4",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_c1713be3a8dc45fcb5462efbd36a3cdb",
-      "name": "APIDesigner",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d14a678a1be54cacb18aa60fc798b86d",
-      "name": "ImplementationEngine",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d9ff81f870194976816b1f9933feb5fc",
-      "name": "TestAutomation",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_7032fcf0f2804f1f94deaa64bb15d49e",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_22af656c88104fe3b7407ca1f48894c7",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_06e103ac8ace40fe97e58f00f95fc0f9",
-      "name": "APIDesigner",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_83f20b0268ed4771befdfbea7d9ca184",
-      "name": "ImplementationEngine",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_fa08379048854be9a94e6b74d11364f5",
-      "name": "TestAutomation",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d6a768cd6e144a9997b4223780ad51dd",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_b54fc2c0108e4da0b77dc5050a904059",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_9b26821851844d11900abe03cfe55fbf",
-      "name": "APIDesigner",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_e2c3883cda3741c49b407fc59be21934",
-      "name": "ImplementationEngine",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_24f316612e4a4064a3336251c553e8ab",
-      "name": "TestAutomation",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_697c0fb30b294201b07e580c7719dbb9",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_e05c6672761e4474a6785d370a948fac",
-      "name": "Design Agent",
-      "icon": "🤖",
-      "role": "Defines API structure",
-      "description": "Establishes the blueprint for the code generation workflow"
-    },
-    {
-      "agent_id": "agt_41a05c0041ee4207bdfa01fadaa3119d",
-      "name": "Implementation Agent",
-      "icon": "🤖",
-      "role": "Executes core tasks",
-      "description": "Handles the actual code generation process"
-    },
-    {
-      "agent_id": "agt_71fdca131b084854879a0476621c3334",
-      "name": "Test Agent",
-      "icon": "🤖",
-      "role": "Validates functionality",
-      "description": "Performs automated testing of the workflow"
-    },
-    {
-      "agent_id": "agt_dfc07c19154c4c0e849484083d488cb2",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_b6bfbe5a44854fddaf5c107b414d3c0c",
-      "name": "Design Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_40d9da1109174ba7a635c3442549ed9e",
-      "name": "Implementation Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_0f769ff10b454bdd951c699960d6d3be",
-      "name": "Test Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_18af99060bf1449380fafde360eb3f8e",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_183c2bcce4584c33a4c9e2c835c8bcfd",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_8a9c0e43ff054996881c962c63312bb8",
-      "name": "Design Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_306e51aac5a14b5997a2f1c228121989",
-      "name": "Implementation Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_381b4ab8db51467ebb6cdc664ce610f4",
-      "name": "Test Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_5a8fb2746dd540e08c4d862999590e53",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_3bd3eb7a0bf94e71ad5d4c7b07717eee",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
-    },
-    {
-      "agent_id": "agt_22923dffb7e8445db9d2bf292acf72cb",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
-    },
-    {
-      "agent_id": "agt_2677c4bc564f4bdeb5474d745b38ebc8",
-      "name": "Design Agent",
-      "icon": "🤖",
-      "role": "Designing the code structure",
-      "description": "Defines the structure and specifications"
-    },
-    {
-      "agent_id": "agt_0ce99d6abd62445e8b7638cbfbba8ea2",
-      "name": "Implementation Agent",
-      "icon": "🤖",
-      "role": "Translating requirements into code",
-      "description": "Converts specifications into functional code"
-    },
-    {
-      "agent_id": "agt_e4d45ba6781247668d4b970d9c3494f6",
-      "name": "Testing Agent",
-      "icon": "🤖",
-      "role": "Validating functionality",
-      "description": "Checks for bugs and compliance"
-    },
-    {
-      "agent_id": "agt_bd9398f9497b46e5853ebb0eaf211651",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_b2ad1549fd09492a8e5307f02d901c38",
-      "name": "Design Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_7c53ea1b26994e42a5d0a6b1dd139eab",
-      "name": "Implementation Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_5080b90779a44bbf9534ba92331d4c4f",
-      "name": "Testing Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_8b56d82ed27144b2adef100acfa7c0f7",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_fb2d950219fc49deaabf2990f787c0ca",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_4e160b35a8704c02a8c4dcb63f8c3556",
-      "name": "Design Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_8ef508603ab843d38245b974b600801b",
-      "name": "Implementation Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_66f0e2e0215a4214b5310f439d32c497",
-      "name": "Testing Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_6658003208f2458f92e151f8eeb89ddd",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_6497c8906cdf4053ac65081513e5b14b",
-      "name": "Parallel Processor",
-      "icon": "🤖",
-      "role": "Parallel Task Handler",
-      "description": "Executes parallelizable operations independently"
-    },
-    {
-      "agent_id": "agt_ac53901fce8b4d6b8529d29a1354b415",
-      "name": "Sequential Coordinator",
-      "icon": "🤖",
-      "role": "Workflow Manager",
-      "description": "Manages ordered execution flow"
-    },
-    {
-      "agent_id": "agt_85f046df4d72406189c93bc2e299904d",
-      "name": "Integration Hub",
-      "icon": "🤖",
-      "role": "Coordinator",
-      "description": "Aggregates outputs for final synthesis"
-    },
-    {
-      "agent_id": "agt_3df9b0c86dc2417dbf0220cebfe88bdb",
-      "name": "Manager",
-      "icon": "🤖",
-      "role": "Coordinator",
-      "description": "Manages the delegation of tasks based on expertise"
-    },
-    {
-      "agent_id": "agt_69ff4753a7fb455992cb00c89a256123",
-      "name": "Frontend",
-      "icon": "🤖",
-      "role": "Developer",
-      "description": "Focuses on frontend development tasks"
-    },
-    {
-      "agent_id": "agt_e7319fed70654607863aa7ce8f5d3840",
-      "name": "DevOps",
-      "icon": "🤖",
-      "role": "Technical Lead",
-      "description": "Coordinates backend and infrastructure responsibilities"
-    },
-    {
-      "agent_id": "agt_6179553e640b45aa9b45708f04d5d29f",
-      "name": "Data Extractor A",
-      "icon": "🤖",
-      "role": "Data Collection",
-      "description": "Fetches raw data from the primary source"
-    },
-    {
-      "agent_id": "agt_67cebe93cfae45a7a3393639164789a6",
-      "name": "Analyzer B",
-      "icon": "🤖",
-      "role": "Analysis",
-      "description": "Performs quality checks on extracted data"
-    },
-    {
-      "agent_id": "agt_12d2784ed7fb443d9fdfdfaa911dec62",
-      "name": "Integrator C",
-      "icon": "🤖",
-      "role": "Integration",
-      "description": "Merges output from both analysis agents"
-    },
-    {
-      "agent_id": "agt_18e1e25d4fca42679dae0df63b4ce772",
-      "name": "Sequential Controller",
-      "icon": "🤖",
-      "role": "Coordinator",
-      "description": "Manages the order of operations to maintain correct flow"
-    },
-    {
-      "agent_id": "agt_8d7e8d4489a443f5ada18830d273c6b4",
-      "name": "Code Review Agent",
-      "icon": "🤖",
-      "role": "Code Quality Check",
-      "description": "Analyzes code for syntax and logic accuracy"
-    },
-    {
-      "agent_id": "agt_e97bd7686ba44726a93f7fa5b578150a",
-      "name": "Testing Agent",
-      "icon": "🤖",
-      "role": "Automated Testing",
-      "description": "Verifies code reliability under various conditions"
-    },
-    {
-      "agent_id": "agt_b732ee67f6c945feb4464f6a2338ebcd",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_70bb663ca65b4762984229891172e8af",
-      "name": "Code Review Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_2ecbd8546d44479e9d0a4f98cb11d5ba",
-      "name": "Testing Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_b55248cba66645779b376ac891fdae33",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_c069a06bfd3f49cc9f4a1f8b268004fe",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_c9f2e3c0dc884579b4dea4285cbdfcf5",
-      "name": "Code Review Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_054d9774315145259b347031c5bb0dad",
-      "name": "Testing Agent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_8ecbb21ff39a43018764b031504986c2",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_49c341ab6b3b4a86a7314f9357f129fd",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
-    },
-    {
-      "agent_id": "agt_b14b84d377f14a42a5dbdb4f4106c981",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
-    },
-    {
-      "agent_id": "agt_4bbc522a81734d7aadf5ba12605ede47",
-      "name": "API Analyst",
-      "icon": "🤖",
-      "role": "Functional Reviewer",
-      "description": "Conducts detailed analysis of endpoints and responses"
-    },
-    {
-      "agent_id": "agt_f986f22aa38e46998ba0f39a7cacb3de",
-      "name": "Code Reviewer",
-      "icon": "🤖",
-      "role": "Code Reviewer",
-      "description": "Evaluates code quality and security"
-    },
-    {
-      "agent_id": "agt_851c40d425e24de1ae90ebd206dca67b",
-      "name": "Tester",
-      "icon": "🤖",
-      "role": "Tester",
-      "description": "Conducts unit tests and performance checks"
-    },
-    {
-      "agent_id": "agt_917c44b6f5dc422ba7ea11d51e3e2911",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_f41f81bc7ab64153a005a31612e1ce73",
-      "name": "Code Reviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_7c4814460675424a93fdac0afd7d34aa",
-      "name": "Tester",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_8aa2b008a60d4f90b152ab1a23855d78",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_34045792094d4bde9fac3735308429ab",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_99061656008b4413afd88330a88b5ab4",
-      "name": "Code Reviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d3730fd966f64cfbace0a35ed7f58c4c",
-      "name": "Tester",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_adee7b1525b246c79bac66b8ebbe4d1a",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_d60c02650c434fc7b1ac25526e7ca39b",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
-    },
-    {
-      "agent_id": "agt_ad7cc633d37146d38e469bee578bb1db",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
-    },
-    {
-      "agent_id": "agt_27d3f5521b7448c0bf5af50bef059c6d",
-      "name": "Design Architect",
-      "icon": "🤖",
-      "role": "Design Architect",
-      "description": "Responsible for outlining the scope and objectives of the review process"
-    },
-    {
-      "agent_id": "agt_e118c82dd22f4d388c201b6dc244be9a",
-      "name": "Implementation Specialist",
-      "icon": "🤖",
-      "role": "Implementation Specialist",
-      "description": "To translate design into actionable tasks"
-    },
-    {
-      "agent_id": "agt_e46069f3a04e4e69b803be1572cee9ba",
-      "name": "Testing Engineer",
-      "icon": "🤖",
-      "role": "Testing Engineer",
-      "description": "To ensure quality and functionality of the API"
-    },
-    {
-      "agent_id": "agt_8a9784b7db3841ff808dd2e20e6f5c47",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_2923e54971684dfcbcd02094d81099c7",
-      "name": "Design Architect",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_a30212d9780448a9b21debad0c1f2f7e",
-      "name": "Implementation Specialist",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_89f73a3b5aa24ee2bf21358d9ea30cf2",
-      "name": "Testing Engineer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_6e3f920a01474502b1ebf7d584c22fb7",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_fbe3d01765a54ebea50eae5036e4e75c",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_66e687ffe9da45efb3c4b8bea678560e",
-      "name": "Design Architect",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_b2032898b88342cebfc84a4680c6b7c1",
-      "name": "Implementation Specialist",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_5ca34d62ce2a4122ad74813b69f71aec",
-      "name": "Testing Engineer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_336e0b290e6d42e89c4f1e2df584d2c3",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_284ea42a7de04c349c006ff3cf8c5995",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_fa3a0420dc174c58944fa893b5a03055",
-      "name": "Design Architect",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_1004c3c53e824fc2bc86465f16384b65",
-      "name": "Implementation Specialist",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_13451554f0e04f3a879edf3515cbb4a6",
-      "name": "Testing Engineer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_81932b9268b3447f94afa7390b26a8e1",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_54c70adddaa94fcb9be7a754814e94c3",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_c87c2532ea964977b605cf1e13a8fa51",
-      "name": "Design Architect",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_6691340e157d4db59cd0c71708a2d613",
-      "name": "Implementation Specialist",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_7b21d6da45b14e7dabca4def499db4e6",
-      "name": "Testing Engineer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_3cb8145e0942422490802534c880ab9e",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_e6166dac6f3445a5a83580854b6c4971",
-      "name": "CodeReviewer",
-      "icon": "🤖",
-      "role": "Analyst",
-      "description": "Analyzes code snippets for errors and inefficiencies"
-    },
-    {
-      "agent_id": "agt_61ffe1eb158541bba1cc68c9caa30fbe",
-      "name": "AutomatedChecker",
-      "icon": "🤖",
-      "role": "Validator",
-      "description": "Scans code for common security flaws"
-    },
-    {
-      "agent_id": "agt_d0dbc6e152c048aebe667be7dcf66fc9",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_ba96db01f46945138255fc181a939d3e",
-      "name": "CodeReviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_43eb8942399849b4b8a118fb67588d9b",
-      "name": "AutomatedChecker",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_20d1e2746a5849e58b45593719f4ca6f",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_62c0bf5fa2b74a76884825f696b1dee1",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_9a160e4857f64a1aa629e38b9ace4dc6",
-      "name": "CodeReviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_c02354bb20e140ecba3ec66dddc1458d",
-      "name": "AutomatedChecker",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_7d87a9ab25674e038689070b6276bfdf",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_3310e8678af944c3a2305ae9b2a7afcd",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
-    },
-    {
-      "agent_id": "agt_ef7eea255aa94988beb21ce954eb95d2",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
-    },
-    {
-      "agent_id": "agt_279404e3bd1d4dc4ac4b9191c65870f6",
-      "name": "Code Generator",
-      "icon": "🤖",
-      "role": "Generates Python code",
-      "description": "Creates code based on input specifications"
-    },
-    {
-      "agent_id": "agt_65ef5d311cd048ad948b4936eca51c39",
-      "name": "Reviewer",
-      "icon": "🤖",
-      "role": "Validates output",
-      "description": "Ensures compliance with requirements"
-    },
-    {
-      "agent_id": "agt_3e176fec2c354fa2a5e7bee42388b05b",
-      "name": "Tester",
-      "icon": "🤖",
-      "role": "Tests functionality",
-      "description": "Validates code effectiveness"
-    },
-    {
-      "agent_id": "agt_bf876978df6842f994b00d0b354e465f",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_22b069701e714f8f99d2dc39612566b8",
-      "name": "Code Generator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_c918423b9f3e427bad5d50e4f3798bc5",
-      "name": "Reviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_38ea59f3d1164e7786f83567307dabb3",
-      "name": "Tester",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_fd7b6253924e498096f792f297ca09b0",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_539874f28941456c96599275124a52d9",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_eedc5fd9dcc247f09fe2bc6fe67a24b3",
-      "name": "Code Generator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_3a1cd82f4d294f00aa7e38a79e1215a5",
-      "name": "Reviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_9309a77151104d83ab3f40f9e1cfd9ea",
-      "name": "Tester",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_74dbec010133483d8d5c3fcc7115506e",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_dc3d33de54f44ef1bbf7d9f0ac753a7b",
-      "name": "Code Generator",
-      "icon": "🤖",
-      "role": "Code Generator",
-      "description": "Creates API endpoint code"
-    },
-    {
-      "agent_id": "agt_79a0753335c04edabf99d3bca2842041",
-      "name": "Extractor",
-      "icon": "🤖",
-      "role": "Extract data from sources",
-      "description": "Handles parallel extraction of data from multiple sources."
-    },
-    {
-      "agent_id": "agt_69f4e129c5a14a59a8286522bcd6c602",
-      "name": "Transformer",
-      "icon": "🤖",
-      "role": "Process data for analysis",
-      "description": "Converts data into structured formats for further stages."
-    },
-    {
-      "agent_id": "agt_e018155c1f0d48a28e07296aebaa3744",
-      "name": "Loader",
-      "icon": "🤖",
-      "role": "Finalize and load results",
-      "description": "Integrates final results into the database."
-    },
-    {
-      "agent_id": "agt_dd3e24bb601d4a1c975f4aa1b10f0f28",
-      "name": "Design Agent",
-      "icon": "🤖",
-      "role": "Designing the code structure",
-      "description": "Defines the steps for generating Python code"
-    },
-    {
-      "agent_id": "agt_8e896aabe67243e4bc9f77edcb27137b",
-      "name": "Testing Agent",
-      "icon": "🤖",
-      "role": "Validation and testing",
-      "description": "Checks functionality and quality"
-    },
-    {
-      "agent_id": "agt_843f8726c76b43aba580c7cdeb5c4f6b",
-      "name": "Agent 1",
-      "icon": "🤖",
-      "role": "Parallel Analyst",
-      "description": "Handles independent analysis tasks simultaneously"
-    },
-    {
-      "agent_id": "agt_9be35a4ea18b46ed8244c39f9af55189",
-      "name": "Agent 2",
-      "icon": "🤖",
-      "role": "Sequential Coordinator",
-      "description": "Manages task ordering and coordination"
-    },
-    {
-      "agent_id": "agt_5ed9e2cece2c45569441b3d063d221ef",
-      "name": "Agent 3",
-      "icon": "🤖",
-      "role": "Hybrid Integrator",
-      "description": "Combines outputs into final results"
-    },
-    {
-      "agent_id": "agt_e4edcfed505041c493cbd2333d224cdb",
-      "name": "Task Coordinator",
-      "icon": "🤖",
-      "role": "Coordinator",
-      "description": "Manages the sequence of tasks to prevent conflicts"
-    },
-    {
-      "agent_id": "agt_23ea16ce0e5049f29499f6a51b8daeb5",
-      "name": "CodeGenerator",
-      "icon": "🤖",
-      "role": "Code Generator",
-      "description": "Produces Python code based on user specifications"
-    },
-    {
-      "agent_id": "agt_4bbdcf12d6564b108aa7d6f2f6c8c5ff",
-      "name": "Code Generator",
-      "icon": "🤖",
-      "role": "Code Generator",
-      "description": "Produces Python code based on user specifications"
-    },
-    {
-      "agent_id": "agt_088d524066f24bfc8aaf11eea06132ea",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_0073121324e54d6ea6a89545714b560c",
-      "name": "Code Generator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_f34d6281109d470592869de561092e53",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_d80e4d79c00b4338a3d40b7804dad11e",
-      "name": "CodeReviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_a8c63860e4914761bf8f6fccdab0fd16",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_a85179cc1298467089b0d5c18f733517",
-      "name": "Code Generator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_29946b6620164e6d8ed64637572b0064",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_9d008a7994b749f3a83265f3f3a16374",
-      "name": "CodeReviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_b57d9e9bf939470aa327db18b6e7cc6c",
-      "name": "ParsingAgent",
-      "icon": "🤖",
-      "role": "Parse input code",
-      "description": "Extracts and processes input data from user"
-    },
-    {
-      "agent_id": "agt_e5b55be246f24942b9a3f48859b83707",
-      "name": "ValidationAgent",
-      "icon": "🤖",
-      "role": "Ensure code compliance",
-      "description": "Checks code for syntax and requirements"
-    },
-    {
-      "agent_id": "agt_a394e4747d88478c878c2d24acd3f8cb",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_f08da74bac314d3ca17a6f6873679e63",
-      "name": "ParsingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_2f745b2c8cc3492e9619764dc3f955fc",
-      "name": "ValidationAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_c17dca15bd034abf90f63c3ea8dfeab8",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_69976c6b1e114875a0b8db0d309c1bfb",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_94c5efb6edcf4c00bec9a63245f3cbd9",
-      "name": "ParsingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_447d062c37cb4d95b0663622cbebabd5",
-      "name": "ValidationAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_f0f9f25f880946218b948be305607ff8",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_5aebe479e5f04e6ca418a05787bb3dbf",
-      "name": "Analyzer1",
-      "icon": "🤖",
-      "role": "Code Analysis",
-      "description": "Assesses code quality and performance"
-    },
-    {
-      "agent_id": "agt_ed82f4ee5efd4cebbca43cc68ed533d9",
-      "name": "Analyzer2",
-      "icon": "🤖",
-      "role": "Performance Testing",
-      "description": "Tests system under load"
-    },
-    {
-      "agent_id": "agt_6c8269abd025434f8ce39a2d25de5937",
-      "name": "Analyzer3",
-      "icon": "🤖",
-      "role": "Deployment Validation",
-      "description": "Verifies deployment success"
-    },
-    {
-      "agent_id": "agt_47bc84afc5ae4898a0630651dccb1e16",
-      "name": "Extractor",
-      "icon": "🤖",
-      "role": "Extractor",
-      "description": "Extracts data from 3 sources"
-    },
-    {
-      "agent_id": "agt_2b1a1157623e473096b00225f130af5e",
-      "name": "Transformer",
-      "icon": "🤖",
-      "role": "Transformer",
-      "description": "Processes data for transformation"
-    },
-    {
-      "agent_id": "agt_8b6bd692808143ca87f65f5397a9e0cd",
-      "name": "Loader",
-      "icon": "🤖",
-      "role": "Loader",
-      "description": "Finalizes data loading"
-    },
-    {
-      "agent_id": "agt_b47d6cc1c4ea492bbc47294def8efc5e",
-      "name": "Code Reviewer",
-      "icon": "🤖",
-      "role": "Code Reviewer",
-      "description": "Analyzes code for syntax and best practices"
-    },
-    {
-      "agent_id": "agt_5c07a70f669a4e89ab351fbea006a2ca",
-      "name": "Deployment Team",
-      "icon": "🤖",
-      "role": "Deployer",
-      "description": "Handles deployment and testing"
-    },
-    {
-      "agent_id": "agt_e8eaceb6045a4c2daf4afc0ae66e6955",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_e10dbb1656a149859e11dedfa056b848",
-      "name": "Code Reviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_24c97373834d49d9a513eda580091c07",
-      "name": "Deployment Team",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_ab0a91c419f64d6c9db64fdfe6c2a971",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_04cae78de32946899c99f2e95868b2b8",
-      "name": "Code Analyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_132daff801504e079a5ab2e7354b8a39",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_bda9787eaf264168b45fb3890897d55c",
-      "name": "Code Reviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_43e4f1f4af8a40b09d666af5b14056f6",
-      "name": "Deployment Team",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_a55b092d536f4e6d94639603391b7ab1",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_e19e529984fe4189a115b254ff860072",
-      "name": "Code Analyzer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_8526fe9e8aa24d4b9c6bd0ddd5377bb3",
-      "name": "ParsingAgent",
-      "icon": "🤖",
-      "role": "Parses input requirements",
-      "description": "Analyzes user input to define scope and constraints"
-    },
-    {
-      "agent_id": "agt_7a750bbf5a0547809cb2efa4a5749208",
-      "name": "TestingAgent",
-      "icon": "🤖",
-      "role": "Validates functionality",
-      "description": "Checks code for compliance and quality"
-    },
-    {
-      "agent_id": "agt_a53d1cdf33ea448ab2b51b7cbf030baa",
-      "name": "WriterAgent",
-      "icon": "🤖",
-      "role": "Generates code",
-      "description": "Translates parsed data into executable code"
-    },
-    {
-      "agent_id": "agt_676834f2350a40b991338b9c00a042ea",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_884c553a8c3844a68d281ed314ab3006",
-      "name": "ParsingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_17d32ed83c5e49b58bb0716c4d0683e5",
-      "name": "TestingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_8b8b398544b844438ee764414754957d",
-      "name": "WriterAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_911dde7d2e9f44e08745020c3aaaec3a",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_5d165afb872547f882d89ad7224e6751",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_52ffa45be7c64413bb4d543b76088bd3",
-      "name": "ParsingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_a2180511b5fe4d76803dd563313d2a1d",
-      "name": "TestingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d7af300a3e5c4872996d535dd4faae77",
-      "name": "WriterAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_cd0a0725a49c4322a7e8d9eabba4a45d",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_01af53a4fca74e35af49b29a38a10f88",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_d54a84616d914f0e8bb5849bee9c1f25",
-      "name": "ParsingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_e1dd92bcddc34e26b564a3c12c58a88e",
-      "name": "TestingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_dbeb5c659f174d2581aef26ea446dfc1",
-      "name": "WriterAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_64d77a9e28504c998f8df58769929ece",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_b93a4bf5d63b4d879e2b9be3d215994f",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_e2f0bb2c01894216a61aca7882f8006d",
-      "name": "ParsingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_21abb5a26d314d29819effa5e9574706",
-      "name": "TestingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_b376d46e48f04bd19dc0bb2b3d1654e4",
-      "name": "WriterAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d5dbbedddf1f410094fd29259923f239",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_de8cf8d774234a2b81914e9599062508",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_eeb3b9695ac347f89c4081dba6fabd42",
-      "name": "ParsingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_83ca9276001349c38a37cbea3606849e",
-      "name": "TestingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_56a2784c09fc46b9b2b03643f228c72e",
-      "name": "WriterAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_06c9ceb164754ad9aca888e74d481cd1",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_ed0c8f0771244c17b66971971a29c11b",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
-    },
-    {
-      "agent_id": "agt_7b144784181a4264a3d0d9840218beb9",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
-    },
-    {
-      "agent_id": "agt_f2f85257578d44b593d3c40878597102",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
-    },
-    {
-      "agent_id": "agt_a84ba56ac84d4b6eb470580ae3c76be2",
-      "name": "Synthesizer",
-      "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
-    },
-    {
-      "agent_id": "agt_730a506a32e847a6833eb738e4ad7a9c",
-      "name": "Market Research Analyst",
-      "icon": "🤖",
-      "role": "Evaluates market demand",
-      "description": "Analyzes market data and trends"
-    },
-    {
-      "agent_id": "agt_984151c4558f4f408a3c445ce0d23c56",
-      "name": "Technical Feasibility Analyst",
-      "icon": "🤖",
-      "role": "Assesses technical requirements",
-      "description": "Evaluates technical constraints and compatibility"
-    },
-    {
-      "agent_id": "agt_f8db106bc83a453dbc426cc092d1faa3",
-      "name": "Financial Analyst",
-      "icon": "🤖",
-      "role": "Estimates costs and revenue",
-      "description": "Analyzes financial aspects and budgeting"
-    },
-    {
-      "agent_id": "agt_823015d1f8e443a5893d405112517cca",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_0dd5dc57590147d18f27c9a51c94f871",
-      "name": "Market Research Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_5bee2c34329c4264b0b5ed10a86adde3",
-      "name": "Technical Feasibility Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_76a12094924842e4a3d61099eb693593",
-      "name": "Financial Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_c172480a29194cb2b979a059a878986c",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_323708b8d3454373b0089df5bb29399f",
-      "name": "Market Research Analyst",
-      "icon": "🤖",
-      "role": "Evaluates market demand",
-      "description": "Assesses customer behavior and demand trends"
-    },
-    {
-      "agent_id": "agt_49b274fff9f846a8b1e53892c75fc605",
-      "name": "Technical Feasibility Analyst",
-      "icon": "🤖",
-      "role": "Assesses technical implementation",
-      "description": "Examines system constraints and requirements"
-    },
-    {
-      "agent_id": "agt_f4238b32ba89428abb798bf5e7ed9aa4",
-      "name": "Financial Analyst",
-      "icon": "🤖",
-      "role": "Estimates financial aspects",
-      "description": "Analyzes budget and profitability"
-    },
-    {
-      "agent_id": "agt_90d6456a10474be9abc28ab8bd42554a",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_f324ca8681334bc2a1a22c245b147e3e",
-      "name": "Market Research Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d30a469d53924a789f901fb6d3772922",
-      "name": "Technical Feasibility Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_f735ae74e5af41feb930d0f5430034a9",
-      "name": "Financial Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_f8a60b0aa11045fdbfd45383db7de5d8",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_b2941ac8a85e416698d5adf8b44fd788",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_e088cb3d784c42afb57930b7e6985238",
-      "name": "Market Research Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_2961c513d9bc4c8ca92f0853a981b620",
-      "name": "Technical Feasibility Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_c444e2f82ce148f69d8b621bd3836e71",
-      "name": "Financial Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_2bcb5171bcde4dc993782564e440a6fc",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_092f36652de04ed98be5c1243642645d",
-      "name": "CodeSentinel",
-      "icon": "🤖",
-      "role": "Senior Code Reviewer",
-      "description": "Provides rigorous analysis of code for quality, efficiency, and compliance."
-    },
-    {
-      "agent_id": "agt_9011108449df430985018de1527827c2",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_8f0e093b2b5a478abff0edfdc56ffc6e",
-      "name": "ParsingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_feca5916d8a7469f9fe45481d75116fd",
-      "name": "TestingAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_8a0d50309d34480792ca8395e93eda99",
-      "name": "WriterAgent",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_9446d5f99c114297ba07a2c07f70a872",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_b6edb2d06bf346fcabf6cb214d76a0e4",
-      "name": "Reviewer A",
-      "icon": "🤖",
-      "role": "Primary Reviewer",
-      "description": "Analyzes code for bugs and compliance"
-    },
-    {
-      "agent_id": "agt_2381844efbe8468f8f23b5e0336e0245",
-      "name": "Reviewer B",
-      "icon": "🤖",
-      "role": "Secondary Reviewer",
-      "description": "Identifies vulnerabilities"
-    },
-    {
-      "agent_id": "agt_74141bf7a98b4ba7b6200359c39c090a",
-      "name": "Reviewer A",
-      "icon": "🤖",
-      "role": "Primary Reviewer",
-      "description": "Performs in-depth review of code quality and compliance"
-    },
-    {
-      "agent_id": "agt_4481b579c9da4d2b846b368a88b1c996",
-      "name": "Automation Tester",
-      "icon": "🤖",
-      "role": "Automated Checker",
-      "description": "Executes automated tests and identifies potential issues"
-    },
-    {
-      "agent_id": "agt_e13c6ea4b87c4a40823ea7d7a9940a8b",
-      "name": "Code Reviewer 1",
-      "icon": "🤖",
-      "role": "Reviewer",
-      "description": "Assesses code quality, identifies issues, and provides feedback"
-    },
-    {
-      "agent_id": "agt_8536876c644045b4b68df0f57ac13567",
-      "name": "Security Analyst",
-      "icon": "🤖",
-      "role": "Identifies vulnerabilities",
-      "description": "Examines code for vulnerabilities"
-    },
-    {
-      "agent_id": "agt_bf2673f721e74609867866df3cd1cd92",
-      "name": "Code Reviewer",
-      "icon": "🤖",
-      "role": "Provides feedback",
-      "description": "Evaluates code quality"
-    },
-    {
-      "agent_id": "agt_1fae12b9e44248b7acdc453af7f9abf0",
-      "name": "Coordinator",
-      "icon": "🤖",
-      "role": "Manages workflow",
-      "description": "Coordinates parallel and sequential steps"
-    },
-    {
-      "agent_id": "agt_2720a4d7fc0f4f768da2d64aa3c64fa3",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_01a8c0391bf34f308a1c2c240d6b8f07",
-      "name": "Security Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_1285fb8d490d4c08817ce5daeaeabde6",
-      "name": "Code Reviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_da73be5d3dd24b719dc2b917c99b8d59",
-      "name": "Coordinator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_a5f2bb053f61452a921eece126f8ed3f",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_5e3e95a63d334abf9680914ca78ff2ad",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_47c0f7942826497e8aea8d6eb12cd511",
-      "name": "Security Analyst",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_3af3091011fd4ffb8f79d5d32dfb9048",
-      "name": "Code Reviewer",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_61053b34275d4fd69d77224a1aa5ac7d",
-      "name": "Coordinator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_9c26ea43368040c5ab10c36bef38f396",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_e0701b156c7b48b7a42dca43fbe2b23e",
-      "name": "Code Reviewer 1",
-      "icon": "🤖",
-      "role": "Code Reviewer",
-      "description": "Performs initial checks on the submitted code"
-    },
-    {
-      "agent_id": "agt_e1d7df8711404efa83140e6928bccdd5",
-      "name": "Reviewer 2",
-      "icon": "🤖",
-      "role": "Peer Reviewer",
-      "description": "Conducts a detailed review of the same or similar code"
-    },
-    {
-      "agent_id": "agt_891b9a3ef9984206beab1d856d1b7aa2",
-      "name": "Quality Assurance",
-      "icon": "🤖",
-      "role": "Quality Assurer",
-      "description": "Performs automated checks and final validation"
-    },
-    {
-      "agent_id": "agt_5255987a44a94935928733d5d536d1c5",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
-    },
-    {
-      "agent_id": "agt_fc0388fd14d348d5909ba19ba41329e4",
-      "name": "Code Reviewer 1",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d306f5a210994e89a33dd23493e4f8bc",
-      "name": "Reviewer 2",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_92c0beac47e64a1c9c7fbf9bf3aa1048",
-      "name": "Quality Assurance",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_60045e2b30ca473b99694a0475b0147b",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_cad1305d0c264889bf5aeb190581b1d8",
-      "name": "Workflow Start",
-      "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
     },
     {
-      "agent_id": "agt_2a982e0a1e044bb7b63899c838a0b313",
-      "name": "Code Reviewer 1",
+      "agent_id": "agt_38100a9a4cbc4b7886251051ab39562d",
+      "name": "Document Classifier",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_9f79accebd0b42709a0e31a00b3ed7af",
-      "name": "Reviewer 2",
+      "agent_id": "agt_ef52b6b5c1914144859b98862f30e718",
+      "name": "Financial Analysis",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_f161f114939748debf4a4e658b08bf8d",
-      "name": "Quality Assurance",
+      "agent_id": "agt_bf3b7f110d704ab39ba4706e490bf320",
+      "name": "Legal Risk Analysis",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_1b69e6984a0948e2bdcf0ddd70a11c15",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_bff49bcc5392435aa3446f8f668320a5",
-      "name": "Analyzer",
-      "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
     },
     {
-      "agent_id": "agt_66da2a72edd64d628b26937ce54f0a60",
-      "name": "Synthesizer",
+      "agent_id": "agt_1641e95d64a647f1bfd415d1ea88c601",
+      "name": "Operational Assessment",
       "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_1998fe63531f424fa6b0d8b5f13334d6",
-      "name": "Analyzer",
+      "agent_id": "agt_ce853875564945fca13bd6cdd7bbff86",
+      "name": "Consolidate Findings",
       "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
+      "role": "Branch merging",
+      "description": "Merge node"
     },
     {
-      "agent_id": "agt_3d2b71bf485f4e2f9c5d619236045027",
-      "name": "Synthesizer",
+      "agent_id": "agt_beb94444aef546fc8cd79ec54cb5c5fb",
+      "name": "Risk Scoring Engine",
       "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_0a56226cc1c84d5eadacb3edd48158f9",
-      "name": "CodeSubmitter",
+      "agent_id": "agt_16e383b744384261a352dcf442e81139",
+      "name": "Risk Assessment Gate",
       "icon": "🤖",
-      "role": "Code Submission Agent",
-      "description": "Accepts code submissions and ensures they meet basic requirements before passing to the next agent"
+      "role": "Conditional branching",
+      "description": "Conditional node"
     },
     {
-      "agent_id": "agt_1301b35ecc294ddbb3c981c1a5489202",
-      "name": "SyntaxValidator",
+      "agent_id": "agt_9232a0eb7e2d48739212122fc894bf85",
+      "name": "Partner Escalation",
       "icon": "🤖",
-      "role": "Syntax Validation Agent",
-      "description": "Checks submitted code for syntax errors and returns results"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_825ab0943ab244f2b82ce15f8c242d33",
-      "name": "SecurityAnalyzer",
+      "agent_id": "agt_d95be020d5524ebf84c6d97a912ab17c",
+      "name": "Senior Manager Review",
       "icon": "🤖",
-      "role": "Security Analysis Agent",
-      "description": "Scans code for potential security issues and provides findings"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_f359187734d041a58fb01939ed98c2e0",
-      "name": "CodeQualityAssessor",
+      "agent_id": "agt_10447f1add484793a4f07085cae34ed5",
+      "name": "Report Generator",
       "icon": "🤖",
-      "role": "Code Quality Analysis Agent",
-      "description": "Assesses code quality based on best practices and returns suggestions"
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_c155ef92e90c4fcb93c4eb2249f2e3c0",
-      "name": "ReviewSynthesizer",
+      "agent_id": "agt_8bdbf21a97ce441a9210cab983e0bef1",
+      "name": "Deliver to Client Portal",
       "icon": "🤖",
-      "role": "Review Synthesis Agent",
-      "description": "Merges syntax, security, and quality analysis results into a comprehensive review"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_abf70c44311d474a98af71cccdfa31e0",
-      "name": "ReportGenerator",
+      "agent_id": "agt_75bbd32aca8541c48c5631e41093fa5d",
+      "name": "DD Complete",
       "icon": "🤖",
-      "role": "Report Generation Agent",
-      "description": "Creates a detailed report based on the synthesis agent's output, including suggestions and overall assessment"
+      "role": "Workflow exit point",
+      "description": "End node"
     },
     {
-      "agent_id": "agt_6f2d6d6832c44399ae24f570e128fca8",
-      "name": "Workflow Start",
+      "agent_id": "agt_e4e40c75f4db47cf8449e06947c35bd7",
+      "name": "DD Request Received",
       "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
-    },
-    {
-      "agent_id": "agt_479dabbc2ca74036a675a41716715025",
-      "name": "CodeSubmitter",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_d76b3e08c45448e2b778d8300ccdf1ac",
-      "name": "SyntaxValidator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
     },
     {
-      "agent_id": "agt_5120c6a088784069801886e233d1c0c7",
-      "name": "SecurityAnalyzer",
+      "agent_id": "agt_9b33d9580c8b4c91ba582fc1df7d596c",
+      "name": "Document Classifier",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_837ad4c9906d4ac79042c42f6fe6379b",
-      "name": "CodeQualityAssessor",
+      "agent_id": "agt_b2b4635a743c4f9a9893c75f78afe06b",
+      "name": "Financial Analysis",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_325b97edbfcb42ceb5be1a44af282a86",
-      "name": "ReviewSynthesizer",
+      "agent_id": "agt_04cdd4b2c0634974af444d3061f0e750",
+      "name": "Legal Risk Analysis",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_053a53dbbd24441c9110bad4a0e04c7a",
-      "name": "ReportGenerator",
+      "agent_id": "agt_f79613177aee4945ba57c1853550d1ec",
+      "name": "Operational Assessment",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_f7c157626e6b4b20b23c4038bb3d981e",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
     },
     {
-      "agent_id": "agt_e3c541e18c2f452695d468aeeaf900f7",
-      "name": "Workflow Start",
+      "agent_id": "agt_b90fc148c45d4e2992947c06faba5b86",
+      "name": "Consolidate Findings",
       "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
+      "role": "Branch merging",
+      "description": "Merge node"
     },
     {
-      "agent_id": "agt_2059a7fd596c4672adc8bbdfcb62c540",
-      "name": "CodeSubmitter",
+      "agent_id": "agt_899a6d7dab784b40a14717e5ca3a28fe",
+      "name": "Risk Scoring Engine",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_5ba1766f79c7462d8f7f6e33d09fbd6c",
-      "name": "SyntaxValidator",
+      "agent_id": "agt_f7dc8e06897c4841b3de374a5fe186c6",
+      "name": "Risk Assessment Gate",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Conditional branching",
+      "description": "Conditional node"
     },
     {
-      "agent_id": "agt_788a668524a14adf86eae382537453e8",
-      "name": "SecurityAnalyzer",
+      "agent_id": "agt_d8d7dbceeee8405bb9293644d251bfb2",
+      "name": "Partner Escalation",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_9c7dfc12fc1a4f9c87f724f691259ddb",
-      "name": "CodeQualityAssessor",
+      "agent_id": "agt_5f57378a10244d1e880ede0ac7029c0b",
+      "name": "Senior Manager Review",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_3738e2b85dba40cea79a61e4e95e95a5",
-      "name": "ReviewSynthesizer",
+      "agent_id": "agt_80ab23a4262f4d91aa9eab28fc08ac3b",
+      "name": "Report Generator",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_63c45e00092c4e21823afd34cbbacf51",
-      "name": "ReportGenerator",
+      "agent_id": "agt_93f8698e112043319cd60d4efdbeead3",
+      "name": "Deliver to Client Portal",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_e89deb0666f942e8bf1022c3444d4cc2",
-      "name": "Workflow End",
+      "agent_id": "agt_0f37a6dbe4484058bc41e8f3e05801ae",
+      "name": "DD Complete",
       "icon": "🤖",
       "role": "Workflow exit point",
       "description": "End node"
     },
     {
-      "agent_id": "agt_d4f23d5a8f4d4a0dae0575eb7d3587c3",
-      "name": "Workflow Start",
+      "agent_id": "agt_492b727335044bdb9bff7b8244d6570e",
+      "name": "DD Request Received",
       "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
-    },
-    {
-      "agent_id": "agt_dda0c1841e7845cc87fae0328e905c0a",
-      "name": "CodeSubmitter",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_e31092490df0450aae817ea338c6cb44",
-      "name": "SyntaxValidator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
     },
     {
-      "agent_id": "agt_913a0b45b87649d3b3c81330b390788f",
-      "name": "SecurityAnalyzer",
+      "agent_id": "agt_7926ad6a8e7b44b7b5070761819fb774",
+      "name": "Document Classifier",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_4c1f563d7109424f9535acd7354a8661",
-      "name": "CodeQualityAssessor",
+      "agent_id": "agt_7efdf011e69648f2963a02bb5339e7b1",
+      "name": "Financial Analysis",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_98172b1247ff457796153c4c6747cb7c",
-      "name": "ReviewSynthesizer",
+      "agent_id": "agt_ec8315d98a1e494dad15879480ae2555",
+      "name": "Legal Risk Analysis",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_f5612a8922ea47d383d8d1cb1f3346be",
-      "name": "ReportGenerator",
+      "agent_id": "agt_c5af5443c92942c3a0589e804d36309e",
+      "name": "Operational Assessment",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_c9a4f28ab7dc44d2b21ce312be82278d",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
     },
     {
-      "agent_id": "agt_320c22ab194146df997cec87ca9a4e5d",
-      "name": "Workflow Start",
+      "agent_id": "agt_637fc8337be141b399f86e93021e9847",
+      "name": "Consolidate Findings",
       "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
+      "role": "Branch merging",
+      "description": "Merge node"
     },
     {
-      "agent_id": "agt_40e02f7588554671939fa72cdf5d863e",
-      "name": "CodeSubmitter",
+      "agent_id": "agt_5d1f4d08855e4674aecf4d35b3cdb36d",
+      "name": "Risk Scoring Engine",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_a06015830c024c86bc01c904c35a60c2",
-      "name": "SyntaxValidator",
+      "agent_id": "agt_f83ff87c266c42a1a78445bfc970bb3d",
+      "name": "Risk Assessment Gate",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Conditional branching",
+      "description": "Conditional node"
     },
     {
-      "agent_id": "agt_5e4825c8d2384d9eb7d90af4f09f4212",
-      "name": "SecurityAnalyzer",
+      "agent_id": "agt_6c61be7ad64143b796268b57a9f7ad65",
+      "name": "Partner Escalation",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_c272e57d7ee84f1aa88518f070e4cc84",
-      "name": "CodeQualityAssessor",
+      "agent_id": "agt_f9e294ce679b4a318393b00ed8a44e31",
+      "name": "Senior Manager Review",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_f12f180ba2004ecca4f3c5c9400d0c46",
-      "name": "ReviewSynthesizer",
+      "agent_id": "agt_b8ae3f6f26fa454f99c9cda112dd64af",
+      "name": "Report Generator",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_3e90ac1212e8424e88e9213e6be8aff3",
-      "name": "ReportGenerator",
+      "agent_id": "agt_911666371e4549de892cf330d07e26fe",
+      "name": "Deliver to Client Portal",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_edcd86c66ae540e7a2ec5035928cc456",
-      "name": "Workflow End",
+      "agent_id": "agt_65a5326000f54c93a9df1de87bb9c67b",
+      "name": "DD Complete",
       "icon": "🤖",
       "role": "Workflow exit point",
       "description": "End node"
     },
     {
-      "agent_id": "agt_9938ae54d62344a6a8e7f141d8282278",
-      "name": "Workflow Start",
+      "agent_id": "agt_d0541f764cd94d48b2f895082a3899db",
+      "name": "RFP Received",
       "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
     },
     {
-      "agent_id": "agt_c2cd1a90518f4be1ae0988239e68700c",
-      "name": "CodeSubmitter",
+      "agent_id": "agt_93d489831bb94ec8acac14d7d0b022bb",
+      "name": "RFP Analyzer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_4e533951cd7449699dded52a2f833c7d",
-      "name": "SyntaxValidator",
+      "agent_id": "agt_30723eaf931b4a859b171811d4c83d26",
+      "name": "Win Probability Scorer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_7f352014a164404e9b21adb02b6c346b",
-      "name": "SecurityAnalyzer",
+      "agent_id": "agt_a3fe230d5eec4ed9831e407702518a4b",
+      "name": "Pursue Opportunity?",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Conditional branching",
+      "description": "Conditional node"
     },
     {
-      "agent_id": "agt_193f8f1a10ef42e086f2fee875646053",
-      "name": "CodeQualityAssessor",
+      "agent_id": "agt_3e4e02e774cf447bbb3f0b11a7280221",
+      "name": "Decline & Notify",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_c005f07b2bd84c1fbe35c4f019d6e5ca",
-      "name": "ReviewSynthesizer",
+      "agent_id": "agt_a23c127cdd3f417cb3fe334b692fc99e",
+      "name": "Solution Designer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_5d0a8f954459418283207284945a23e6",
-      "name": "ReportGenerator",
+      "agent_id": "agt_c89311d01b9441feaeb98abd8eb5b2d2",
+      "name": "Query Historical Projects",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_475d31f8209b4fcbb4e7c75b668acde4",
-      "name": "Workflow End",
+      "agent_id": "agt_836758b5f34d46a98125ccbc6e91adcc",
+      "name": "Pricing Calculator",
       "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
+      "role": "Code execution",
+      "description": "Code node"
     },
     {
-      "agent_id": "agt_4aa9053406f1489fa684d81b4807c1d0",
-      "name": "Code Submission Agent",
+      "agent_id": "agt_d14ece449aab4b6894823be67af3502a",
+      "name": "Proposal Writer",
       "icon": "🤖",
-      "role": "Receives and validates code submissions",
-      "description": "Accepts code, checks for basic formatting, and ensures required files are present"
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_5ae56d55124949f0a7dfac4351b5dbd9",
-      "name": "Syntax Validator",
+      "agent_id": "agt_6a2bebfdc781413e83ce5be8888e1ce4",
+      "name": "Compliance Check",
       "icon": "🤖",
-      "role": "Validates code syntax",
-      "description": "Analyzes the code for syntax errors and ensures it follows the required formatting standards"
+      "role": "Quality validation",
+      "description": "Self-Review node"
     },
     {
-      "agent_id": "agt_5b05263953a641eaa7c776d103756c74",
-      "name": "Security Vulnerability Scanner",
+      "agent_id": "agt_cf0d8d13860e40318f57f185f6f4d787",
+      "name": "Partner Final Review",
       "icon": "🤖",
-      "role": "Identifies security vulnerabilities",
-      "description": "Analyzes the code for known security vulnerabilities and suggests mitigations"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_1a193285e9834933aaedc0e2fcad9d40",
-      "name": "Code Quality Analyzer",
+      "agent_id": "agt_c3c36b8c1b0447f6b8b16a280396d308",
+      "name": "Submit Proposal",
       "icon": "🤖",
-      "role": "Evaluates code quality",
-      "description": "Analyzes the code for readability, maintainability, and adherence to best practices, providing suggestions for improvement"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_890db44cf4604e5e96d1ff9050ffdb34",
-      "name": "Review Report Generator",
+      "agent_id": "agt_6a226ab3804d498797c278d512c463c9",
+      "name": "Proposal Submitted",
       "icon": "🤖",
-      "role": "Generates a detailed review report",
-      "description": "Aggregates the results from the syntax validator, security scanner, and quality analyzer to produce a detailed review report with suggestions for improvement"
+      "role": "Workflow exit point",
+      "description": "End node"
     },
     {
-      "agent_id": "agt_b95e164d893d404b972c013d7c90cb8f",
-      "name": "Workflow Start",
+      "agent_id": "agt_8acc3492fc3540b599db9ef255ece085",
+      "name": "RFP Received",
       "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
     },
     {
-      "agent_id": "agt_d15e5bff115f40e2863cf5f467da4911",
-      "name": "Code Submission Agent",
+      "agent_id": "agt_c0df1dfd52d84c6c8ef49c057801b13f",
+      "name": "RFP Analyzer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_f29b3e5f73224c319743b975020c5ae9",
-      "name": "Syntax Validator",
+      "agent_id": "agt_d60093ce373d4533b2a62f6e27b5079d",
+      "name": "Win Probability Scorer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_fb82fa094da2430b96cb0e9df0c80117",
-      "name": "Security Vulnerability Scanner",
+      "agent_id": "agt_4df997771e454260b604b8c462e6f076",
+      "name": "Pursue Opportunity?",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Conditional branching",
+      "description": "Conditional node"
     },
     {
-      "agent_id": "agt_3acc4362da0d40babdc782b67a98b70f",
-      "name": "Code Quality Analyzer",
+      "agent_id": "agt_40e7419fe4a74ffb9f383f935f236864",
+      "name": "Decline & Notify",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_bdff68af0c4d4051977888209dc13ae6",
-      "name": "Review Report Generator",
+      "agent_id": "agt_f2a26d19a9b847cab207df45e0ddfa93",
+      "name": "Solution Designer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_a36821c2cca14a138e645656985d2d30",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
     },
     {
-      "agent_id": "agt_892efb6a521142b990502a2024e17ff8",
-      "name": "Workflow Start",
+      "agent_id": "agt_f88d858b471d44c198073ff27ed0a2cf",
+      "name": "Query Historical Projects",
       "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_c0d21099ba3e4e1db8e06a56307529e0",
-      "name": "Code Submission Agent",
+      "agent_id": "agt_6cd6010fab494d3f908860c4b434378a",
+      "name": "Pricing Calculator",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Code execution",
+      "description": "Code node"
     },
     {
-      "agent_id": "agt_976f17b445454d3ea594780f3ac1ffed",
-      "name": "Syntax Validator",
+      "agent_id": "agt_4685c835476041b4875940c76aaec235",
+      "name": "Proposal Writer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_7c28e8a04c544292bc654345996d1af8",
-      "name": "Security Vulnerability Scanner",
+      "agent_id": "agt_46c74d04f4d5403aabc894a123a6a6bc",
+      "name": "Compliance Check",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Quality validation",
+      "description": "Self-Review node"
     },
     {
-      "agent_id": "agt_11a4ad0bdb074495afb5560314dc07de",
-      "name": "Code Quality Analyzer",
+      "agent_id": "agt_a03ec53df70b4eabb28addbf65c6f6c5",
+      "name": "Partner Final Review",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_72ba7b135cf841d391f86ec937694d56",
-      "name": "Review Report Generator",
+      "agent_id": "agt_05ae803933f0473884be49780187737c",
+      "name": "Submit Proposal",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_4a983c2800ed4212b7addb4a2dd426fe",
-      "name": "Workflow End",
+      "agent_id": "agt_2926dba6845843e09afd2396ffe67c2f",
+      "name": "Proposal Submitted",
       "icon": "🤖",
       "role": "Workflow exit point",
       "description": "End node"
-    },
-    {
-      "agent_id": "agt_b3a3662779f244289baf8bffb76d5da7",
-      "name": "CodeReceiver",
-      "icon": "🤖",
-      "role": "Code Submission Handler",
-      "description": "Accepts code submissions and extracts relevant metadata (author, timestamp, file paths)."
     },
     {
-      "agent_id": "agt_3933fa2e0b6948c095ef61b2a837d8ea",
-      "name": "SyntaxValidator",
+      "agent_id": "agt_7bee3a89141b4019a21aed52e7635f22",
+      "name": "RFP Received",
       "icon": "🤖",
-      "role": "Syntax Checker",
-      "description": "Checks submitted code for syntax errors and returns a report."
-    },
-    {
-      "agent_id": "agt_2a1c1ec304a940ccafac33d34bb5ef73",
-      "name": "SecurityAnalyzer",
-      "icon": "🤖",
-      "role": "Security Vulnerability Checker",
-      "description": "Scans code for common security issues and returns a report."
-    },
-    {
-      "agent_id": "agt_16b4d42c363541a6b5c8c3bde822b824",
-      "name": "CodeQualityAssessor",
-      "icon": "🤖",
-      "role": "Code Quality Evaluator",
-      "description": "Assesses code quality based on best practices and returns a report."
-    },
-    {
-      "agent_id": "agt_13737b6772fc4dcd9c0ab418717c393e",
-      "name": "ReportGenerator",
-      "icon": "🤖",
-      "role": "Review Report Creator",
-      "description": "Merges results from all analysis agents and generates a detailed review report with suggestions."
-    },
-    {
-      "agent_id": "agt_a8387887a02740dbb32ff7962e4e153c",
-      "name": "Workflow Start",
-      "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
     },
     {
-      "agent_id": "agt_a3e38438681542e68c029d45c009c293",
-      "name": "CodeReceiver",
+      "agent_id": "agt_8dbd6e5286af4cf6b20325ffb6fd3d46",
+      "name": "RFP Analyzer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_a784c1e868d047049c5447465a42c524",
-      "name": "SyntaxValidator",
+      "agent_id": "agt_00e8b8b7810148eba92b34882de4ce50",
+      "name": "Win Probability Scorer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_56d421b7d8b54ce2978fe843ee359a7b",
-      "name": "SecurityAnalyzer",
+      "agent_id": "agt_4d54cb02e11b4ba7ba39efa03ecc6692",
+      "name": "Pursue Opportunity?",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Conditional branching",
+      "description": "Conditional node"
     },
     {
-      "agent_id": "agt_f8789806d3f84eddb86d910437864ad9",
-      "name": "CodeQualityAssessor",
+      "agent_id": "agt_bcb490a1b8e04c09a29c42121af8ca34",
+      "name": "Decline & Notify",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_b3f053e65c7842e99ad4730839c9b5be",
-      "name": "ReportGenerator",
+      "agent_id": "agt_fb4e13f451f24e92a71ef3fff0a5a0d3",
+      "name": "Solution Designer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_a7cca35e27814e3fb18796349c13944d",
-      "name": "Workflow End",
+      "agent_id": "agt_626295e50b5a446a84ea096c9949be69",
+      "name": "Query Historical Projects",
       "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_13368eef871d41a2b71931d1edcefe76",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_de740a116a204279be1dea619d409ca4",
-      "name": "CodeReceiver",
+      "agent_id": "agt_e93ae2f6c98045f7973a43afde96520b",
+      "name": "Pricing Calculator",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Code execution",
+      "description": "Code node"
     },
     {
-      "agent_id": "agt_0de9a182d4614bdb97dd6c386322986e",
-      "name": "SyntaxValidator",
+      "agent_id": "agt_bea98603f6df4eca8500d926cebd6815",
+      "name": "Proposal Writer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_b4d1f65125404f4ebc2a620532070829",
-      "name": "SecurityAnalyzer",
+      "agent_id": "agt_d662258421d74298b13a2feec9b573e1",
+      "name": "Compliance Check",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Quality validation",
+      "description": "Self-Review node"
     },
     {
-      "agent_id": "agt_87b76f41a7594945822722b7f3354646",
-      "name": "CodeQualityAssessor",
+      "agent_id": "agt_e0a2dc536ee34a998faed2f14e8fc9ba",
+      "name": "Partner Final Review",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_f0845e486f4243139e8487f1d34e10ef",
-      "name": "ReportGenerator",
+      "agent_id": "agt_c223cfeb1cb647d6936081e859f0e88f",
+      "name": "Submit Proposal",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_8981285d14b74a12b489b0e31f87cc92",
-      "name": "Workflow End",
+      "agent_id": "agt_83128c15dd2f40c7aa4c2cd53f6a2cde",
+      "name": "Proposal Submitted",
       "icon": "🤖",
       "role": "Workflow exit point",
       "description": "End node"
     },
     {
-      "agent_id": "agt_83ca9da26e00487daedc52019ff4dbe5",
-      "name": "Workflow Start",
+      "agent_id": "agt_b62fc6c3dd2a4b86ae4b019e8a5586f4",
+      "name": "RFP Received",
       "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
     },
     {
-      "agent_id": "agt_e3cd326ebadd4b7896e5f804a2947f0f",
-      "name": "CodeReceiver",
+      "agent_id": "agt_e4bddb7877134537b7e3b58a6599e39b",
+      "name": "RFP Analyzer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_b9f1968b8f034f20ab66b7f0ee4e8517",
-      "name": "SyntaxValidator",
+      "agent_id": "agt_a78d294bfc5f4f3e9c6ddbb551b88353",
+      "name": "Win Probability Scorer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_d7fa92cfc39745f9ad91504e076f7517",
-      "name": "SecurityAnalyzer",
+      "agent_id": "agt_5f2c0bb0173c4b20a907a1969d846366",
+      "name": "Pursue Opportunity?",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Conditional branching",
+      "description": "Conditional node"
     },
     {
-      "agent_id": "agt_5368f0db16f84e84803f841645dd5d7b",
-      "name": "CodeQualityAssessor",
+      "agent_id": "agt_aeefe04766eb484f9844e1c6a14fcec4",
+      "name": "Decline & Notify",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_5948bcc5f00c45f3a91eab3efb1f5958",
-      "name": "ReportGenerator",
+      "agent_id": "agt_1c89ba3ee8ed4c179e81b7b4c56c207d",
+      "name": "Solution Designer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_93cff02024d54a8487ea3d62cfa1cc7c",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
     },
     {
-      "agent_id": "agt_806887790ff34fcfa0afdcec946b1787",
-      "name": "MathMaven Pro",
+      "agent_id": "agt_63920c059f9641dcac43456b32f73383",
+      "name": "Query Historical Projects",
       "icon": "🤖",
-      "role": "Senior Mathematics Specialist",
-      "description": "MathMaven Pro is an advanced mathematical expert capable of performing complex calculations, solving equations, and explaining mathematical concepts in detail. This agent utilizes the calculator tool to ensure accuracy and precision in its responses."
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_test_math",
-      "name": "Math Expert",
+      "agent_id": "agt_486b21d3df4d4a929edb65d2e76b8bf9",
+      "name": "Pricing Calculator",
       "icon": "🤖",
-      "role": "Mathematics Specialist",
-      "description": "Expert in mathematical calculations"
+      "role": "Code execution",
+      "description": "Code node"
     },
     {
-      "agent_id": "agt_2dd19fbe87c24360a8bd49618ae0a566",
-      "name": "Code Generator",
+      "agent_id": "agt_033e29f2d7e64fb7873970863512138f",
+      "name": "Proposal Writer",
       "icon": "🤖",
-      "role": "Code Generation Specialist",
-      "description": "This agent takes user requirements and generates appropriate code, handling all necessary logic and formatting."
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_da4fa47b7a3a4715abdaae79b8030570",
-      "name": "Code Generator",
+      "agent_id": "agt_5b09097a6e7040f9ad5f69f136aa50a7",
+      "name": "Compliance Check",
       "icon": "🤖",
-      "role": "Code Generation",
-      "description": "This agent takes user requirements and generates code for the specified task."
+      "role": "Quality validation",
+      "description": "Self-Review node"
     },
     {
-      "agent_id": "agt_b5612f38c2e84fda8c19bbeb4c094deb",
-      "name": "Code Generator",
+      "agent_id": "agt_5085b3b4c73c45e9abf207415bd3a828",
+      "name": "Partner Final Review",
       "icon": "🤖",
-      "role": "Code Generation Specialist",
-      "description": "This agent receives user requirements and generates appropriate code."
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_7fb3ba29de9b408d9215a7757452f004",
-      "name": "Code Generator",
+      "agent_id": "agt_29629a5ea1514298bdae45fbea43dc48",
+      "name": "Submit Proposal",
       "icon": "🤖",
-      "role": "Generate code based on specifications",
-      "description": "The agent takes user specifications or requirements and generates corresponding code"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_d52b649b4323400a931b263a8d9ba847",
-      "name": "Code Generator",
+      "agent_id": "agt_9a8e2de4db264e6096f9320d1ae986c6",
+      "name": "Proposal Submitted",
       "icon": "🤖",
-      "role": "Code Generation",
-      "description": "This agent takes a natural language prompt or technical requirements and produces executable code."
+      "role": "Workflow exit point",
+      "description": "End node"
     },
     {
-      "agent_id": "agt_f20a92b42b384530ad1973cae01900dc",
-      "name": "Workflow Start",
+      "agent_id": "agt_2994bfc4d3854470b274e4fd2d2beba6",
+      "name": "RFP Received",
       "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
     },
     {
-      "agent_id": "agt_7b1b395c55044cb18377e2e8c8b73f94",
-      "name": "Code Generator",
+      "agent_id": "agt_b62b4232147e441eb4a063d808df5a19",
+      "name": "RFP Analyzer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_58fea81371b44244b0a51373ac6ac877",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
-    },
-    {
-      "agent_id": "agt_3cbf263568b34a8690ac18f7997d76f4",
-      "name": "Workflow Start",
-      "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
     },
     {
-      "agent_id": "agt_7c9e0a8cd159429b919ebc34c63a5568",
-      "name": "Code Generator",
+      "agent_id": "agt_18e3c6dd0fb5403eb315fb1a72001d9f",
+      "name": "Win Probability Scorer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_25013c78e0f54f29a760ea2e84ff07b2",
-      "name": "Workflow End",
+      "agent_id": "agt_03b89c5343e344c6a050d3bf83140689",
+      "name": "Pursue Opportunity?",
       "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
+      "role": "Conditional branching",
+      "description": "Conditional node"
     },
     {
-      "agent_id": "agt_2ae042c324d843c0907d87edebc1c683",
-      "name": "CareerMaven Pro",
+      "agent_id": "agt_1fecbeff12c644cf9de678a3d20b4750",
+      "name": "Decline & Notify",
       "icon": "🤖",
-      "role": "Professional Career Coach",
-      "description": "CareerMaven Pro offers personalized career advice, creates tailored resume tabs, and provides effective job search strategies to help individuals advance in their careers."
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_629c1b0f4d46467fb2fe5985e367e3ba",
-      "name": "CodeCraft Pro",
+      "agent_id": "agt_66d18b916b5f459894bc91c63da32276",
+      "name": "Solution Designer",
       "icon": "🤖",
-      "role": "Senior Code Reviewer",
-      "description": "CodeCraft Pro meticulously reviews code for quality, security, and adherence to best practices. This agent ensures that all code submissions meet high standards of functionality, maintainability, and safety."
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agent-6",
-      "name": "CodeCraft Pro",
+      "agent_id": "agt_18181d8d280b43009f3f098624c5c992",
+      "name": "Query Historical Projects",
       "icon": "🤖",
-      "role": "Senior Code Reviewer",
-      "description": "CodeCraft Pro meticulously reviews code for quality, security, and adherence to best practices. This agent ensures that all code submissions meet high standards of functionality, maintainability, and safety."
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_c2bd820ca7bc4dab8dad11e87326dda7",
-      "name": "CodeCraft Pro",
+      "agent_id": "agt_a1bc199dbbb24f6b832d63539fcb66b4",
+      "name": "Pricing Calculator",
       "icon": "🤖",
-      "role": "Senior Software Engineer",
-      "description": "CodeCraft Pro is a professional code reviewer that evaluates code for quality, security, and adherence to best practices. This agent provides detailed feedback, suggestions, and explanations to help developers improve their code."
+      "role": "Code execution",
+      "description": "Code node"
     },
     {
-      "agent_id": "agent-7",
-      "name": "Code Reviewer",
+      "agent_id": "agt_88859ab6f9d04c399f97dc4fb7dfc666",
+      "name": "Proposal Writer",
       "icon": "🤖",
-      "role": "Code Review",
-      "description": "Reviews code for quality, security, and best practices"
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_7aa571d1f1ca476d94522b7d66b174a7",
-      "name": "FinAnalyst Pro",
+      "agent_id": "agt_2adbff958ba040828239c07985571bfc",
+      "name": "Compliance Check",
       "icon": "🤖",
-      "role": "Financial Analyst",
-      "description": "FinAnalyst Pro analyzes financial data, identifies trends, and generates comprehensive reports for stakeholders. It provides actionable insights and recommendations based on the latest market data and financial metrics."
+      "role": "Quality validation",
+      "description": "Self-Review node"
     },
     {
-      "agent_id": "agt_fa434c56a420441e83b3d55a1ba7054c",
-      "name": "FinGenius Pro",
+      "agent_id": "agt_3e4010c836964e2dbe2ab1b0f761bc7b",
+      "name": "Partner Final Review",
       "icon": "🤖",
-      "role": "Financial Analyst",
-      "description": "FinGenius Pro analyzes financial data, identifies trends, and generates comprehensive reports to support informed business decisions."
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agent-8",
-      "name": "Financial Analyst",
+      "agent_id": "agt_282627702262443da18cde45c6c4b4f4",
+      "name": "Submit Proposal",
       "icon": "🤖",
-      "role": "Financial Analysis",
-      "description": "Analyzes financial data and generates reports"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_cfbacdf420bb495b9eaf7faed64a057b",
-      "name": "SkyTraveler Pro",
+      "agent_id": "agt_3e0308cd6354405290924173dbe69ca8",
+      "name": "Proposal Submitted",
       "icon": "🤖",
-      "role": "Flight Booking Specialist",
-      "description": "SkyTraveler Pro helps users find, compare, and book the best flight tickets for their travel needs. This agent ensures a seamless and stress-free booking experience by providing detailed information and recommendations."
+      "role": "Workflow exit point",
+      "description": "End node"
     },
     {
-      "agent_id": "agent-9",
-      "name": "SkyTraveler Pro",
+      "agent_id": "agt_920545a858034602bb6e576482d1f742",
+      "name": "Research Request",
       "icon": "🤖",
-      "role": "Flight Booking Specialist",
-      "description": "SkyTraveler Pro helps users find, compare, and book the best flight tickets for their travel needs. This agent ensures a seamless and stress-free booking experience by providing detailed information and recommendations."
+      "role": "Workflow entry point",
+      "description": "Start node"
     },
     {
-      "agent_id": "agt_84d3213fe99d4af8b7238f51d24cfe66",
-      "name": "TravelEase Booking Agent",
+      "agent_id": "agt_7433703ec1b3416eb34b8eb39836e52d",
+      "name": "Research Plan Designer",
       "icon": "🤖",
-      "role": "Travel Booking Specialist",
-      "description": "This agent helps users book train tickets efficiently by finding the best routes, schedules, and prices. It provides personalized recommendations and handles all booking details seamlessly."
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_e13c073400b04813a5c03f43bd99ab8d",
-      "name": "ShopSavvy Pro",
+      "agent_id": "agt_e290d09cfb994a4e95035da326610a54",
+      "name": "Secondary Research",
       "icon": "🤖",
-      "role": "Online Shopping Expert",
-      "description": "ShopSavvy Pro helps users find the best products, compare prices, and make informed online shopping decisions. This agent provides personalized shopping advice, product recommendations, and deals based on user preferences and needs."
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agent-10",
-      "name": "ShopSavvy Pro",
+      "agent_id": "agt_835ae8ae73934616ad6f217a0636b203",
+      "name": "Query Market Data APIs",
       "icon": "🤖",
-      "role": "Online Shopping Expert",
-      "description": "ShopSavvy Pro helps users find the best products, compare prices, and make informed online shopping decisions. This agent provides personalized shopping advice, product recommendations, and deals based on user preferences and needs."
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_c72ce3674df54f3f90f1a216a1012806",
-      "name": "Code Generator",
+      "agent_id": "agt_e4c44bde716746429d3ba91a2e0a8f08",
+      "name": "Consolidate Data",
       "icon": "🤖",
-      "role": "Python Code Writer",
-      "description": "Generates Python code that fulfills the user's specifications."
+      "role": "Branch merging",
+      "description": "Merge node"
     },
     {
-      "agent_id": "agt_8cf368e8f6424c488dd3c62481db0393",
-      "name": "Code Reviewer",
+      "agent_id": "agt_bd27898cc2c34b649c40ad3216fdc574",
+      "name": "Data Synthesizer",
       "icon": "🤖",
-      "role": "Code Quality Checker",
-      "description": "Analyzes the generated code for correctness, readability, and adherence to best practices."
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_29eff09f05b9406ab895fcce7afce451",
-      "name": "Code Optimizer",
+      "agent_id": "agt_0b42bf2f27a645569b2ce9bf82078723",
+      "name": "Data Visualization",
       "icon": "🤖",
-      "role": "Performance Enhancer",
-      "description": "Modifies the code based on the review report to improve its performance and readability."
+      "role": "Code execution",
+      "description": "Code node"
     },
     {
-      "agent_id": "agt_d29c336cf1fb400c9817c22120e1040f",
-      "name": "Workflow Start",
+      "agent_id": "agt_7f26b263fbf949dba00562e5edb300b8",
+      "name": "Report Writer",
       "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_40516f04d44044d89475c504c65cd33b",
-      "name": "Code Generator",
+      "agent_id": "agt_dd10bd03278d4a8ca17eb81b16db63d3",
+      "name": "Fact Check",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Quality validation",
+      "description": "Self-Review node"
     },
     {
-      "agent_id": "agt_2caa482da06145e4b368851d6f38261a",
-      "name": "Code Reviewer",
+      "agent_id": "agt_94e9c8725cf2456a910162884d20c6f0",
+      "name": "Senior Analyst Review",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_ed4945c7d2cb4a9189d9a51179bdb7bf",
-      "name": "Code Optimizer",
+      "agent_id": "agt_c1da357b87d74b2b8f0120ec366e56a7",
+      "name": "Publish to Knowledge Base",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_1d2a2b8a60164bccb4e89701243ec51a",
-      "name": "Workflow End",
+      "agent_id": "agt_7566a45a2d5b48bf857a52da43fc08eb",
+      "name": "Report Complete",
       "icon": "🤖",
       "role": "Workflow exit point",
       "description": "End node"
     },
     {
-      "agent_id": "agt_acb9840c3c944c84bc798680145f046d",
-      "name": "Workflow Start",
+      "agent_id": "agt_c156ff1d1e4e4fafae94583d38487995",
+      "name": "Research Request",
       "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
     },
     {
-      "agent_id": "agt_14995f05df9c4b4697cf96bdcdcdd492",
-      "name": "Code Generator",
+      "agent_id": "agt_415f1df6c76144908652d1001acd45b6",
+      "name": "Research Plan Designer",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_a37c06557452409cabce01acb4fd9b6e",
-      "name": "Code Reviewer",
+      "agent_id": "agt_d83747ccd3ee453dbdf1c3a9e981aaba",
+      "name": "Secondary Research",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_9747e6290a4a445e89b6e2299ff630c1",
-      "name": "Code Optimizer",
+      "agent_id": "agt_776ae3dccb294f2b81373fbfbd91ed92",
+      "name": "Query Market Data APIs",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_5e390970270e49c5a0b29cd4439278ab",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_a99c2ce6aa6a414eb2cb0bf6a6224478",
-      "name": "Analyzer",
+      "agent_id": "agt_291e6920a6b040efbcd5aaeeac4fecff",
+      "name": "Consolidate Data",
       "icon": "🤖",
-      "role": "Data Analysis",
-      "description": "Analyzes input data"
+      "role": "Branch merging",
+      "description": "Merge node"
     },
     {
-      "agent_id": "agt_b224a58339e44fc78b8f89cda51df440",
-      "name": "Synthesizer",
+      "agent_id": "agt_2f9ef96f13f84e36999ec09de3d3e70d",
+      "name": "Data Synthesizer",
       "icon": "🤖",
-      "role": "Result Synthesis",
-      "description": "Synthesizes analysis into final output"
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_041f2f56f8784a81b681055f5982c627",
-      "name": "Code Generator",
+      "agent_id": "agt_b96eede8fd574576bfe94d66b5756eaa",
+      "name": "Data Visualization",
       "icon": "🤖",
-      "role": "Generate code based on user requirements",
-      "description": "This agent takes user requirements and generates code, ensuring it follows best practices and is well-documented."
+      "role": "Code execution",
+      "description": "Code node"
     },
     {
-      "agent_id": "agt_03e9355877ac413ca6bfa8088e5990f0",
-      "name": "Code Reviewer",
+      "agent_id": "agt_f001dff2eacb4879a27291d0344f90f9",
+      "name": "Report Writer",
       "icon": "🤖",
-      "role": "Review generated code for quality and adherence to standards",
-      "description": "This agent examines the generated code, checks for bugs, ensures readability, and verifies that it meets the specified requirements."
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_f69473c8a30741afab11fe30985a1507",
-      "name": "Workflow Start",
+      "agent_id": "agt_8542c70bb00b462281116a923c96372a",
+      "name": "Fact Check",
       "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
+      "role": "Quality validation",
+      "description": "Self-Review node"
     },
     {
-      "agent_id": "agt_d2f51e6c77c74671a518810758234819",
-      "name": "Code Generator",
+      "agent_id": "agt_eae61d04950d49d984012d00732777f7",
+      "name": "Senior Analyst Review",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_6c5a42fc23f947688bf08296882157a7",
-      "name": "Code Reviewer",
+      "agent_id": "agt_5248e72a6bb647109ebcfae10c996bdd",
+      "name": "Publish to Knowledge Base",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_eb37ed08d770493b88a7a594d5f44331",
-      "name": "Workflow End",
+      "agent_id": "agt_f34b0093c29347cea3b70e9b678f90d2",
+      "name": "Report Complete",
       "icon": "🤖",
       "role": "Workflow exit point",
       "description": "End node"
     },
     {
-      "agent_id": "agt_d9f0acb934f54382804be4e92c1f53d1",
-      "name": "Workflow Start",
+      "agent_id": "agt_b0ff5366f3404680a728e5b88ddf12a9",
+      "name": "Application Received",
       "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
-    },
-    {
-      "agent_id": "agt_81b425bad322493ebffbe5965a63ac4f",
-      "name": "Code Generator",
-      "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
     },
     {
-      "agent_id": "agt_06902a9d5a0145189eb809dc56e6d28c",
-      "name": "Code Reviewer",
+      "agent_id": "agt_0f1e4cc7ffb4443893601c8a26db3cef",
+      "name": "Resume Parser",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_067cea715be8420a8b1489d81e475923",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
     },
     {
-      "agent_id": "agt_b5a74b89faf842f19796fa9756c219f5",
-      "name": "Code Executor",
+      "agent_id": "agt_a64b50b425b6463590ae43e7587dc394",
+      "name": "Fetch Job Requirements",
       "icon": "🤖",
-      "role": "Execute code snippets",
-      "description": "Executes the code provided by the user and returns the output, errors, or status."
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_07c445ccf7254fb8b0025109fbac9d74",
-      "name": "Code Reviewer",
+      "agent_id": "agt_7731ad8f1f1a45df8da0c967eae95414",
+      "name": "Skills Matcher",
       "icon": "🤖",
-      "role": "Analyze and review executed code",
-      "description": "Reviews the results from the code executor, checks for errors, and provides suggestions or validation."
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_93729afe454442a8af6d2282ad18a85b",
-      "name": "Workflow Start",
+      "agent_id": "agt_37b2fbafcb5f4864b673e62c52a8fd7b",
+      "name": "Meets Minimum?",
       "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
+      "role": "Conditional branching",
+      "description": "Conditional node"
     },
     {
-      "agent_id": "agt_47d78825bd5243a5a1ebc35f3a082551",
-      "name": "Code Executor",
+      "agent_id": "agt_37dd6b953d8e40069b8b9a4f3f320b58",
+      "name": "Send Rejection Email",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_7071293d845f413a898d0512b95cf55a",
-      "name": "Code Reviewer",
+      "agent_id": "agt_922150a3320f4201a6594526840fe94c",
+      "name": "Screening Questions Generator",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_5f46119dd9b144b9991d470e2aea38c5",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
     },
     {
-      "agent_id": "agt_b94f4f42e4e84b579deeb4f7a8d38cb3",
-      "name": "Workflow Start",
+      "agent_id": "agt_e0458864c5e94f4c8753b097d2e831f4",
+      "name": "Schedule Phone Screen",
       "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_761794c596d5439c96e34a7fc67be9ee",
-      "name": "Code Executor",
+      "agent_id": "agt_23ee064743c54ddf89e3e08ea6c91c28",
+      "name": "Recruiter Assessment",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_c78ed689f2ed4e0f8ad81979026d5902",
-      "name": "Code Reviewer",
+      "agent_id": "agt_dda63ebde127479b9ffeb5c8b120b0b3",
+      "name": "Update ATS",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_95ff00e004d742f6bce3c49e8ec5bcf2",
-      "name": "Workflow End",
+      "agent_id": "agt_05f22008726a4cfbbfcbd9ac66b5bc5d",
+      "name": "Screening Complete",
       "icon": "🤖",
       "role": "Workflow exit point",
       "description": "End node"
     },
     {
-      "agent_id": "agt_6c472172f1e24729bb30508672bdcd86",
-      "name": "Workflow Start",
+      "agent_id": "agt_54a78090a61c40a5910cea7a78ef174b",
+      "name": "Application Received",
       "icon": "🤖",
       "role": "Workflow entry point",
       "description": "Start node"
     },
     {
-      "agent_id": "agt_842b9be6fb0b44b4892199030591d851",
-      "name": "Code Executor",
+      "agent_id": "agt_fd55eac5c22c4333bcf13604b3ebc3d3",
+      "name": "Resume Parser",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
     },
     {
-      "agent_id": "agt_6f41adbe0219405fad8bd917ae022f86",
-      "name": "Code Reviewer",
+      "agent_id": "agt_da9206aed69d4c66a46108872cfc42c4",
+      "name": "Fetch Job Requirements",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_9029d1c7b0ca4399aa3937801570ce26",
-      "name": "Workflow End",
+      "agent_id": "agt_61549556c15c4f95a6479839f59d00bd",
+      "name": "Skills Matcher",
       "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
     },
     {
-      "agent_id": "agt_86e9ea1779894f1c818630cfa5119952",
-      "name": "Workflow Start",
+      "agent_id": "agt_3977e38969c142128656e9f5b88a7e93",
+      "name": "Meets Minimum?",
       "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
+      "role": "Conditional branching",
+      "description": "Conditional node"
     },
     {
-      "agent_id": "agt_41611ed89fda48c4877ed451df6335a7",
-      "name": "Code Executor",
+      "agent_id": "agt_c3cff87eb14147c3be875627d759b910",
+      "name": "Send Rejection Email",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_50d2fb84b606488b808c00832e9d1658",
-      "name": "Code Reviewer",
+      "agent_id": "agt_7e63f7aa42744e8caeed99e00745947d",
+      "name": "Screening Questions Generator",
       "icon": "🤖",
       "role": "Autonomous AI agent",
       "description": "Agent node"
-    },
-    {
-      "agent_id": "agt_f908dd3a60b14da6bac208280e6614e9",
-      "name": "Workflow End",
-      "icon": "🤖",
-      "role": "Workflow exit point",
-      "description": "End node"
     },
     {
-      "agent_id": "agt_5042be3ec53c46b288f76589bb5ac561",
-      "name": "Workflow Start",
+      "agent_id": "agt_8583975653694b4582d2e95f2a24e423",
+      "name": "Schedule Phone Screen",
       "icon": "🤖",
-      "role": "Workflow entry point",
-      "description": "Start node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_f460973b61d24b26b48be35033f820cb",
-      "name": "Code Executor",
+      "agent_id": "agt_c67dc57788b9439fa3a5b936299e90a5",
+      "name": "Recruiter Assessment",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "Human approval gate",
+      "description": "HITL node"
     },
     {
-      "agent_id": "agt_191c6b680d3146bab49be187a7133e47",
-      "name": "Code Reviewer",
+      "agent_id": "agt_6b7f58ee09474bdda6b7ae48a6559fe1",
+      "name": "Update ATS",
       "icon": "🤖",
-      "role": "Autonomous AI agent",
-      "description": "Agent node"
+      "role": "HTTP request",
+      "description": "API node"
     },
     {
-      "agent_id": "agt_b3c6c4cc8fc94326906c92813cabffe6",
-      "name": "Workflow End",
+      "agent_id": "agt_c49e6ae313a24c25a156d6ccc8e93487",
+      "name": "Screening Complete",
       "icon": "🤖",
       "role": "Workflow exit point",
       "description": "End node"

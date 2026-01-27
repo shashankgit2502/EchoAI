@@ -1,0 +1,41 @@
+{
+  "agent_id": "agt_94e9c8725cf2456a910162884d20c6f0",
+  "name": "Senior Analyst Review",
+  "role": "Human approval gate",
+  "goal": "",
+  "prompt": "",
+  "description": "HITL node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "HITL",
+    "ui_layout": {
+      "x": 2100,
+      "y": 300,
+      "icon": "👤",
+      "color": "#06b6d4"
+    },
+    "created_at": "2026-01-27T21:18:40.608402",
+    "hitl_config": {
+      "title": "",
+      "message": "Review report quality, insights, and recommendations",
+      "priority": "high",
+      "allowEdit": true,
+      "allowDefer": false
+    },
+    "registered_at": "2026-01-27T21:18:40.912363"
+  }
+}

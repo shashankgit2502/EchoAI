@@ -1,0 +1,42 @@
+{
+  "agent_id": "agt_0b42bf2f27a645569b2ce9bf82078723",
+  "name": "Data Visualization",
+  "role": "Code execution",
+  "goal": "",
+  "prompt": "",
+  "description": "Code node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Code",
+    "ui_layout": {
+      "x": 1350,
+      "y": 300,
+      "icon": "💻",
+      "color": "#0ea5e9"
+    },
+    "created_at": "2026-01-27T21:18:40.608402",
+    "code_config": {
+      "language": "python",
+      "code": "# Generate charts and visualizations\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\n# Market size evolution\nyears = [2020, 2021, 2022, 2023, 2024]\nmarket_size = [45.2, 52.1, 61.3, 72.8, 87.5]\n\nplt.figure(figsize=(10, 6))\nplt.plot(years, market_size, marker='o', linewidth=2)\nplt.title('Market Size Evolution ($B)', fontsize=14)\nplt.xlabel('Year')\nplt.ylabel('Market Size ($B)')\nplt.grid(True, alpha=0.3)\nplt.savefig('market_size.png', dpi=300, bbox_inches='tight')\n\n# Competitive landscape\ncompanies = ['Company A', 'Company B', 'Company C', 'Others']\nmarket_share = [35, 28, 22, 15]\nplt.figure(figsize=(8, 8))\nplt.pie(market_share, labels=companies, autopct='%1.1f%%')\nplt.title('Market Share Distribution')\nplt.savefig('market_share.png', dpi=300, bbox_inches='tight')",
+      "packages": [
+        "matplotlib",
+        "pandas"
+      ]
+    },
+    "registered_at": "2026-01-27T21:18:40.825791"
+  }
+}

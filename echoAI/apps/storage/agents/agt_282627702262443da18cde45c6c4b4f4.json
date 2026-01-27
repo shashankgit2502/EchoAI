@@ -1,0 +1,40 @@
+{
+  "agent_id": "agt_282627702262443da18cde45c6c4b4f4",
+  "name": "Submit Proposal",
+  "role": "HTTP request",
+  "goal": "",
+  "prompt": "",
+  "description": "API node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "API",
+    "ui_layout": {
+      "x": 2600,
+      "y": 300,
+      "icon": "🌐",
+      "color": "#3b82f6"
+    },
+    "created_at": "2026-01-27T21:09:49.400485",
+    "api_config": {
+      "method": "POST",
+      "url": "https://api.proposalportal.com/v1/submit",
+      "headers": {},
+      "auth": {}
+    },
+    "registered_at": "2026-01-27T21:09:49.767504"
+  }
+}

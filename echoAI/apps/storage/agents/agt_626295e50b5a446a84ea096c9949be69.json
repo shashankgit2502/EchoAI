@@ -1,0 +1,40 @@
+{
+  "agent_id": "agt_626295e50b5a446a84ea096c9949be69",
+  "name": "Query Historical Projects",
+  "role": "HTTP request",
+  "goal": "",
+  "prompt": "",
+  "description": "API node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "API",
+    "ui_layout": {
+      "x": 1350,
+      "y": 300,
+      "icon": "🌐",
+      "color": "#3b82f6"
+    },
+    "created_at": "2026-01-27T20:37:20.771292",
+    "api_config": {
+      "method": "GET",
+      "url": "https://api.projectdb.com/v1/similar-projects",
+      "headers": {},
+      "auth": {}
+    },
+    "registered_at": "2026-01-27T20:37:20.979035"
+  }
+}

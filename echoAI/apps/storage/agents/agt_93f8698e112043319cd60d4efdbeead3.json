@@ -1,0 +1,42 @@
+{
+  "agent_id": "agt_93f8698e112043319cd60d4efdbeead3",
+  "name": "Deliver to Client Portal",
+  "role": "HTTP request",
+  "goal": "",
+  "prompt": "",
+  "description": "API node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "API",
+    "ui_layout": {
+      "x": 1850,
+      "y": 300,
+      "icon": "🌐",
+      "color": "#3b82f6"
+    },
+    "created_at": "2026-01-27T20:28:39.183697",
+    "api_config": {
+      "method": "POST",
+      "url": "https://api.clientportal.com/v1/deliverables",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "auth": {}
+    },
+    "registered_at": "2026-01-27T20:28:39.498120"
+  }
+}

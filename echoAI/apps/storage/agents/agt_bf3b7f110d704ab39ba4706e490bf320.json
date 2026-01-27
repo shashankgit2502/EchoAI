@@ -1,0 +1,34 @@
+{
+  "agent_id": "agt_bf3b7f110d704ab39ba4706e490bf320",
+  "name": "Legal Risk Analysis",
+  "role": "Autonomous AI agent",
+  "goal": "",
+  "prompt": "Review legal documents and contracts for risks and liabilities. Assess: Contract terms and obligations, Litigation history, Regulatory compliance, IP ownership and disputes, Employment agreements, Material contracts. Flag high-risk items requiring immediate attention.",
+  "description": "Agent node",
+  "llm": {
+    "model": "claude-sonnet-4-5-20250514",
+    "temperature": 0.2,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 600,
+      "y": 300,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-27T20:22:43.627424",
+    "registered_at": "2026-01-27T20:22:43.755491"
+  }
+}

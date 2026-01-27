@@ -1,0 +1,41 @@
+{
+  "agent_id": "agt_d95be020d5524ebf84c6d97a912ab17c",
+  "name": "Senior Manager Review",
+  "role": "Human approval gate",
+  "goal": "",
+  "prompt": "",
+  "description": "HITL node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "HITL",
+    "ui_layout": {
+      "x": 1600,
+      "y": 300,
+      "icon": "👤",
+      "color": "#06b6d4"
+    },
+    "created_at": "2026-01-27T20:22:43.627424",
+    "hitl_config": {
+      "title": "",
+      "message": "Moderate risks identified requiring management review",
+      "priority": "high",
+      "allowEdit": true,
+      "allowDefer": false
+    },
+    "registered_at": "2026-01-27T20:22:43.894659"
+  }
+}
