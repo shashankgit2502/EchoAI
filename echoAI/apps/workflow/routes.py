@@ -583,7 +583,16 @@ async def send_chat_message(request: dict):
             output = result.get("output", {})
 
             # Try to extract meaningful response from output
-            if "message" in output:
+            # Priority: crew_result/result (CrewAI) > message > messages > fallback
+            if "crew_result" in output and output["crew_result"]:
+                response_text = output["crew_result"]
+            elif "result" in output and output["result"]:
+                response_text = output["result"]
+            elif "hierarchical_output" in output and output["hierarchical_output"]:
+                response_text = output["hierarchical_output"]
+            elif "parallel_output" in output and output["parallel_output"]:
+                response_text = output["parallel_output"]
+            elif "message" in output:
                 response_text = output["message"]
             elif "messages" in output and output["messages"]:
                 # Get last message if messages array exists

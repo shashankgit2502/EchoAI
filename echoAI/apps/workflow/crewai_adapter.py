@@ -79,10 +79,57 @@ class CrewAIAdapter:
             CrewAI BaseTool instance that wraps the tool
         """
         from crewai.tools import BaseTool
+        from pydantic import BaseModel, Field, create_model
+        from typing import Optional, Any
 
         # Capture tool_def and executor in closure for the dynamic class
         captured_tool_def = tool_def
         captured_executor = executor
+
+        # Create dynamic Pydantic model from tool's input_schema
+        def create_args_schema(input_schema: dict):
+            """Create a Pydantic model from JSON Schema."""
+            properties = input_schema.get("properties", {})
+            required = input_schema.get("required", [])
+
+            fields = {}
+            for field_name, field_spec in properties.items():
+                field_type = str  # Default to string
+
+                # Map JSON Schema types to Python types
+                json_type = field_spec.get("type", "string")
+                if json_type == "string":
+                    field_type = str
+                elif json_type == "integer":
+                    field_type = int
+                elif json_type == "number":
+                    field_type = float
+                elif json_type == "boolean":
+                    field_type = bool
+                elif json_type == "array":
+                    field_type = list
+                elif json_type == "object":
+                    field_type = dict
+
+                # Get default and description
+                default_value = field_spec.get("default", ...)
+                description = field_spec.get("description", "")
+
+                # If field is required and has no default, use ... (required)
+                if field_name in required and default_value is ...:
+                    fields[field_name] = (field_type, Field(..., description=description))
+                else:
+                    # Optional field or has default
+                    if default_value is ...:
+                        fields[field_name] = (Optional[field_type], Field(None, description=description))
+                    else:
+                        fields[field_name] = (field_type, Field(default_value, description=description))
+
+            # Create the dynamic model
+            return create_model("ToolArgsSchema", **fields)
+
+        # Generate args_schema from tool's input_schema
+        args_schema_class = create_args_schema(captured_tool_def.input_schema or {})
 
         class DynamicCrewAITool(BaseTool):
             """
@@ -92,6 +139,7 @@ class CrewAIAdapter:
             """
             name: str = captured_tool_def.name
             description: str = captured_tool_def.description
+            args_schema: type[BaseModel] = args_schema_class
 
             def _run(self, **kwargs) -> str:
                 """
@@ -281,6 +329,15 @@ class CrewAIAdapter:
                 manager_tools = self._bind_tools_to_agent(master_agent_config)
                 if manager_tools:
                     logger.info(f"Manager agent will use {len(manager_tools)} tool(s)")
+                    # Add tool usage instruction to task description
+                    tool_names = [t.name for t in manager_tools]
+                    tool_instruction = (
+                        f"AVAILABLE TOOLS: {', '.join(tool_names)}\n"
+                        f"IMPORTANT: Use your available tools to enhance your response with real-time or external data. "
+                        f"Combine tool results with your own knowledge for the best answer. "
+                        f"Do not claim you cannot access information if you have tools that can help."
+                    )
+                    task_description = task_description + "\n\n" + tool_instruction
 
                 # Create CrewAI Manager Agent (can delegate)
                 manager = Agent(
@@ -454,6 +511,17 @@ class CrewAIAdapter:
                     task_parts.append(f"Focus on your specific expertise and provide a complete response.")
 
                     task_description = "\n\n".join(task_parts)
+
+                    # Add tool usage instruction if agent has tools
+                    if agent_tools:
+                        tool_names = [t.name for t in agent_tools]
+                        tool_instruction = (
+                            f"AVAILABLE TOOLS: {', '.join(tool_names)}\n"
+                            f"IMPORTANT: Use your available tools to enhance your response with real-time or external data. "
+                            f"Combine tool results with your own knowledge for the best answer. "
+                            f"Do not claim you cannot access information if you have tools that can help."
+                        )
+                        task_description = task_description + "\n\n" + tool_instruction
 
                     # Create task for this agent
                     task = Task(
@@ -631,6 +699,15 @@ class CrewAIAdapter:
                 crewai_tools = self._bind_tools_to_agent(agent_config)
                 if crewai_tools:
                     logger.info(f"Agent '{agent_name}' will use {len(crewai_tools)} tool(s)")
+                    # Add tool usage instruction to task description
+                    tool_names = [t.name for t in crewai_tools]
+                    tool_instruction = (
+                        f"AVAILABLE TOOLS: {', '.join(tool_names)}\n"
+                        f"IMPORTANT: Use your available tools to enhance your response with real-time or external data. "
+                        f"Combine tool results with your own knowledge for the best answer. "
+                        f"Do not claim you cannot access information if you have tools that can help."
+                    )
+                    task_description = task_description + "\n\n" + tool_instruction
 
                 # --- Create CrewAI agent ---
                 agent = Agent(

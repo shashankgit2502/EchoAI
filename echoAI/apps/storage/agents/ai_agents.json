@@ -1049,6 +1049,335 @@
       "icon": "🤖",
       "role": "Workflow exit point",
       "description": "End node"
+    },
+    {
+      "agent_id": "agt_f7ba941f2bf24a1fa56225f9c778e82a",
+      "name": "DD Request Received",
+      "icon": "🤖",
+      "role": "Workflow entry point",
+      "description": "Start node"
+    },
+    {
+      "agent_id": "agt_4c29741becd24b17be0ac7c5a2fe1f4a",
+      "name": "Document Classifier",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_3597b116d3eb4a58b47ecdf0cdb38cef",
+      "name": "Financial Analysis",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_9bc197ba8c2f40888599df24ba6d8443",
+      "name": "Legal Risk Analysis",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_4471eff9e01b4963a02ba1b3fd68b349",
+      "name": "Operational Assessment",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_250596285a3744639769bd9eb20720bf",
+      "name": "Consolidate Findings",
+      "icon": "🤖",
+      "role": "Branch merging",
+      "description": "Merge node"
+    },
+    {
+      "agent_id": "agt_4b70f58c906248b3b8324cc86cbc1a43",
+      "name": "Risk Scoring Engine",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_0d90265400cf4f37914a21edfd448508",
+      "name": "Risk Assessment Gate",
+      "icon": "🤖",
+      "role": "Conditional branching",
+      "description": "Conditional node"
+    },
+    {
+      "agent_id": "agt_fe188d2128cd4ef9b6ffa0145a82b7e7",
+      "name": "Partner Escalation",
+      "icon": "🤖",
+      "role": "Human approval gate",
+      "description": "HITL node"
+    },
+    {
+      "agent_id": "agt_34d409e903da4b71aabd52c534bfe4c3",
+      "name": "Senior Manager Review",
+      "icon": "🤖",
+      "role": "Human approval gate",
+      "description": "HITL node"
+    },
+    {
+      "agent_id": "agt_0515d7efe7dc451d86c286c56b2f93a3",
+      "name": "Report Generator",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_5523d2e9be494d7a8b320e0fe41658cb",
+      "name": "Deliver to Client Portal",
+      "icon": "🤖",
+      "role": "HTTP request",
+      "description": "API node"
+    },
+    {
+      "agent_id": "agt_f49d9daf35d545f993ca09785475b935",
+      "name": "DD Complete",
+      "icon": "🤖",
+      "role": "Workflow exit point",
+      "description": "End node"
+    },
+    {
+      "agent_id": "agt_8211cd2bd3cd4023a110525ab12f58c5",
+      "name": "DD Request Received",
+      "icon": "🤖",
+      "role": "Workflow entry point",
+      "description": "Start node"
+    },
+    {
+      "agent_id": "agt_bf5449868fa94448a14df89d398c644e",
+      "name": "Document Classifier",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_7ef08cca9af542b48c4bf097517a71bd",
+      "name": "Financial Analysis",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_73c0733541bb4101b12f779de2027077",
+      "name": "Legal Risk Analysis",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_9017bf6f23ee42f78d7b27c32edfffe8",
+      "name": "Operational Assessment",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_583b4f906d584eb39dd0dece4ebded8a",
+      "name": "Consolidate Findings",
+      "icon": "🤖",
+      "role": "Branch merging",
+      "description": "Merge node"
+    },
+    {
+      "agent_id": "agt_1490aa4c9f08499896700887fb2a37a2",
+      "name": "Risk Scoring Engine",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_dd8507aa17fa4ad49e786d75eebfa1dc",
+      "name": "Risk Assessment Gate",
+      "icon": "🤖",
+      "role": "Conditional branching",
+      "description": "Conditional node"
+    },
+    {
+      "agent_id": "agt_43c5afbe138444b5b98d9d3aa67c1961",
+      "name": "Partner Escalation",
+      "icon": "🤖",
+      "role": "Human approval gate",
+      "description": "HITL node"
+    },
+    {
+      "agent_id": "agt_5d2a9d0f587f4d73a4473faf13172556",
+      "name": "Senior Manager Review",
+      "icon": "🤖",
+      "role": "Human approval gate",
+      "description": "HITL node"
+    },
+    {
+      "agent_id": "agt_72ea54fab68d4092b69009d46d31ad7d",
+      "name": "Report Generator",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_03dbe5ff341a4f83bab18663dcf934f1",
+      "name": "Deliver to Client Portal",
+      "icon": "🤖",
+      "role": "HTTP request",
+      "description": "API node"
+    },
+    {
+      "agent_id": "agt_4c1b0758955e45d88a442e2141f9ac53",
+      "name": "DD Complete",
+      "icon": "🤖",
+      "role": "Workflow exit point",
+      "description": "End node"
+    },
+    {
+      "agent_id": "agt_56a18d6df2b74af1a5f25e1509e39a26",
+      "name": "Web Search Agent",
+      "icon": "🤖",
+      "role": "Web search executor",
+      "description": "The agent takes a search query as input, performs a web search using an API, and returns a list of relevant results."
+    },
+    {
+      "agent_id": "agt_c7720943afa243329c40db7fa0bd78f8",
+      "name": "Workflow Start",
+      "icon": "🤖",
+      "role": "Workflow entry point",
+      "description": "Start node"
+    },
+    {
+      "agent_id": "agt_1a771d3cb5f349ee84f9af9c2d19a08e",
+      "name": "Web Search Agent",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_bebbdd1822db4fe78e88207965ae5e7c",
+      "name": "Workflow End",
+      "icon": "🤖",
+      "role": "Workflow exit point",
+      "description": "End node"
+    },
+    {
+      "agent_id": "agt_fe4d7597c2f54d37a61ee9e0bafe4211",
+      "name": "Workflow Start",
+      "icon": "🤖",
+      "role": "Workflow entry point",
+      "description": "Start node"
+    },
+    {
+      "agent_id": "agt_0107c34fe06c4d4d8d9dab015cee8b33",
+      "name": "Web Search Agent",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_9d960ecc6576414ebab92f59ebff86a8",
+      "name": "Workflow End",
+      "icon": "🤖",
+      "role": "Workflow exit point",
+      "description": "End node"
+    },
+    {
+      "agent_id": "agt_a07f786cc7924cbebbc6799fc4a058b1",
+      "name": "Workflow Start",
+      "icon": "🤖",
+      "role": "Workflow entry point",
+      "description": "Start node"
+    },
+    {
+      "agent_id": "agt_451d4686e50b47a0944cf6a12a0d2e31",
+      "name": "Web Search Agent",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_8dd359c0d12d4da3b99c08c54fccb995",
+      "name": "Workflow End",
+      "icon": "🤖",
+      "role": "Workflow exit point",
+      "description": "End node"
+    },
+    {
+      "agent_id": "agt_60ef31505c794d9b8ed1d59064254a35",
+      "name": "Application Received",
+      "icon": "🤖",
+      "role": "Workflow entry point",
+      "description": "Start node"
+    },
+    {
+      "agent_id": "agt_144b436dd9dd4988be4cc381ec7596f6",
+      "name": "Resume Parser",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_06622907b2c141a5819c83d7a5e55433",
+      "name": "Fetch Job Requirements",
+      "icon": "🤖",
+      "role": "HTTP request",
+      "description": "API node"
+    },
+    {
+      "agent_id": "agt_6139228408b64dc5ac985e896a7540ed",
+      "name": "Skills Matcher",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_fa93b0ae0e8d49bf9c60602d255b094d",
+      "name": "Meets Minimum?",
+      "icon": "🤖",
+      "role": "Conditional branching",
+      "description": "Conditional node"
+    },
+    {
+      "agent_id": "agt_7a95fb3d37fb48c49b7a49b7f4da6359",
+      "name": "Send Rejection Email",
+      "icon": "🤖",
+      "role": "HTTP request",
+      "description": "API node"
+    },
+    {
+      "agent_id": "agt_d90e446d1b79428ba5562fde46e8814c",
+      "name": "Screening Questions Generator",
+      "icon": "🤖",
+      "role": "Autonomous AI agent",
+      "description": "Agent node"
+    },
+    {
+      "agent_id": "agt_6083ab8e75cf4756a7f36e7e1d162a4f",
+      "name": "Schedule Phone Screen",
+      "icon": "🤖",
+      "role": "HTTP request",
+      "description": "API node"
+    },
+    {
+      "agent_id": "agt_17b9f9c0fa294fb6b5f0df67ef374b83",
+      "name": "Recruiter Assessment",
+      "icon": "🤖",
+      "role": "Human approval gate",
+      "description": "HITL node"
+    },
+    {
+      "agent_id": "agt_d0f126934361454990e86fda1574adba",
+      "name": "Update ATS",
+      "icon": "🤖",
+      "role": "HTTP request",
+      "description": "API node"
+    },
+    {
+      "agent_id": "agt_efb5fdf43c4042e1a5a351a478b551e6",
+      "name": "Screening Complete",
+      "icon": "🤖",
+      "role": "Workflow exit point",
+      "description": "End node"
     }
   ]
 }

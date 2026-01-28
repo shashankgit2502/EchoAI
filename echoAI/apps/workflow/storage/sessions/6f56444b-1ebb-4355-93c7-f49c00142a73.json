@@ -1,0 +1,40 @@
+{
+  "session_id": "6f56444b-1ebb-4355-93c7-f49c00142a73",
+  "workflow_id": "wf_eacf4442245b4a559a17e0a6d50fcccf",
+  "workflow_mode": "draft",
+  "workflow_version": null,
+  "created_at": "2026-01-28T08:26:31.628492",
+  "last_activity": "2026-01-28T08:26:47.340921",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Started testing workflow: wf_eacf4442245b4a559a17e0a6d50fcccf",
+      "timestamp": "2026-01-28T08:26:31.628492",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "user",
+      "content": "give me top 5 headlines till 26 January 2026.",
+      "timestamp": "2026-01-28T08:26:31.673670",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "{'agent': 'agt_8dd359c0d12d4da3b99c08c54fccb995', 'name': 'Workflow End', 'role': 'Workflow exit point', 'tools_bound': 0, 'tool_names': [], 'original_request': 'give me top 5 headlines till 26 January 2026.', 'had_previous_context': True, 'had_parallel_context': False, 'output_preview': \"Sorry, I don't have access to real-time data or the ability to retrieve news headlines up to 26 January 2026. I recommend checking news websites or using a news database to find headlines from that date range.\", 'timestamp': '2026-01-28T08:26:47.337919'}",
+      "timestamp": "2026-01-28T08:26:47.340921",
+      "agent_id": null,
+      "metadata": {
+        "execution_status": "completed"
+      }
+    }
+  ],
+  "context": {
+    "workflow_name": "Web Search Agent"
+  },
+  "run_ids": [
+    "run_c3c9f96bbb1a40279c876de0d2c004a5"
+  ],
+  "message_count": 3
+}

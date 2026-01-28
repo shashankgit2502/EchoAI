@@ -537,3 +537,112 @@ class ToolRegistry:
             if query_lower in tool.name.lower()
             or query_lower in tool.description.lower()
         ]
+
+    def sync_connectors_as_tools(self) -> Dict[str, Any]:
+        """
+        Sync registered MCP connectors as tools in the registry.
+
+        Gets all connectors from ConnectorManager and registers them
+        as tools with tool_type=MCP. This operation is idempotent -
+        connectors that already have corresponding tools are skipped.
+
+        Returns:
+            Dict with:
+                - status: "success" or "error"
+                - synced: List of newly synced tool_ids
+                - skipped: List of tool_ids that already existed
+                - errors: List of error messages for failed syncs
+                - message: Optional error message if ConnectorManager unavailable
+
+        Note:
+            Requires 'connector.manager' to be registered in the DI container.
+            If not available, returns an error status with appropriate message.
+        """
+        from echolib.di import container
+
+        synced: List[str] = []
+        skipped: List[str] = []
+        errors: List[str] = []
+
+        # Attempt to get ConnectorManager from DI container
+        try:
+            connector_manager = container.resolve('connector.manager')
+        except KeyError:
+            logger.warning("ConnectorManager not available in DI container")
+            return {
+                "status": "error",
+                "synced": [],
+                "skipped": [],
+                "errors": [],
+                "message": "ConnectorManager not available. Ensure 'connector.manager' is registered in the DI container."
+            }
+
+        # Get all registered connectors
+        try:
+            connectors = connector_manager.list()
+        except Exception as e:
+            logger.error(f"Failed to list connectors: {e}")
+            return {
+                "status": "error",
+                "synced": [],
+                "skipped": [],
+                "errors": [f"Failed to list connectors: {str(e)}"],
+                "message": "Failed to retrieve connectors from ConnectorManager"
+            }
+
+        logger.info(f"Found {len(connectors)} connectors to sync")
+
+        for connector in connectors:
+            connector_name = connector.name
+            tool_id = f"tool_mcp_{connector_name}"
+
+            # Check if tool already exists (idempotent)
+            existing = self.get(tool_id)
+            if existing:
+                logger.debug(f"Tool {tool_id} already exists, skipping")
+                skipped.append(tool_id)
+                continue
+
+            try:
+                # Create ToolDef for the connector
+                tool = ToolDef(
+                    tool_id=tool_id,
+                    name=f"{connector_name.title()} MCP Connector",
+                    description=f"MCP connector for {connector_name}",
+                    tool_type=ToolType.MCP,
+                    input_schema={
+                        "type": "object",
+                        "properties": {
+                            "payload": {"type": "object"}
+                        }
+                    },
+                    output_schema={"type": "object"},
+                    execution_config={
+                        "connector_name": connector_name,
+                        "source": "connector_sync"
+                    },
+                    status="active",
+                    tags=["mcp", "connector", "synced"]
+                )
+
+                # Register the tool
+                self.register(tool)
+                synced.append(tool_id)
+                logger.info(f"Synced connector '{connector_name}' as tool '{tool_id}'")
+
+            except Exception as e:
+                error_msg = f"Failed to sync connector '{connector_name}': {str(e)}"
+                logger.error(error_msg)
+                errors.append(error_msg)
+
+        logger.info(
+            f"Connector sync complete: {len(synced)} synced, "
+            f"{len(skipped)} skipped, {len(errors)} errors"
+        )
+
+        return {
+            "status": "success",
+            "synced": synced,
+            "skipped": skipped,
+            "errors": errors
+        }

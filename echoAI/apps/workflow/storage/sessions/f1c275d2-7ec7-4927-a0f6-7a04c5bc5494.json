@@ -1,0 +1,40 @@
+{
+  "session_id": "f1c275d2-7ec7-4927-a0f6-7a04c5bc5494",
+  "workflow_id": "wf_31876228707f4b5d9b000ce042540ef5",
+  "workflow_mode": "draft",
+  "workflow_version": null,
+  "created_at": "2026-01-28T08:49:11.600576",
+  "last_activity": "2026-01-28T08:49:54.359926",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Started testing workflow: wf_31876228707f4b5d9b000ce042540ef5",
+      "timestamp": "2026-01-28T08:49:11.600576",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "user",
+      "content": "Evaluate the following candidate for the role of AI / ML Engineer using the resume content below. Assess technical fit, strengths, gaps, and readiness for an AI/ML engineering role. Calculate an overall fit score (0\u2013100) and recommend whether the candidate should move forward in the hiring process or be rejected.\n\nResume Content:\nCandidate Name: Shashank Singh\nSummary: AI Engineer with hands-on experience in Python, Generative AI, LLMs, RAG pipelines, and agent-based systems. Skilled in designing and deploying AI-driven solutions using modern ML techniques, with a strong foundation in data analytics and system architecture. Previously managed high-impact production systems and key enterprise accounts, bringing a reliability-first mindset to building scalable, business-focused applications.\n\nEducation: Bachelor of Technology in Computer Science Engineering, DIT University, Dehradun. Graduated July 2024 with 8.31 CGPA.\n\nSkills: Python; Machine Learning; Scikit-learn; Generative AI; Open-source LLMs; Prompt Engineering; LangChain; RAG; Agentic AI; Multi-Agent Systems; FAISS; MySQL; PostgreSQL; FastAPI; Streamlit; LangGraph; CrewAI; AutoGen; Kafka; Azure Cloud Services; Azure Foundry; Git/GitHub; MobiControl (MDM); SSMS; Client Communication; Problem-solving; Teamwork.\n\nExperience:\n\u2013 Executive Software Developer at KPMG India (Sept 2025 \u2013 Present): Built production-grade Generative AI applications, designed agentic and multi-agent workflows using LangGraph and CrewAI, and developed scalable FastAPI backends with strong error handling and modular architecture.\n\u2013 Technical Analyst at SOTI (July 2024 \u2013 Sept 2025): Managed enterprise systems, performed root-cause analysis across application, database, and infrastructure layers, and supported production environments.\n\u2013 Technical Support Associate Intern at SOTI (Feb 2024 \u2013 June 2024): Provided end-to-end technical support, database management, and networking/firewall troubleshooting.\n\nProjects: agentic workflows, AI chatbot, real estate price prediction using ML, interactive AI chatbot using OpenAI and Streamlit, MCQ generator using OpenAI and LangChain, and Python-based web server log analysis.\n\nBased on this resume, evaluate the candidate\u2019s suitability for an AI / ML Engineer role, identify strengths and gaps relative to the role, compute a fit score, and provide a clear hire or reject recommendation.",
+      "timestamp": "2026-01-28T08:49:11.647416",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "Shashank Singh is a strong candidate for an AI/ML Engineer role. His resume demonstrates a clear focus on AI and ML with hands-on experience in LLMs, Generative AI, RAG, agentic AI, and multi-agent systems. He is proficient in modern ML frameworks (Scikit-learn), Python, and has experience with backend development (FastAPI, Streamlit) and production deployment. The professional journey from SOTI into KPMG shows progression in technical depth and enterprise exposure, supplemented by relevant projects.\n\nStrengths:\n- Deep experience in generative AI and LLMs (OpenAI, LangChain, RAG, MCQ generator)\n- Strong backend and infrastructure skills (FastAPI, LangGraph, Kafka, Azure Foundry, MobiControl, MLOps tools, SSMS, DB management)\n- Production systems experience (KPMG executive software developer, agentic workflows, error handling, modular architecture)\n- Communication and teamwork, including client interaction\n- Educational background (BTech CS, 8.31 CGPA)\n- Active open-source community engagement (LangChain, FAISS, Agentic AI frameworks)\n\nAreas for improvement or gaps:\n- Limited experience in traditional ML pipelines and classical ML (Scikit-learn projects are basic and the background is mostly in generative AI and NLP)\n- Lack of explicit experience in data engineering, ETL pipelines, or big data tools (Apache Spark, Databricks)\n- No published research, open-source library contributions, or academic publications\n- Less direct machine learning model training, tuning, and deployment experience in production (though backend deployment is noted)\n- Gaps in cloud infrastructure beyond Azure Foundry (AWS, GCP, SageMaker, etc. not mentioned)\n- Lack of experience with computer vision, reinforcement learning, or deep learning frameworks (PyTorch, TensorFlow) beyond basic usage\n\nOverall Fit Score: 82/100\n\nRecommendation: Move forward in the hiring process. Shashank Singh demonstrates a solid technical fit for an AI/ML Engineer role, especially for generative AI, LLMs, and agentic systems, with a track record in production and backend development. His skills are aligned closely with the modern demands of leading AI engineering positions. However, the resume could be strengthened by highlighting additional ML training, data engineering experience, and contributions to open-source or research, which would further improve the candidate\u2019s overall profile.",
+      "timestamp": "2026-01-28T08:49:54.359926",
+      "agent_id": null,
+      "metadata": {
+        "execution_status": "completed"
+      }
+    }
+  ],
+  "context": {
+    "workflow_name": "Talent Acquisition Workflow"
+  },
+  "run_ids": [
+    "run_7ecd736c9b0a4ee9af0971c6a2cc9dba"
+  ],
+  "message_count": 3
+}

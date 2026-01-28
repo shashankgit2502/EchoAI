@@ -1,0 +1,28 @@
+{
+  "agent_id": "agt_56a18d6df2b74af1a5f25e1509e39a26",
+  "name": "Web Search Agent",
+  "role": "Web search executor",
+  "goal": "Retrieve relevant information from the web based on user query",
+  "description": "The agent takes a search query as input, performs a web search using an API, and returns a list of relevant results.",
+  "llm": {
+    "temperature": 0.3
+  },
+  "tools": [],
+  "input_schema": [
+    "query"
+  ],
+  "output_schema": [
+    "results"
+  ],
+  "constraints": {
+    "max_steps": 10,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "created_at": "2026-01-28T08:00:46.741737",
+    "registered_at": "2026-01-28T08:00:46.741737"
+  }
+}

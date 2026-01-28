@@ -425,7 +425,7 @@
                     <div class="flex-1 overflow-y-auto p-4 space-y-4">
                         <div class="mb-2">
                             <div class="text-xs font-bold text-slate-700 mb-2">Chat with Workflow</div>
-                            <div class="space-y-2 max-h-64 overflow-y-auto bg-white border rounded-lg p-3">
+                            <div class="space-y-2 max-h-[500px] overflow-y-auto bg-white border rounded-lg p-3">
                                 <div v-if="chatMessages.length === 0" class="text-[10px] text-slate-400">
                                     No chat yet. Start the conversation below.
                                 </div>
@@ -3657,7 +3657,33 @@
                         }
 
                         const data = await response.json();
-                        const botMessage = data.response || data.message || JSON.stringify(data);
+                        let botMessage = data.response || data.message || JSON.stringify(data);
+
+                        // If response looks like a Python dict string, extract the meaningful content
+                        if (typeof botMessage === 'string' && botMessage.startsWith("{'")) {
+                            try {
+                                // Convert Python dict syntax to JSON
+                                const jsonStr = botMessage
+                                    .replace(/'/g, '"')
+                                    .replace(/True/g, 'true')
+                                    .replace(/False/g, 'false')
+                                    .replace(/None/g, 'null');
+
+                                const parsed = JSON.parse(jsonStr);
+                                // Prefer full output fields over preview/truncated versions
+                                botMessage = parsed.final_output || parsed.output || parsed.result || parsed.message || parsed.output_preview || botMessage;
+                            } catch (e) {
+                                // If JSON parsing fails, try regex extraction - prefer full output fields
+                                let match = botMessage.match(/["']?(?:final_output|output|result)["']?\s*:\s*["'](.+?)["']\s*[,}]/s);
+                                if (!match) {
+                                    match = botMessage.match(/output_preview["']?\s*:\s*["'](.+?)["']\s*,\s*["']?timestamp/);
+                                }
+                                if (match) {
+                                    botMessage = match[1].replace(/\\"/g, '"').replace(/\\'/g, "'").replace(/\\n/g, '\n');
+                                }
+                            }
+                        }
+
                         const assistantTimestamp = new Date().toLocaleTimeString();
                         chatMessages.value.push({
                             role: 'assistant',

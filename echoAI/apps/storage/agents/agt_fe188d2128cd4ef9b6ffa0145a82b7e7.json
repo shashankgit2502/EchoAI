@@ -1,0 +1,41 @@
+{
+  "agent_id": "agt_fe188d2128cd4ef9b6ffa0145a82b7e7",
+  "name": "Partner Escalation",
+  "role": "Human approval gate",
+  "goal": "",
+  "prompt": "",
+  "description": "HITL node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "HITL",
+    "ui_layout": {
+      "x": 1600,
+      "y": 150,
+      "icon": "👤",
+      "color": "#06b6d4"
+    },
+    "created_at": "2026-01-28T07:48:52.230991",
+    "hitl_config": {
+      "title": "",
+      "message": "Deal has critical risks requiring partner decision",
+      "priority": "critical",
+      "allowEdit": true,
+      "allowDefer": false
+    },
+    "registered_at": "2026-01-28T07:48:52.528333"
+  }
+}

@@ -1,103 +1,103 @@
 {
   "workflow_id": "wf_e104b9133680427294953cbe360daf8c",
-  "name": "Imported Workflow",
-  "description": "Created from canvas on 2026-01-27",
+  "name": "M&A Due Diligence Workflow",
+  "description": "Created from canvas on 2026-01-28",
   "status": "testing",
   "version": "0.1",
   "execution_model": "hybrid",
   "agents": [
-    "agt_b4163e2c5b9e40e5a38c12acec779b0f",
-    "agt_38100a9a4cbc4b7886251051ab39562d",
-    "agt_ef52b6b5c1914144859b98862f30e718",
-    "agt_bf3b7f110d704ab39ba4706e490bf320",
-    "agt_1641e95d64a647f1bfd415d1ea88c601",
-    "agt_ce853875564945fca13bd6cdd7bbff86",
-    "agt_beb94444aef546fc8cd79ec54cb5c5fb",
-    "agt_16e383b744384261a352dcf442e81139",
-    "agt_9232a0eb7e2d48739212122fc894bf85",
-    "agt_d95be020d5524ebf84c6d97a912ab17c",
-    "agt_10447f1add484793a4f07085cae34ed5",
-    "agt_8bdbf21a97ce441a9210cab983e0bef1",
-    "agt_75bbd32aca8541c48c5631e41093fa5d"
+    "agt_f7ba941f2bf24a1fa56225f9c778e82a",
+    "agt_4c29741becd24b17be0ac7c5a2fe1f4a",
+    "agt_3597b116d3eb4a58b47ecdf0cdb38cef",
+    "agt_9bc197ba8c2f40888599df24ba6d8443",
+    "agt_4471eff9e01b4963a02ba1b3fd68b349",
+    "agt_250596285a3744639769bd9eb20720bf",
+    "agt_4b70f58c906248b3b8324cc86cbc1a43",
+    "agt_0d90265400cf4f37914a21edfd448508",
+    "agt_fe188d2128cd4ef9b6ffa0145a82b7e7",
+    "agt_34d409e903da4b71aabd52c534bfe4c3",
+    "agt_0515d7efe7dc451d86c286c56b2f93a3",
+    "agt_5523d2e9be494d7a8b320e0fe41658cb",
+    "agt_f49d9daf35d545f993ca09785475b935"
   ],
   "connections": [
     {
-      "from": "agt_b4163e2c5b9e40e5a38c12acec779b0f",
-      "to": "agt_38100a9a4cbc4b7886251051ab39562d"
+      "from": "agt_f7ba941f2bf24a1fa56225f9c778e82a",
+      "to": "agt_4c29741becd24b17be0ac7c5a2fe1f4a"
     },
     {
-      "from": "agt_38100a9a4cbc4b7886251051ab39562d",
-      "to": "agt_ef52b6b5c1914144859b98862f30e718"
+      "from": "agt_4c29741becd24b17be0ac7c5a2fe1f4a",
+      "to": "agt_3597b116d3eb4a58b47ecdf0cdb38cef"
     },
     {
-      "from": "agt_38100a9a4cbc4b7886251051ab39562d",
-      "to": "agt_bf3b7f110d704ab39ba4706e490bf320"
+      "from": "agt_4c29741becd24b17be0ac7c5a2fe1f4a",
+      "to": "agt_9bc197ba8c2f40888599df24ba6d8443"
     },
     {
-      "from": "agt_38100a9a4cbc4b7886251051ab39562d",
-      "to": "agt_1641e95d64a647f1bfd415d1ea88c601"
+      "from": "agt_4c29741becd24b17be0ac7c5a2fe1f4a",
+      "to": "agt_4471eff9e01b4963a02ba1b3fd68b349"
     },
     {
-      "from": "agt_ef52b6b5c1914144859b98862f30e718",
-      "to": "agt_ce853875564945fca13bd6cdd7bbff86"
+      "from": "agt_3597b116d3eb4a58b47ecdf0cdb38cef",
+      "to": "agt_250596285a3744639769bd9eb20720bf"
     },
     {
-      "from": "agt_bf3b7f110d704ab39ba4706e490bf320",
-      "to": "agt_ce853875564945fca13bd6cdd7bbff86"
+      "from": "agt_9bc197ba8c2f40888599df24ba6d8443",
+      "to": "agt_250596285a3744639769bd9eb20720bf"
     },
     {
-      "from": "agt_1641e95d64a647f1bfd415d1ea88c601",
-      "to": "agt_ce853875564945fca13bd6cdd7bbff86"
+      "from": "agt_4471eff9e01b4963a02ba1b3fd68b349",
+      "to": "agt_250596285a3744639769bd9eb20720bf"
     },
     {
-      "from": "agt_ce853875564945fca13bd6cdd7bbff86",
-      "to": "agt_beb94444aef546fc8cd79ec54cb5c5fb"
+      "from": "agt_250596285a3744639769bd9eb20720bf",
+      "to": "agt_4b70f58c906248b3b8324cc86cbc1a43"
     },
     {
-      "from": "agt_beb94444aef546fc8cd79ec54cb5c5fb",
-      "to": "agt_16e383b744384261a352dcf442e81139"
+      "from": "agt_4b70f58c906248b3b8324cc86cbc1a43",
+      "to": "agt_0d90265400cf4f37914a21edfd448508"
     },
     {
-      "from": "agt_16e383b744384261a352dcf442e81139",
-      "to": "agt_9232a0eb7e2d48739212122fc894bf85"
+      "from": "agt_0d90265400cf4f37914a21edfd448508",
+      "to": "agt_fe188d2128cd4ef9b6ffa0145a82b7e7"
     },
     {
-      "from": "agt_16e383b744384261a352dcf442e81139",
-      "to": "agt_d95be020d5524ebf84c6d97a912ab17c"
+      "from": "agt_0d90265400cf4f37914a21edfd448508",
+      "to": "agt_34d409e903da4b71aabd52c534bfe4c3"
     },
     {
-      "from": "agt_16e383b744384261a352dcf442e81139",
-      "to": "agt_10447f1add484793a4f07085cae34ed5"
+      "from": "agt_0d90265400cf4f37914a21edfd448508",
+      "to": "agt_0515d7efe7dc451d86c286c56b2f93a3"
     },
     {
-      "from": "agt_9232a0eb7e2d48739212122fc894bf85",
-      "to": "agt_8bdbf21a97ce441a9210cab983e0bef1"
+      "from": "agt_fe188d2128cd4ef9b6ffa0145a82b7e7",
+      "to": "agt_5523d2e9be494d7a8b320e0fe41658cb"
     },
     {
-      "from": "agt_d95be020d5524ebf84c6d97a912ab17c",
-      "to": "agt_8bdbf21a97ce441a9210cab983e0bef1"
+      "from": "agt_34d409e903da4b71aabd52c534bfe4c3",
+      "to": "agt_5523d2e9be494d7a8b320e0fe41658cb"
     },
     {
-      "from": "agt_10447f1add484793a4f07085cae34ed5",
-      "to": "agt_8bdbf21a97ce441a9210cab983e0bef1"
+      "from": "agt_0515d7efe7dc451d86c286c56b2f93a3",
+      "to": "agt_5523d2e9be494d7a8b320e0fe41658cb"
     },
     {
-      "from": "agt_8bdbf21a97ce441a9210cab983e0bef1",
-      "to": "agt_75bbd32aca8541c48c5631e41093fa5d"
+      "from": "agt_5523d2e9be494d7a8b320e0fe41658cb",
+      "to": "agt_f49d9daf35d545f993ca09785475b935"
     }
   ],
   "state_schema": {
     "target_company": "string",
-    "deal_size": "number",
+    "deal_size": "string",
     "industry": "string",
-    "documents": "array",
-    "risk_score": "number",
+    "documents": "string",
+    "risk_score": "string",
     "recommendation": "string",
     "report_url": "string"
   },
   "metadata": {
     "created_by": "workflow_builder",
-    "created_at": "2026-01-27T20:22:43.627424",
+    "created_at": "2026-01-28T07:48:52.230991",
     "canvas_layout": {
       "width": 5000,
       "height": 5000
@@ -107,8 +107,8 @@
   "human_in_loop": {
     "enabled": true,
     "review_points": [
-      "agt_9232a0eb7e2d48739212122fc894bf85",
-      "agt_d95be020d5524ebf84c6d97a912ab17c"
+      "agt_fe188d2128cd4ef9b6ffa0145a82b7e7",
+      "agt_34d409e903da4b71aabd52c534bfe4c3"
     ]
   }
 }

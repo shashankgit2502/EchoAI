@@ -354,6 +354,45 @@ async def discover_tools() -> Dict[str, Any]:
         )
 
 
+@router.post('/discover/connectors')
+async def discover_connectors() -> Dict[str, Any]:
+    """
+    Sync registered MCP connectors as tools.
+
+    Gets all connectors from ConnectorManager and registers them
+    as tools with tool_type=MCP in the ToolRegistry. This operation
+    is idempotent - connectors that already have corresponding tools
+    are skipped.
+
+    Returns:
+        Dict with:
+            - status: "success" or "error"
+            - synced_count: Number of newly synced tools
+            - tools: List of newly synced tool_ids
+            - skipped: List of tool_ids that already existed
+            - errors: List of error messages for failed syncs
+            - message: Optional error message if operation failed
+    """
+    try:
+        registry = get_registry()
+        result = registry.sync_connectors_as_tools()
+
+        # Transform result to match API response format
+        return {
+            "status": result["status"],
+            "synced_count": len(result["synced"]),
+            "tools": result["synced"],
+            "skipped": result["skipped"],
+            "errors": result["errors"],
+            "message": result.get("message")
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Connector discovery failed: {str(e)}"
+        )
+
+
 # ==============================================================================
 # Agent-Tool Integration Routes
 # ==============================================================================

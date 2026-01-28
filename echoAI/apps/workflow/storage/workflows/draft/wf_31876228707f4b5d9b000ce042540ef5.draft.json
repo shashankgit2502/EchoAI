@@ -1,67 +1,67 @@
 {
   "workflow_id": "wf_31876228707f4b5d9b000ce042540ef5",
   "name": "Talent Acquisition Workflow",
-  "description": "Created from canvas on 2026-01-27",
+  "description": "Created from canvas on 2026-01-28",
   "status": "draft",
   "version": "0.1",
   "execution_model": "hybrid",
   "agents": [
-    "agt_b0ff5366f3404680a728e5b88ddf12a9",
-    "agt_0f1e4cc7ffb4443893601c8a26db3cef",
-    "agt_a64b50b425b6463590ae43e7587dc394",
-    "agt_7731ad8f1f1a45df8da0c967eae95414",
-    "agt_37b2fbafcb5f4864b673e62c52a8fd7b",
-    "agt_37dd6b953d8e40069b8b9a4f3f320b58",
-    "agt_922150a3320f4201a6594526840fe94c",
-    "agt_e0458864c5e94f4c8753b097d2e831f4",
-    "agt_23ee064743c54ddf89e3e08ea6c91c28",
-    "agt_dda63ebde127479b9ffeb5c8b120b0b3",
-    "agt_05f22008726a4cfbbfcbd9ac66b5bc5d"
+    "agt_60ef31505c794d9b8ed1d59064254a35",
+    "agt_144b436dd9dd4988be4cc381ec7596f6",
+    "agt_06622907b2c141a5819c83d7a5e55433",
+    "agt_6139228408b64dc5ac985e896a7540ed",
+    "agt_fa93b0ae0e8d49bf9c60602d255b094d",
+    "agt_7a95fb3d37fb48c49b7a49b7f4da6359",
+    "agt_d90e446d1b79428ba5562fde46e8814c",
+    "agt_6083ab8e75cf4756a7f36e7e1d162a4f",
+    "agt_17b9f9c0fa294fb6b5f0df67ef374b83",
+    "agt_d0f126934361454990e86fda1574adba",
+    "agt_efb5fdf43c4042e1a5a351a478b551e6"
   ],
   "connections": [
     {
-      "from": "agt_b0ff5366f3404680a728e5b88ddf12a9",
-      "to": "agt_0f1e4cc7ffb4443893601c8a26db3cef"
+      "from": "agt_60ef31505c794d9b8ed1d59064254a35",
+      "to": "agt_144b436dd9dd4988be4cc381ec7596f6"
     },
     {
-      "from": "agt_0f1e4cc7ffb4443893601c8a26db3cef",
-      "to": "agt_a64b50b425b6463590ae43e7587dc394"
+      "from": "agt_144b436dd9dd4988be4cc381ec7596f6",
+      "to": "agt_06622907b2c141a5819c83d7a5e55433"
     },
     {
-      "from": "agt_a64b50b425b6463590ae43e7587dc394",
-      "to": "agt_7731ad8f1f1a45df8da0c967eae95414"
+      "from": "agt_06622907b2c141a5819c83d7a5e55433",
+      "to": "agt_6139228408b64dc5ac985e896a7540ed"
     },
     {
-      "from": "agt_7731ad8f1f1a45df8da0c967eae95414",
-      "to": "agt_37b2fbafcb5f4864b673e62c52a8fd7b"
+      "from": "agt_6139228408b64dc5ac985e896a7540ed",
+      "to": "agt_fa93b0ae0e8d49bf9c60602d255b094d"
     },
     {
-      "from": "agt_37b2fbafcb5f4864b673e62c52a8fd7b",
-      "to": "agt_37dd6b953d8e40069b8b9a4f3f320b58"
+      "from": "agt_fa93b0ae0e8d49bf9c60602d255b094d",
+      "to": "agt_7a95fb3d37fb48c49b7a49b7f4da6359"
     },
     {
-      "from": "agt_37b2fbafcb5f4864b673e62c52a8fd7b",
-      "to": "agt_922150a3320f4201a6594526840fe94c"
+      "from": "agt_fa93b0ae0e8d49bf9c60602d255b094d",
+      "to": "agt_d90e446d1b79428ba5562fde46e8814c"
     },
     {
-      "from": "agt_37dd6b953d8e40069b8b9a4f3f320b58",
-      "to": "agt_05f22008726a4cfbbfcbd9ac66b5bc5d"
+      "from": "agt_7a95fb3d37fb48c49b7a49b7f4da6359",
+      "to": "agt_efb5fdf43c4042e1a5a351a478b551e6"
     },
     {
-      "from": "agt_922150a3320f4201a6594526840fe94c",
-      "to": "agt_e0458864c5e94f4c8753b097d2e831f4"
+      "from": "agt_d90e446d1b79428ba5562fde46e8814c",
+      "to": "agt_6083ab8e75cf4756a7f36e7e1d162a4f"
     },
     {
-      "from": "agt_e0458864c5e94f4c8753b097d2e831f4",
-      "to": "agt_23ee064743c54ddf89e3e08ea6c91c28"
+      "from": "agt_6083ab8e75cf4756a7f36e7e1d162a4f",
+      "to": "agt_17b9f9c0fa294fb6b5f0df67ef374b83"
     },
     {
-      "from": "agt_23ee064743c54ddf89e3e08ea6c91c28",
-      "to": "agt_dda63ebde127479b9ffeb5c8b120b0b3"
+      "from": "agt_17b9f9c0fa294fb6b5f0df67ef374b83",
+      "to": "agt_d0f126934361454990e86fda1574adba"
     },
     {
-      "from": "agt_dda63ebde127479b9ffeb5c8b120b0b3",
-      "to": "agt_05f22008726a4cfbbfcbd9ac66b5bc5d"
+      "from": "agt_d0f126934361454990e86fda1574adba",
+      "to": "agt_efb5fdf43c4042e1a5a351a478b551e6"
     }
   ],
   "state_schema": {
@@ -69,13 +69,13 @@
     "position_id": "string",
     "resume_url": "string",
     "cover_letter": "string",
-    "fit_score": "number",
+    "fit_score": "string",
     "decision": "string",
     "next_stage": "string"
   },
   "metadata": {
     "created_by": "workflow_builder",
-    "created_at": "2026-01-27T21:30:14.725978",
+    "created_at": "2026-01-28T08:33:12.548082",
     "canvas_layout": {
       "width": 5000,
       "height": 5000
@@ -84,7 +84,7 @@
   "human_in_loop": {
     "enabled": true,
     "review_points": [
-      "agt_23ee064743c54ddf89e3e08ea6c91c28"
+      "agt_17b9f9c0fa294fb6b5f0df67ef374b83"
     ]
   }
 }

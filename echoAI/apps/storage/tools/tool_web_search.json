@@ -1,7 +1,7 @@
 {
   "tool_id": "tool_web_search",
   "name": "Web Search",
-  "description": "Performs web searches using multiple search providers (Google, Bing, DuckDuckGo). Returns relevant web results with titles, URLs, and snippets",
+  "description": "Performs web searches using Bing search provider. Returns relevant web results with titles, URLs, and snippets",
   "tool_type": "local",
   "input_schema": {
     "type": "object",
@@ -13,11 +13,9 @@
       "provider": {
         "type": "string",
         "enum": [
-          "google",
-          "bing",
-          "duckduckgo"
+          "bing"
         ],
-        "default": "duckduckgo",
+        "default": "bing",
         "description": "Search provider to use"
       },
       "max_results": {
@@ -96,14 +94,12 @@
     "web",
     "internet",
     "research",
-    "google",
-    "bing",
-    "duckduckgo"
+    "bing"
   ],
   "status": "active",
   "metadata": {
     "author": "EchoAI",
     "category": "research"
   },
-  "_saved_at": "2026-01-26T07:06:32.214251"
+  "_saved_at": "2026-01-28T08:11:06.331848"
 }

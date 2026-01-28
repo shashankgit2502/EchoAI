@@ -448,6 +448,9 @@ TOTAL PROGRESS:              [███████░░░]  70%
 | 2026-01-26 | `echoAI/AgentTools/*/tool_manifest.json` | CREATED | Phase 4: Created 5 tool manifests (calculator, web_search, file_reader, code_generator, code_reviewer) with complete JSON schemas | COMPLETED |
 | 2026-01-26 | `echoAI/AgentTools/*/service.py` | ENHANCED | Phase 4: Updated import paths in 5 service files to use AgentTools prefix instead of old paths | COMPLETED |
 | 2026-01-26 | `apps/tool/registry.py` | ENHANCED | Phase 4: Enhanced discover_local_tools() and _load_manifest() with robust tool discovery, ToolType enum conversion, idempotent registration | COMPLETED |
+| 2026-01-28 | `apps/tool/registry.py` | ENHANCED | MCP Integration: Added sync_connectors_as_tools() method to sync MCP connectors from ConnectorManager to ToolRegistry | COMPLETED |
+| 2026-01-28 | `apps/tool/routes.py` | ENHANCED | MCP Integration: Added POST /tools/discover/connectors route to trigger connector-to-tool sync | COMPLETED |
+| 2026-01-28 | `documents/tools_plan.md` | ENHANCED | Added Appendix D: MCP Connector Integration As Tool with full analysis and implementation design | COMPLETED |
 
 ---
 
@@ -469,6 +472,7 @@ TOTAL PROGRESS:              [███████░░░]  70%
 | 2026-01-26 | CrewAI tool wrapper for agent integration | CrewAI handles tool decision logic | Custom tool invocation logic (rejected - reinventing wheel) |
 | 2026-01-26 | Preserve frontend tool type strings | UI tool modal and canvas behavior must remain unchanged | Backend-side type normalization (rejected - breaks existing workflows) |
 | 2026-01-26 | Inject ToolRegistry into NodeMapper | Enables real tool resolution instead of placeholder strings | Global registry singleton (rejected - harder to test) |
+| 2026-01-28 | Sync-based MCP connector integration | Explicit sync route gives control over when connectors appear as tools; idempotent design | Auto-sync on connector registration (rejected - adds complexity, unexpected side effects) |
 
 ---
 
@@ -506,6 +510,7 @@ TOTAL PROGRESS:              [███████░░░]  70%
 - **Phase 2 Completion (2026-01-26)**: ToolExecutor implements full execution pipeline with support for LOCAL, MCP, and API tool types. Dynamic module loading with instance caching for local tools. Async/sync method handling with timeout support. Routes completely rewritten with 15 endpoints covering all CRUD operations, discovery, validation, and health checks. MCP integration uses httpx for async HTTP calls to connector endpoint.
 - **Phase 3 Completion (2026-01-26)**: CrewAI adapter now binds tools to agents during workflow execution. Implemented _get_tool_executor(), _get_tool_registry(), _create_crewai_tool_wrapper(), and _bind_tools_to_agent() methods. All three workflow types (sequential, hierarchical, parallel) now pass tools to CrewAI Agent constructor. DynamicCrewAITool class wraps ToolDef and handles async-to-sync conversion for CrewAI compatibility. Tool execution errors are handled gracefully with JSON error responses. Message tracking includes tool binding information. Testing tasks (3.3, 3.4) deferred to Phase 5.
 - **Phase 4 Completion (2026-01-26)**: AgentTools folder structure established with 5 production-ready tools. Renamed "Tools I made" to "AgentTools" for standardized naming. Created comprehensive tool_manifest.json files with complete JSON schemas for calculator, web_search, file_reader, code_generator, and code_reviewer. Updated all import paths in service files to use AgentTools prefix. Enhanced discover_local_tools() with robust manifest parsing, ToolType enum conversion with multiple fallback strategies, and idempotent registration. All tools now discoverable via POST /tools/discover endpoint.
+- **MCP Connector Integration (2026-01-28)**: Added bridge between Connector system and Tool system. New `sync_connectors_as_tools()` method in ToolRegistry converts registered MCP connectors into tools with `tool_type=MCP`. New `POST /tools/discover/connectors` route triggers the sync. Idempotent design - skips already-synced connectors. Graceful handling when ConnectorManager is unavailable. This enables MCP connectors to appear in the tools list alongside local tools. Full execution logic deferred for post-demo implementation.
 
 ### Lessons Learned
 - Lazy initialization pattern in container.py prevents startup overhead when tool system is not immediately needed

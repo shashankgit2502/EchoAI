@@ -1,0 +1,51 @@
+{
+  "agent_id": "agt_0d90265400cf4f37914a21edfd448508",
+  "name": "Risk Assessment Gate",
+  "role": "Conditional branching",
+  "goal": "",
+  "prompt": "",
+  "description": "Conditional node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Conditional",
+    "ui_layout": {
+      "x": 1350,
+      "y": 300,
+      "icon": "🔀",
+      "color": "#8b5cf6"
+    },
+    "created_at": "2026-01-28T07:48:52.230991",
+    "branches": [
+      {
+        "type": "if",
+        "condition": "risk_score > 70",
+        "targetNodeId": 1008
+      },
+      {
+        "type": "elif",
+        "condition": "risk_score > 40",
+        "targetNodeId": 1009
+      },
+      {
+        "type": "else",
+        "condition": "",
+        "targetNodeId": 1010
+      }
+    ],
+    "registered_at": "2026-01-28T07:48:52.500286"
+  }
+}

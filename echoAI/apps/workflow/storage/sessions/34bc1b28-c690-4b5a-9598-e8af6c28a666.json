@@ -1,0 +1,40 @@
+{
+  "session_id": "34bc1b28-c690-4b5a-9598-e8af6c28a666",
+  "workflow_id": "wf_e104b9133680427294953cbe360daf8c",
+  "workflow_mode": "draft",
+  "workflow_version": null,
+  "created_at": "2026-01-28T07:49:05.762970",
+  "last_activity": "2026-01-28T07:49:48.113712",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Started testing workflow: wf_e104b9133680427294953cbe360daf8c",
+      "timestamp": "2026-01-28T07:49:05.762970",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "user",
+      "content": "Perform due diligence on Acme Corp, a $50M deal in the healthcare industry.",
+      "timestamp": "2026-01-28T07:49:05.823138",
+      "agent_id": null,
+      "metadata": {}
+    },
+    {
+      "role": "assistant",
+      "content": "{'agent': 'agt_72ea54fab68d4092b69009d46d31ad7d', 'name': 'Report Generator', 'role': 'Autonomous AI agent', 'tools_bound': 0, 'tool_names': [], 'original_request': 'Perform due diligence on Acme Corp, a $50M deal in the healthcare industry.', 'had_previous_context': True, 'had_parallel_context': True, 'output_preview': 'The comprehensive due diligence on Acme Corp for the proposed $50M deal in the healthcare industry has been completed, yielding a detailed and actionable legal risk analysis. The analysis systematically evaluated financial statements, reviewed regulatory compliance, examined intellectual property and contractual obligations, and assessed litigation history and potential liabilities. Key findings include: (1) Acme Corp maintains adequate financial health but exhibits moderate leverage and inconsi', 'timestamp': '2026-01-28T07:49:48.110710'}",
+      "timestamp": "2026-01-28T07:49:48.113712",
+      "agent_id": null,
+      "metadata": {
+        "execution_status": "completed"
+      }
+    }
+  ],
+  "context": {
+    "workflow_name": "M&A Due Diligence Workflow"
+  },
+  "run_ids": [
+    "run_3973c4d445024700864568a8b786d434"
+  ],
+  "message_count": 3
+}

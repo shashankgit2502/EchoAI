@@ -1,0 +1,39 @@
+{
+  "agent_id": "agt_8211cd2bd3cd4023a110525ab12f58c5",
+  "name": "DD Request Received",
+  "role": "Workflow entry point",
+  "goal": "",
+  "prompt": "",
+  "description": "Start node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [
+    "target_company",
+    "deal_size",
+    "industry",
+    "documents"
+  ],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Start",
+    "ui_layout": {
+      "x": 100,
+      "y": 300,
+      "icon": "▶️",
+      "color": "#10b981"
+    },
+    "created_at": "2026-01-28T07:49:00.447546",
+    "registered_at": "2026-01-28T07:49:00.506806"
+  }
+}

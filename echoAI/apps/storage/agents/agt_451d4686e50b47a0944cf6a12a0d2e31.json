@@ -1,0 +1,36 @@
+{
+  "agent_id": "agt_451d4686e50b47a0944cf6a12a0d2e31",
+  "name": "Web Search Agent",
+  "role": "Autonomous AI agent",
+  "goal": "",
+  "prompt": "",
+  "description": "Agent node",
+  "llm": {
+    "model": "",
+    "temperature": 0.3,
+    "max_tokens": 4000
+  },
+  "tools": [
+    "tool_web_search"
+  ],
+  "input_schema": [],
+  "output_schema": [],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "Agent",
+    "ui_layout": {
+      "x": 380,
+      "y": 100,
+      "icon": "🔶",
+      "color": "#f59e0b"
+    },
+    "created_at": "2026-01-28T08:26:19.383013",
+    "registered_at": "2026-01-28T08:26:19.436583"
+  }
+}

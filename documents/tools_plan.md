@@ -1462,4 +1462,166 @@ container.register('tool.service', lambda: _tool_service)
 
 ---
 
+## Appendix D: MCP Connector Integration As Tool
+
+**Added**: 2026-01-28
+**Status**: READY FOR IMPLEMENTATION
+
+### Problem Statement
+
+From the original problem list (Section 1, Item #6):
+> **MCP Connector Not Integrated As Tool**
+> - MCP routes exist (`/connectors/mcp/invoke`)
+> - But cannot be used as a tool by agents
+> - Separate invocation path
+
+### Current State Analysis
+
+#### Frontend (`workflow_builder_ide.html`)
+
+| Component | Location | Status |
+|-----------|----------|--------|
+| MCP Server tool type in dropdown | Line 927-932 | ✅ EXISTS |
+| `addBuiltinTool('mcp_server')` | Line 2882-2894 | ✅ WORKS |
+| MCP tool config modal | Line 1595-1604 | ✅ EXISTS |
+| MCP Node inspector | Line 1414-1424 | ✅ EXISTS |
+| **Hardcoded server options** | Line 1418-1423 | ⚠️ Static list (Google Drive, Slack, GitHub, PostgreSQL, Custom) |
+
+#### Backend - Tool System
+
+| Component | Location | Status |
+|-----------|----------|--------|
+| `ToolType.MCP` enum value | `echolib/types.py` | ✅ EXISTS |
+| `GET /tools/list/type/mcp` | `apps/tool/routes.py:145` | ✅ WORKS |
+| `_execute_mcp()` in ToolExecutor | `apps/tool/executor.py` | ✅ IMPLEMENTED |
+
+#### Backend - Connector System
+
+| Component | Location | Status |
+|-----------|----------|--------|
+| `ConnectorDef` model | `echolib/types.py:253` | ✅ Minimal (name + config only) |
+| `ConnectorManager.register/invoke/list` | `echolib/services.py:1416-1429` | ⚠️ Placeholder (invoke echoes payload) |
+| `POST /connectors/register` | `apps/connector/routes.py:14` | ✅ EXISTS |
+| `GET /connectors/list` | `apps/connector/routes.py:22` | ✅ EXISTS |
+
+### The Gap
+
+**There is no bridge between the Connector system and the Tool system.**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                     CURRENT STATE (DISCONNECTED)                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  Connector System                     Tool System                   │
+│  ┌────────────────────┐              ┌────────────────────┐        │
+│  │ ConnectorManager   │              │ ToolRegistry       │        │
+│  │ - register()       │   NO LINK    │ - register()       │        │
+│  │ - list()           │ ────────────│ - list_all()       │        │
+│  │ - invoke()         │              │ - list_by_type()   │        │
+│  └────────────────────┘              └────────────────────┘        │
+│                                                                     │
+│  Frontend expects tools from:        Frontend MCP dropdown shows:   │
+│  GET /tools/list                     Hardcoded options only         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Consequence:** When someone registers an MCP connector via `/connectors/register`, it does NOT appear in `GET /tools/list`. The frontend tools section only shows tools from `ToolRegistry`, not connectors.
+
+### Solution Design (Minimal - Display Only)
+
+Add a **sync/discovery route** to convert registered connectors into tools:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                     PROPOSED STATE (CONNECTED)                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  Connector System                     Tool System                   │
+│  ┌────────────────────┐              ┌────────────────────┐        │
+│  │ ConnectorManager   │    NEW       │ ToolRegistry       │        │
+│  │ - register()       │────ROUTE────▶│ - register()       │        │
+│  │ - list()           │   (sync)     │ - list_all()       │        │
+│  │ - invoke()         │              │ - list_by_type()   │        │
+│  └────────────────────┘              └────────────────────┘        │
+│                                                                     │
+│  POST /tools/discover/connectors                                    │
+│  - Gets all connectors from ConnectorManager.list()                 │
+│  - Creates ToolDef with tool_type="mcp" for each                   │
+│  - Registers in ToolRegistry (idempotent)                          │
+│  - Returns list of synced tools                                    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Implementation Tasks
+
+| Task ID | Description | File(s) | Status |
+|---------|-------------|---------|--------|
+| MCP-1 | Add `sync_connectors_as_tools()` method to ToolRegistry | `apps/tool/registry.py` | NOT STARTED |
+| MCP-2 | Add `POST /tools/discover/connectors` route | `apps/tool/routes.py` | NOT STARTED |
+| MCP-3 | (Optional) Update frontend to call discover/connectors on load | `workflow_builder_ide.html` | DEFERRED |
+
+### API Specification
+
+#### POST /tools/discover/connectors
+
+**Description**: Sync all registered MCP connectors as tools in the tool registry.
+
+**Request**: No body required
+
+**Response**:
+```json
+{
+  "status": "success",
+  "synced_count": 3,
+  "tools": [
+    {
+      "tool_id": "tool_mcp_github",
+      "name": "GitHub MCP Connector",
+      "tool_type": "mcp",
+      "source": "connector"
+    }
+  ],
+  "skipped": [],
+  "errors": []
+}
+```
+
+### Data Transformation
+
+When syncing a connector to a tool:
+
+```
+ConnectorDef                          ToolDef
+┌──────────────────────┐             ┌──────────────────────────────┐
+│ name: "github"       │ ──────────▶ │ tool_id: "tool_mcp_github"   │
+│ config: {            │             │ name: "GitHub MCP Connector" │
+│   endpoint: "...",   │             │ description: "MCP connector" │
+│   token: "..."       │             │ tool_type: ToolType.MCP      │
+│ }                    │             │ execution_config: {          │
+└──────────────────────┘             │   connector_name: "github",  │
+                                     │   source: "connector_sync"   │
+                                     │ }                            │
+                                     │ status: "active"             │
+                                     │ tags: ["mcp", "connector"]   │
+                                     └──────────────────────────────┘
+```
+
+### Future Enhancement (Post-Demo)
+
+**Planned**: Tool creation from natural language prompts
+
+The user has indicated that after the demo, the system will support creating tools (including MCP connectors) via natural language prompts. This will involve:
+
+1. LLM-based tool definition generation from user description
+2. Automatic connector registration
+3. Tool manifest generation
+4. Integration with the workflow designer
+
+This is OUT OF SCOPE for the current implementation.
+
+---
+
 **END OF PLAN**

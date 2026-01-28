@@ -1,89 +1,89 @@
 {
   "workflow_id": "wf_e104b9133680427294953cbe360daf8c",
   "name": "M&A Due Diligence Workflow",
-  "description": "Created from canvas on 2026-01-27",
+  "description": "Created from canvas on 2026-01-28",
   "status": "draft",
   "version": "0.1",
   "execution_model": "hybrid",
   "agents": [
-    "agt_492b727335044bdb9bff7b8244d6570e",
-    "agt_7926ad6a8e7b44b7b5070761819fb774",
-    "agt_7efdf011e69648f2963a02bb5339e7b1",
-    "agt_ec8315d98a1e494dad15879480ae2555",
-    "agt_c5af5443c92942c3a0589e804d36309e",
-    "agt_637fc8337be141b399f86e93021e9847",
-    "agt_5d1f4d08855e4674aecf4d35b3cdb36d",
-    "agt_f83ff87c266c42a1a78445bfc970bb3d",
-    "agt_6c61be7ad64143b796268b57a9f7ad65",
-    "agt_f9e294ce679b4a318393b00ed8a44e31",
-    "agt_b8ae3f6f26fa454f99c9cda112dd64af",
-    "agt_911666371e4549de892cf330d07e26fe",
-    "agt_65a5326000f54c93a9df1de87bb9c67b"
+    "agt_8211cd2bd3cd4023a110525ab12f58c5",
+    "agt_bf5449868fa94448a14df89d398c644e",
+    "agt_7ef08cca9af542b48c4bf097517a71bd",
+    "agt_73c0733541bb4101b12f779de2027077",
+    "agt_9017bf6f23ee42f78d7b27c32edfffe8",
+    "agt_583b4f906d584eb39dd0dece4ebded8a",
+    "agt_1490aa4c9f08499896700887fb2a37a2",
+    "agt_dd8507aa17fa4ad49e786d75eebfa1dc",
+    "agt_43c5afbe138444b5b98d9d3aa67c1961",
+    "agt_5d2a9d0f587f4d73a4473faf13172556",
+    "agt_72ea54fab68d4092b69009d46d31ad7d",
+    "agt_03dbe5ff341a4f83bab18663dcf934f1",
+    "agt_4c1b0758955e45d88a442e2141f9ac53"
   ],
   "connections": [
     {
-      "from": "agt_492b727335044bdb9bff7b8244d6570e",
-      "to": "agt_7926ad6a8e7b44b7b5070761819fb774"
+      "from": "agt_8211cd2bd3cd4023a110525ab12f58c5",
+      "to": "agt_bf5449868fa94448a14df89d398c644e"
     },
     {
-      "from": "agt_7926ad6a8e7b44b7b5070761819fb774",
-      "to": "agt_7efdf011e69648f2963a02bb5339e7b1"
+      "from": "agt_bf5449868fa94448a14df89d398c644e",
+      "to": "agt_7ef08cca9af542b48c4bf097517a71bd"
     },
     {
-      "from": "agt_7926ad6a8e7b44b7b5070761819fb774",
-      "to": "agt_ec8315d98a1e494dad15879480ae2555"
+      "from": "agt_bf5449868fa94448a14df89d398c644e",
+      "to": "agt_73c0733541bb4101b12f779de2027077"
     },
     {
-      "from": "agt_7926ad6a8e7b44b7b5070761819fb774",
-      "to": "agt_c5af5443c92942c3a0589e804d36309e"
+      "from": "agt_bf5449868fa94448a14df89d398c644e",
+      "to": "agt_9017bf6f23ee42f78d7b27c32edfffe8"
     },
     {
-      "from": "agt_7efdf011e69648f2963a02bb5339e7b1",
-      "to": "agt_637fc8337be141b399f86e93021e9847"
+      "from": "agt_7ef08cca9af542b48c4bf097517a71bd",
+      "to": "agt_583b4f906d584eb39dd0dece4ebded8a"
     },
     {
-      "from": "agt_ec8315d98a1e494dad15879480ae2555",
-      "to": "agt_637fc8337be141b399f86e93021e9847"
+      "from": "agt_73c0733541bb4101b12f779de2027077",
+      "to": "agt_583b4f906d584eb39dd0dece4ebded8a"
     },
     {
-      "from": "agt_c5af5443c92942c3a0589e804d36309e",
-      "to": "agt_637fc8337be141b399f86e93021e9847"
+      "from": "agt_9017bf6f23ee42f78d7b27c32edfffe8",
+      "to": "agt_583b4f906d584eb39dd0dece4ebded8a"
     },
     {
-      "from": "agt_637fc8337be141b399f86e93021e9847",
-      "to": "agt_5d1f4d08855e4674aecf4d35b3cdb36d"
+      "from": "agt_583b4f906d584eb39dd0dece4ebded8a",
+      "to": "agt_1490aa4c9f08499896700887fb2a37a2"
     },
     {
-      "from": "agt_5d1f4d08855e4674aecf4d35b3cdb36d",
-      "to": "agt_f83ff87c266c42a1a78445bfc970bb3d"
+      "from": "agt_1490aa4c9f08499896700887fb2a37a2",
+      "to": "agt_dd8507aa17fa4ad49e786d75eebfa1dc"
     },
     {
-      "from": "agt_f83ff87c266c42a1a78445bfc970bb3d",
-      "to": "agt_6c61be7ad64143b796268b57a9f7ad65"
+      "from": "agt_dd8507aa17fa4ad49e786d75eebfa1dc",
+      "to": "agt_43c5afbe138444b5b98d9d3aa67c1961"
     },
     {
-      "from": "agt_f83ff87c266c42a1a78445bfc970bb3d",
-      "to": "agt_f9e294ce679b4a318393b00ed8a44e31"
+      "from": "agt_dd8507aa17fa4ad49e786d75eebfa1dc",
+      "to": "agt_5d2a9d0f587f4d73a4473faf13172556"
     },
     {
-      "from": "agt_f83ff87c266c42a1a78445bfc970bb3d",
-      "to": "agt_b8ae3f6f26fa454f99c9cda112dd64af"
+      "from": "agt_dd8507aa17fa4ad49e786d75eebfa1dc",
+      "to": "agt_72ea54fab68d4092b69009d46d31ad7d"
     },
     {
-      "from": "agt_6c61be7ad64143b796268b57a9f7ad65",
-      "to": "agt_911666371e4549de892cf330d07e26fe"
+      "from": "agt_43c5afbe138444b5b98d9d3aa67c1961",
+      "to": "agt_03dbe5ff341a4f83bab18663dcf934f1"
     },
     {
-      "from": "agt_f9e294ce679b4a318393b00ed8a44e31",
-      "to": "agt_911666371e4549de892cf330d07e26fe"
+      "from": "agt_5d2a9d0f587f4d73a4473faf13172556",
+      "to": "agt_03dbe5ff341a4f83bab18663dcf934f1"
     },
     {
-      "from": "agt_b8ae3f6f26fa454f99c9cda112dd64af",
-      "to": "agt_911666371e4549de892cf330d07e26fe"
+      "from": "agt_72ea54fab68d4092b69009d46d31ad7d",
+      "to": "agt_03dbe5ff341a4f83bab18663dcf934f1"
     },
     {
-      "from": "agt_911666371e4549de892cf330d07e26fe",
-      "to": "agt_65a5326000f54c93a9df1de87bb9c67b"
+      "from": "agt_03dbe5ff341a4f83bab18663dcf934f1",
+      "to": "agt_4c1b0758955e45d88a442e2141f9ac53"
     }
   ],
   "state_schema": {
@@ -97,7 +97,7 @@
   },
   "metadata": {
     "created_by": "workflow_builder",
-    "created_at": "2026-01-27T20:31:02.677098",
+    "created_at": "2026-01-28T07:49:00.448785",
     "canvas_layout": {
       "width": 5000,
       "height": 5000
@@ -106,8 +106,8 @@
   "human_in_loop": {
     "enabled": true,
     "review_points": [
-      "agt_6c61be7ad64143b796268b57a9f7ad65",
-      "agt_f9e294ce679b4a318393b00ed8a44e31"
+      "agt_43c5afbe138444b5b98d9d3aa67c1961",
+      "agt_5d2a9d0f587f4d73a4473faf13172556"
     ]
   }
 }

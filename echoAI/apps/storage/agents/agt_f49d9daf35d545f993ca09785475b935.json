@@ -1,0 +1,38 @@
+{
+  "agent_id": "agt_f49d9daf35d545f993ca09785475b935",
+  "name": "DD Complete",
+  "role": "Workflow exit point",
+  "goal": "",
+  "prompt": "",
+  "description": "End node",
+  "llm": {
+    "model": "gpt-4o-mini",
+    "temperature": 0.7,
+    "max_tokens": 4000
+  },
+  "tools": [],
+  "input_schema": [],
+  "output_schema": [
+    "risk_score",
+    "recommendation",
+    "report_url"
+  ],
+  "constraints": {
+    "max_steps": 5,
+    "timeout_seconds": 60
+  },
+  "permissions": {
+    "can_call_agents": false
+  },
+  "metadata": {
+    "node_type": "End",
+    "ui_layout": {
+      "x": 2100,
+      "y": 300,
+      "icon": "⏹️",
+      "color": "#64748b"
+    },
+    "created_at": "2026-01-28T07:48:52.230991",
+    "registered_at": "2026-01-28T07:48:52.654483"
+  }
+}

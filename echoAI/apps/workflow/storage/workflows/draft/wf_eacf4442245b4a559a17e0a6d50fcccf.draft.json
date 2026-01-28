@@ -1,0 +1,35 @@
+{
+  "workflow_id": "wf_eacf4442245b4a559a17e0a6d50fcccf",
+  "name": "Web Search Agent",
+  "description": "Created from canvas on 2026-01-28",
+  "status": "draft",
+  "version": "0.1",
+  "execution_model": "sequential",
+  "agents": [
+    "agt_a07f786cc7924cbebbc6799fc4a058b1",
+    "agt_451d4686e50b47a0944cf6a12a0d2e31",
+    "agt_8dd359c0d12d4da3b99c08c54fccb995"
+  ],
+  "connections": [
+    {
+      "from": "agt_a07f786cc7924cbebbc6799fc4a058b1",
+      "to": "agt_451d4686e50b47a0944cf6a12a0d2e31"
+    },
+    {
+      "from": "agt_451d4686e50b47a0944cf6a12a0d2e31",
+      "to": "agt_8dd359c0d12d4da3b99c08c54fccb995"
+    }
+  ],
+  "state_schema": {
+    "query": "string",
+    "result": "string"
+  },
+  "metadata": {
+    "created_by": "workflow_builder",
+    "created_at": "2026-01-28T08:26:19.383013",
+    "canvas_layout": {
+      "width": 5000,
+      "height": 5000
+    }
+  }
+}
